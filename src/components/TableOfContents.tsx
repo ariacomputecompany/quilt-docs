@@ -55,7 +55,7 @@ export default function TableOfContents({
         .toc-wrapper {
           display: none;
         }
-        @container (min-width: 1400px) {
+        @container (min-width: 1280px) {
           .toc-wrapper {
             display: flex;
           }
