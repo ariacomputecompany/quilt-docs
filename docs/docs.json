@@ -14,18 +14,11 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "customization"
-            ]
+            "pages": ["index", "quickstart", "customization"]
           },
           {
             "group": "Content",
-            "pages": [
-              "components",
-              "guides/example"
-            ]
+            "pages": ["components", "guides/example"]
           }
         ]
       }

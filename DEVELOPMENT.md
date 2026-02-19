@@ -45,14 +45,14 @@ The site will be available at `http://localhost:4321`.
 
 ## Available Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run build` | Build the site for production |
-| `npm run preview` | Preview the production build locally |
-| `npm run format` | Format code with Prettier |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Run ESLint with auto-fix |
+| Command            | Description                          |
+| ------------------ | ------------------------------------ |
+| `npm run dev`      | Start the development server         |
+| `npm run build`    | Build the site for production        |
+| `npm run preview`  | Preview the production build locally |
+| `npm run format`   | Format code with Prettier            |
+| `npm run lint`     | Run ESLint                           |
+| `npm run lint:fix` | Run ESLint with auto-fix             |
 
 ## Project Structure
 

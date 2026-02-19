@@ -120,14 +120,14 @@ A catch-all route at `src/pages/[...slug].astro` renders each MDX page. The `@mi
 
 You have full control over the presentation layer. Key files to customize:
 
-| File | Purpose |
-| --- | --- |
-| `src/layouts/Layout.astro` | Root HTML layout |
-| `src/pages/[...slug].astro` | Page template and data loading |
-| `src/components/Header.astro` | Site header |
-| `src/components/Sidebar/` | Sidebar navigation |
-| `src/components/TableOfContents.tsx` | On-page table of contents |
-| `src/styles/` | Global styles, typography, and color scheme |
+| File                                 | Purpose                                     |
+| ------------------------------------ | ------------------------------------------- |
+| `src/layouts/Layout.astro`           | Root HTML layout                            |
+| `src/pages/[...slug].astro`          | Page template and data loading              |
+| `src/components/Header.astro`        | Site header                                 |
+| `src/components/Sidebar/`            | Sidebar navigation                          |
+| `src/components/TableOfContents.tsx` | On-page table of contents                   |
+| `src/styles/`                        | Global styles, typography, and color scheme |
 
 ## Search and AI assistant
 
@@ -140,14 +140,14 @@ The starter includes search and assistant components that connect to Mintlify's 
 
 ## Available scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run build` | Build the site for production |
-| `npm run preview` | Preview the production build locally |
-| `npm run format` | Format code with Prettier |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Run ESLint with auto-fix |
+| Command            | Description                          |
+| ------------------ | ------------------------------------ |
+| `npm run dev`      | Start the development server         |
+| `npm run build`    | Build the site for production        |
+| `npm run preview`  | Preview the production build locally |
+| `npm run format`   | Format code with Prettier            |
+| `npm run lint`     | Run ESLint                           |
+| `npm run lint:fix` | Run ESLint with auto-fix             |
 
 ## AI-assisted writing
 

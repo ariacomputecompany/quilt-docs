@@ -15,4 +15,3 @@ All notable changes to this project will be documented in this file.
 - Mobile-responsive layout
 - Tailwind CSS styling
 - ESLint and Prettier configuration
-
