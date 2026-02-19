@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { cn } from '@mintlify/components';
-import {
-  getAssistantOpen,
-  subscribeToAssistant,
-} from '../utils/assistantState';
 
 export interface TocHeading {
   depth: number;
@@ -21,9 +17,6 @@ export default function TableOfContents({
     [headings],
   );
   const [activeSlug, setActiveSlug] = useState('');
-  const [isAssistantOpen, setIsAssistantOpen] = useState(() =>
-    getAssistantOpen(),
-  );
 
   const handleScroll = useCallback(() => {
     const headingElements = tocHeadings
@@ -54,48 +47,54 @@ export default function TableOfContents({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  useEffect(() => {
-    return subscribeToAssistant(() => {
-      setIsAssistantOpen(getAssistantOpen());
-    });
-  }, []);
-
-  if (tocHeadings.length === 0 || isAssistantOpen) return null;
+  if (tocHeadings.length === 0) return null;
 
   return (
-    <div className="hidden xl:flex flex-col sticky top-38 h-[calc(100vh-9.5rem)] w-80 shrink-0 pl-10">
-      <nav className="overflow-y-auto text-sm leading-6 pt-2 pb-8">
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
-          className="font-medium text-gray-900 mb-3 flex items-center gap-2 cursor-pointer hover:text-gray-600 transition-colors"
-        >
-          <LinesIcon />
-          <span>On this page</span>
-        </button>
-        <ul className="space-y-0.5">
-          {tocHeadings.map((heading) => {
-            const isActive = activeSlug === heading.slug;
+    <>
+      <style>{`
+        .toc-wrapper {
+          display: none;
+        }
+        @container (min-width: 1400px) {
+          .toc-wrapper {
+            display: flex;
+          }
+        }
+      `}</style>
+      <div className="toc-wrapper flex-col sticky top-38 h-[calc(100vh-9.5rem)] w-80 shrink-0 pl-10">
+        <nav className="overflow-y-auto text-sm leading-6 pt-2 pb-8">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+            className="font-medium text-gray-900 mb-3 flex items-center gap-2 cursor-pointer hover:text-gray-600 transition-colors"
+          >
+            <LinesIcon />
+            <span>On this page</span>
+          </button>
+          <ul className="space-y-0.5">
+            {tocHeadings.map((heading) => {
+              const isActive = activeSlug === heading.slug;
 
-            return (
-              <li key={heading.slug}>
-                <a
-                  href={`#${heading.slug}`}
-                  className={cn(
-                    'block py-1 wrap-break-word transition-colors',
-                    heading.depth > 2 ? 'pl-4' : 'pl-0',
-                    isActive
-                      ? 'font-medium text-(--primary)'
-                      : 'text-gray-500 hover:text-gray-900',
-                  )}
-                >
-                  {heading.text}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    </div>
+              return (
+                <li key={heading.slug}>
+                  <a
+                    href={`#${heading.slug}`}
+                    className={cn(
+                      'block py-1 wrap-break-word transition-colors',
+                      heading.depth > 2 ? 'pl-4' : 'pl-0',
+                      isActive
+                        ? 'font-medium text-(--primary)'
+                        : 'text-gray-500 hover:text-gray-900',
+                    )}
+                  >
+                    {heading.text}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
+    </>
   );
 }
 
