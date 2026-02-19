@@ -161,7 +161,7 @@ This installs Mintlify's documentation skill for tools like Claude Code, Cursor,
 
 ## Resources
 
-- [Create a custom frontend guide](https://mintlify-headless-guide.mintlify.app/guides/custom-frontend)
+- [Create a custom frontend guide](https://www.mintlify.com/docs/guides/custom-frontend)
 - [Mintlify documentation](https://mintlify.com/docs)
 - [Astro documentation](https://docs.astro.build)
 - [Contributing guide](./CONTRIBUTING.md)
