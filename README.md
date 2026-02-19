@@ -4,7 +4,7 @@ Build a fully custom documentation frontend with [Astro](https://astro.build) wh
 
 Instead of using Mintlify's hosted frontend, this starter lets you control the entire presentation layer — layouts, components, and styles — while the `@mintlify/astro` integration handles content processing, navigation resolution, and component rendering at build time.
 
-For a detailed walkthrough, see the [Create a custom frontend](https://mintlify-headless-guide.mintlify.app/guides/custom-frontend) guide.
+For a detailed walkthrough, see the [Create a custom frontend](https://www.mintlify.com/docs/guides/custom-frontend) guide.
 
 ## Prerequisites
 
