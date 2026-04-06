@@ -175,7 +175,14 @@ export function SearchBar() {
       const iconName = item.metadata?.iconName || 'hashtag';
       return {
         ...item,
-        icon: <Icon icon={iconName} size={16} color="gray" />,
+        icon: (
+          <Icon
+            icon={iconName}
+            size={16}
+            color="currentColor"
+            className="app-search-icon"
+          />
+        ),
       };
     });
   };

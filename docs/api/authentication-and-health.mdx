@@ -1,0 +1,148 @@
+---
+title: "Authentication and health"
+description: "Authenticate correctly, check the right health endpoint, and discover each API concern safely."
+sidebarTitle: "Auth"
+---
+
+If you only learn one defensive habit in Quilt, make it this one:
+
+**Check health before you mutate things.**
+
+That single habit prevents a lot of wasted debugging.
+
+## Authentication
+
+Most protected routes accept one of these headers:
+
+```text
+X-Api-Key: <key>
+Authorization: Bearer <token>
+```
+
+Default base URL:
+
+```text
+https://backend.quilt.sh
+```
+
+### Example with an API key
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  https://backend.quilt.sh/api/system/info
+```
+
+### Example with a bearer token
+
+```bash
+curl \
+  -H "Authorization: Bearer $QUILT_TOKEN" \
+  https://backend.quilt.sh/api/system/info
+```
+
+<Warning>
+  Do not send both styles unless your own client explicitly standardizes that behavior. Pick one auth scheme and stay consistent.
+</Warning>
+
+## Health checks: what each one means
+
+Quilt uses different health endpoints for different questions.
+
+| Question | Route to use | What it tells you |
+|------|---------|---------|
+| "Is the backend alive at all?" | `GET /health` | Liveness only |
+| "Is container work ready?" | `GET /api/containers/health` | Container concern readiness |
+| "Can functions run?" | `GET /api/functions/health` | Function concern readiness |
+| "Is elasticity healthy?" | `GET /api/elasticity/health` | Elasticity concern readiness |
+
+### Why `/health` is not enough
+
+`GET /health` is a front-door heartbeat. It does **not** prove that a specific subsystem is ready for your next action.
+
+Analogy:
+
+- `/health` answers "is the building open?"
+- `/api/containers/health` answers "is the kitchen staffed and ready to cook?"
+
+Both matter, but they are not the same question.
+
+## Concern guides
+
+Most major API families expose:
+
+```text
+GET /api/<concern>/help
+GET /api/<concern>/examples
+GET /api/<concern>/health
+```
+
+You can also request Markdown by adding `?format=markdown` or sending `Accept: text/markdown`.
+
+### Example
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  -H "Accept: text/markdown" \
+  https://backend.quilt.sh/api/oci/help
+```
+
+## Safe startup checklist
+
+<Steps>
+  <Step title="Check platform liveness">
+    ```bash
+    curl https://backend.quilt.sh/health
+    ```
+  </Step>
+  <Step title="Check concern health">
+    If you are about to work with containers, use:
+
+    ```bash
+    curl -H "X-Api-Key: $QUILT_API_KEY" \
+      https://backend.quilt.sh/api/containers/health
+    ```
+  </Step>
+  <Step title="Inspect help or examples if the route family is unfamiliar">
+    ```bash
+    curl -H "X-Api-Key: $QUILT_API_KEY" \
+      https://backend.quilt.sh/api/containers/examples
+    ```
+  </Step>
+  <Step title="Only then perform the mutation">
+    This keeps troubleshooting grounded in real platform state instead of guesswork.
+  </Step>
+</Steps>
+
+## Common mistakes
+
+<AccordionGroup>
+  <Accordion title="I checked `/health`, so why did my container call still fail?">
+    Because `/health` only proves the backend is alive. It does not guarantee container readiness, available capacity, or a healthy runtime worker.
+  </Accordion>
+  <Accordion title="Can I use concern guides for OCI too?">
+    Yes. OCI is covered by the `oci` concern, including `GET /api/oci/help`, `GET /api/oci/examples`, and `GET /api/oci/health`.
+  </Accordion>
+  <Accordion title="Should I retry mutations blindly when something fails?">
+    No. First confirm health, then inspect the returned operation or error. Blind retries can create duplicate work or hide the real problem.
+  </Accordion>
+</AccordionGroup>
+
+## Minimal working check
+
+```bash
+curl https://backend.quilt.sh/health
+
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  https://backend.quilt.sh/api/system/info
+
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  https://backend.quilt.sh/api/containers/health
+```
+
+## Next step
+
+Once auth and health are working, move to [Containers](/runtime/containers). That is the fastest way to do something tangible in Quilt.

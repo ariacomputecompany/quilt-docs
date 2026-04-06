@@ -31,7 +31,7 @@ const isLocalUrl = (url: string | undefined): boolean => {
 };
 
 const CopyButtonClassName =
-  'rounded-lg p-1.5 hover:bg-gray-100 cursor-pointer text-gray-500';
+  'app-assistant-copy rounded-lg p-1.5 cursor-pointer';
 
 const CopyButton = ({ content }: { content: string }) => {
   const [copied, setCopied] = useState(false);
@@ -53,7 +53,7 @@ const CopyButton = ({ content }: { content: string }) => {
       {copied ? (
         <Icon icon="check" iconLibrary="lucide" color="green" size={16} />
       ) : (
-        <Icon icon="copy" iconLibrary="lucide" color="dimgray" size={16} />
+        <Icon icon="copy" iconLibrary="lucide" color="currentColor" size={16} />
       )}
     </button>
   );
@@ -100,7 +100,7 @@ const SearchingContainer = ({
     <>
       <button
         className={cn(
-          'group flex items-center text-left gap-2.5 text-gray-500 shrink-0 hover:text-gray-600 transition-colors',
+          'app-assistant-searching group flex items-center text-left gap-2.5 shrink-0 transition-colors rounded-lg',
           hasResults ? 'cursor-pointer' : 'cursor-default',
         )}
         onClick={() => {
@@ -114,7 +114,7 @@ const SearchingContainer = ({
               icon="search"
               iconLibrary="lucide"
               size={12}
-              color="dimgray"
+              color="currentColor"
             />
           </span>
         )}
@@ -128,7 +128,7 @@ const SearchingContainer = ({
             <Icon
               icon="chevron-right"
               iconLibrary="lucide"
-              color="dimgray"
+              color="currentColor"
               size={15}
             />
           </span>
@@ -184,37 +184,27 @@ const ChatSuggestions = ({ markdownLinks }: { markdownLinks: string }) => {
 
 const MarkdownContent = ({ text }: { text: string }) => {
   return (
-    <div className="prose prose-sm overflow-x-auto pb-1 max-w-none text-base lg:text-sm [&_p]:text-base lg:[&_p]:text-sm [&_li]:text-base lg:[&_li]:text-sm [&_ul]:text-base lg:[&_ul]:text-sm [&_ol]:text-base lg:[&_ol]:text-sm">
+    <div className="app-assistant-markdown prose prose-sm overflow-x-auto pb-1 max-w-none text-base lg:text-sm [&_p]:text-base lg:[&_p]:text-sm [&_li]:text-base lg:[&_li]:text-sm [&_ul]:text-base lg:[&_ul]:text-sm [&_ol]:text-base lg:[&_ol]:text-sm">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => (
-            <h1 className="text-lg font-semibold text-gray-950">{children}</h1>
+            <h1 className="text-lg font-semibold">{children}</h1>
           ),
           h2: ({ children }) => (
-            <h2 className="text-base font-semibold text-gray-950">
-              {children}
-            </h2>
+            <h2 className="text-base font-semibold">{children}</h2>
           ),
           h3: ({ children }) => (
-            <h3 className="text-base font-semibold text-gray-950">
-              {children}
-            </h3>
+            <h3 className="text-base font-semibold">{children}</h3>
           ),
           h4: ({ children }) => (
-            <h4 className="text-base font-semibold text-gray-950">
-              {children}
-            </h4>
+            <h4 className="text-base font-semibold">{children}</h4>
           ),
           h5: ({ children }) => (
-            <h5 className="text-base font-semibold text-gray-950">
-              {children}
-            </h5>
+            <h5 className="text-base font-semibold">{children}</h5>
           ),
           h6: ({ children }) => (
-            <h6 className="text-base font-semibold text-gray-950">
-              {children}
-            </h6>
+            <h6 className="text-base font-semibold">{children}</h6>
           ),
           a: ({ href, children, ...props }) => {
             const isLocal = isLocalUrl(href);
@@ -251,7 +241,7 @@ const MarkdownContent = ({ text }: { text: string }) => {
               <pre
                 {...props}
                 className={cn(
-                  'p-3 text-sm rounded-xl text-gray-950 bg-white border border-gray-200/70 overflow-x-auto',
+                  'app-assistant-code p-3 text-sm rounded-xl border overflow-x-auto',
                   props.className,
                 )}
               >
@@ -270,7 +260,7 @@ const MarkdownContent = ({ text }: { text: string }) => {
 
             return inline ? (
               <code
-                className="px-1 py-0.5 rounded bg-gray-100 text-sm"
+                className="app-assistant-inline-code px-1 py-0.5 rounded text-sm"
                 {...props}
               >
                 {children}

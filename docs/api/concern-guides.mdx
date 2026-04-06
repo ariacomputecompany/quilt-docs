@@ -1,0 +1,79 @@
+---
+title: "Concern guides"
+description: "Use help, examples, and health endpoints per concern so you do not have to guess the platform contract."
+sidebarTitle: "Guides"
+---
+
+Quilt exposes concern-scoped discovery endpoints for major API families.
+
+These are some of the highest-leverage endpoints in the product because they let you inspect the contract for the exact surface you are about to use.
+
+## The pattern
+
+```text
+GET /api/<concern>/help
+GET /api/<concern>/examples
+GET /api/<concern>/health
+```
+
+Default format is JSON.
+
+You can also request Markdown:
+
+- add `?format=markdown`
+- or send `Accept: text/markdown`
+
+## What each route is for
+
+| Route | Use it for |
+|------|---------|
+| `help` | route family discovery and contract reminders |
+| `examples` | canonical payload shapes and sample flows |
+| `health` | readiness for that specific subsystem |
+
+## Example: OCI
+
+OCI image management is covered by the `oci` concern.
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  "$QUILT_BASE_URL/api/oci/help"
+```
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  -H "Accept: text/markdown" \
+  "$QUILT_BASE_URL/api/oci/examples"
+```
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  "$QUILT_BASE_URL/api/oci/health"
+```
+
+## Why this is better than guessing
+
+Without concern guides, teams often:
+
+- cargo-cult old payloads
+- assume all health checks mean the same thing
+- miss concern-specific validation rules
+
+With concern guides, you can discover what the live backend expects right now.
+
+## Recommended habit
+
+<Steps>
+  <Step title="Check the concern's health">
+    Make sure the subsystem is ready.
+  </Step>
+  <Step title="Pull examples if the payload is not muscle memory yet">
+    This avoids schema drift in hand-written requests.
+  </Step>
+  <Step title="Use help when you need route-family discovery">
+    Especially useful when moving between runtime, functions, OCI, and elasticity.
+  </Step>
+</Steps>

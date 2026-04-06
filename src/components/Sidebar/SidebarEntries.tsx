@@ -7,7 +7,7 @@ import { SidebarGroupItem } from './SidebarGroupItem';
 function Divider() {
   return (
     <div className="px-1 py-3">
-      <div className="h-px w-full bg-gray-100" />
+      <div className="app-sidebar-divider h-px w-full" />
     </div>
   );
 }

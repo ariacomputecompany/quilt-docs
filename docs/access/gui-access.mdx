@@ -1,0 +1,61 @@
+---
+title: "GUI access"
+description: "Open Quilt GUI containers safely using the signed noVNC URL flow."
+sidebarTitle: "GUI"
+---
+
+GUI access is a special-purpose path for `prod-gui` containers.
+
+Treat it as a container-scoped capability layered on top of normal readiness checks.
+
+Primary route:
+
+```text
+GET /api/containers/<container_id>/gui-url
+```
+
+Use GUI access only for `prod-gui` containers.
+
+## GUI-capable create shape
+
+```json
+{
+  "name": "demo-gui",
+  "image": "prod-gui",
+  "working_directory": "/app",
+  "memory_limit_mb": 1024,
+  "cpu_limit_percent": 50,
+  "strict": true,
+  "environment": {
+    "FOO": "bar"
+  }
+}
+```
+
+## Typical GUI flow
+
+<Steps>
+  <Step title="Create a `prod-gui` container">
+    Quilt starts the GUI stack automatically.
+  </Step>
+  <Step title="Wait for readiness">
+    Poll until `exec_ready=true`, `network_ready=true`, and `gui_ready=true`.
+  </Step>
+  <Step title="Request the signed GUI URL">
+    The response contains `gui_url`.
+  </Step>
+  <Step title="Open it on the backend public host">
+    Quilt serves GUI traffic under `/gui/<container_id>/...`.
+  </Step>
+</Steps>
+
+## Notes
+
+- `prod-gui` does not accept a custom `command`
+- `gui_url` is typically a relative path under `/gui/<container_id>/...`
+- Quilt keeps browser assets and the VNC websocket container-scoped
+- `GET /api/containers/<container_id>/gui` is not part of the current contract
+
+## Rule of thumb
+
+Wait for `gui_ready=true` before requesting the signed URL. `exec_ready` alone is not enough for a working GUI session.

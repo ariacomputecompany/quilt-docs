@@ -1,0 +1,79 @@
+---
+title: "Core resource model"
+description: "Understand the stable Quilt resources and the troubleshooting flow they imply."
+sidebarTitle: "Resources"
+---
+
+Quilt's API is broad, but the underlying model is stable.
+
+If you understand the resources on this page, the rest of the docs become much easier to reason about.
+
+## The stable resources
+
+- **containers** are the primary runtime unit
+- **exec jobs** are commands launched inside a container
+- **operations** represent async lifecycle work
+- **snapshots** capture container state for cloning and lineage
+- **forks** create a writable branch from a live container
+- **volumes** hold persistent filesystem data
+- **network resources** expose addressing and diagnostics
+- **terminal sessions** are managed interactive PTY sessions
+
+## Why this matters
+
+These are not random endpoint families. They describe the lifecycle of real work:
+
+1. create or locate a runtime
+2. check whether it is ready
+3. run commands or open a session
+4. save, clone, scale, or delete it
+
+## The default troubleshooting flow
+
+```text
+1. confirm API health
+2. resolve the target container or function
+3. inspect readiness and current state
+4. act
+5. inspect the resulting operation, exec job, or invocation record
+```
+
+<Tip>
+  If you follow this sequence, Quilt feels predictable. If you skip it, the platform can feel more magical and confusing than it really is.
+</Tip>
+
+## Readiness before action
+
+The resource model assumes you will check readiness intentionally:
+
+- containers: use `/ready`
+- functions: inspect state plus pool status
+- orchestration: inspect health and operation records
+
+That is why the docs repeatedly separate **existence**, **accepted mutation**, and **actual readiness**.
+
+## How the resources connect
+
+| Resource | Depends on | Produces |
+|------|---------|---------|
+| Container create | image or managed runtime | operation |
+| Exec request | running, exec-ready container | job |
+| Snapshot | existing container | operation + snapshot |
+| Clone | existing snapshot | operation + container |
+| Fork | existing live container | operation + container |
+| Volume attach | existing volume + create payload | persistent filesystem |
+| Terminal session | existing container | session + websocket attach |
+
+## Related pages
+
+<Columns cols={2}>
+  <Card title="Containers" icon="container" href="/runtime/containers">
+    See the primary runtime contract in detail.
+  </Card>
+  <Card title="Operations" icon="loader-circle" href="/runtime/operations">
+    Learn how async Quilt work is tracked.
+  </Card>
+  <Card title="Decision rules" icon="list-checks" href="/reference/decision-rules">
+    Use the shortest safe path for common goals.
+  </Card>
+</Columns>

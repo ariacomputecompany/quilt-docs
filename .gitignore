@@ -9,6 +9,7 @@ dist/
 
 # dependencies
 node_modules/
+mintlify-astro-starter/
 
 # logs
 npm-debug.log*

@@ -1,0 +1,100 @@
+---
+title: "Snapshots and forking"
+description: "Save reproducible state, clone from snapshots, and branch live containers safely."
+sidebarTitle: "Snapshots"
+---
+
+Snapshot routes:
+
+```text
+GET    /api/snapshots
+GET    /api/snapshots?container_id=<container_id>
+GET    /api/snapshots/<snapshot_id>
+GET    /api/snapshots/<snapshot_id>/lineage
+POST   /api/containers/<container_id>/snapshot
+POST   /api/snapshots/<snapshot_id>/clone
+POST   /api/snapshots/<snapshot_id>/pin
+POST   /api/snapshots/<snapshot_id>/unpin
+DELETE /api/snapshots/<snapshot_id>
+```
+
+Fork route:
+
+```text
+POST /api/containers/<container_id>/fork
+```
+
+These routes require:
+
+```text
+X-Tenant-Id: <tenant_id>
+```
+
+## Snapshot payload
+
+```json
+{
+  "consistency_mode": "crash-consistent",
+  "network_mode": "reset",
+  "volume_mode": "exclude",
+  "ttl_seconds": 3600,
+  "labels": {
+    "suite": "demo"
+  }
+}
+```
+
+Accepted values:
+
+- `consistency_mode`: `crash-consistent`, `app-consistent`
+- `network_mode`: `reset`, `preserve_ns`, `preserve_conn_best_effort`
+- `volume_mode`: `exclude`, `include_named`, `include_all_allowed`
+
+## Clone payload
+
+```json
+{
+  "resume_policy": "immediate",
+  "name": "clone-name",
+  "labels": {
+    "suite": "demo"
+  }
+}
+```
+
+Accepted `resume_policy` values:
+
+- `manual`
+- `immediate`
+
+## Fork payload
+
+```json
+{
+  "consistency_mode": "crash-consistent",
+  "network_mode": "reset",
+  "volume_mode": "exclude",
+  "resume_policy": "immediate",
+  "name": "fork-name",
+  "labels": {
+    "suite": "demo"
+  }
+}
+```
+
+Fork validates `resume_policy` during request validation rather than deferring the enum failure to background work.
+
+## Snapshot source fields
+
+Snapshot responses include:
+
+- `source_container_id`
+- `source_container_name`
+
+`source_container_name` may be `null`.
+
+## Practical rule
+
+- use snapshots plus clone when reproducibility matters
+- use fork when you want a writable branch from a live container
+- use lineage before making ancestry assumptions

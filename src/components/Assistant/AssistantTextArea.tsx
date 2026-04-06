@@ -47,12 +47,9 @@ export function AssistantTextArea({
         placeholder="Ask a question..."
         rows={2}
         className={cn(
-          'w-full py-3 pr-10 pl-3 rounded-xl resize-none outline-none',
+          'app-assistant-input w-full py-3 pr-10 pl-3 rounded-xl resize-none outline-none',
           isMobile ? 'text-base' : 'text-sm',
-          'border border-gray-200',
-          'bg-white',
-          'text-gray-900',
-          'placeholder:text-gray-400',
+          'border',
           'focus:ring-2 min-h-[48px] transition-shadow',
         )}
         style={

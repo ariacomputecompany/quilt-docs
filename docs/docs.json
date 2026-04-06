@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "Mint Astro Starter Kit",
+  "name": "Quilt Docs",
   "theme": "mint",
   "colors": {
     "primary": "#16A34A",
@@ -13,12 +13,58 @@
         "tab": "Docs",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": ["index", "quickstart", "customization"]
+            "group": "Overview",
+            "pages": [
+              "index",
+              "quickstart",
+              "concepts/mental-model",
+              "concepts/core-resource-model",
+              "api/authentication-and-health",
+              "api/concern-guides"
+            ]
           },
           {
-            "group": "Content",
-            "pages": ["components", "guides/example"]
+            "group": "Runtime",
+            "pages": [
+              "runtime/containers",
+              "runtime/oci-images",
+              "runtime/gpu-passthrough",
+              "runtime/exec-contract",
+              "runtime/operations"
+            ]
+          },
+          {
+            "group": "State",
+            "pages": [
+              "state/snapshots-and-forking",
+              "state/environment-variables",
+              "state/archive-and-file-transfer",
+              "state/volumes"
+            ]
+          },
+          {
+            "group": "Access",
+            "pages": [
+              "access/network-activity-and-cleanup",
+              "access/terminal-sessions",
+              "access/gui-access",
+              "access/icc"
+            ]
+          },
+          {
+            "group": "Orchestration",
+            "pages": [
+              "orchestration/elasticity",
+              "orchestration/clusters-agents-and-kubernetes"
+            ]
+          },
+          {
+            "group": "Tooling",
+            "pages": ["tooling/quiltc", "functions/serverless-functions"]
+          },
+          {
+            "group": "Reference",
+            "pages": ["reference/decision-rules"]
           }
         ]
       }
@@ -26,14 +72,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Backend health",
+          "href": "https://backend.quilt.sh/health",
+          "icon": "heart-pulse"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "quiltc GitHub",
+          "href": "https://github.com/ariacomputecompany/quiltc",
+          "icon": "github"
         }
       ]
     }

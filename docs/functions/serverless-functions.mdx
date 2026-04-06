@@ -1,0 +1,177 @@
+---
+title: "Serverless functions"
+description: "Create, deploy, invoke, pause, resume, inspect pool state, and roll back Quilt functions."
+sidebarTitle: "Functions"
+---
+
+Functions are Quilt's serverless surface.
+
+Use them when you want execution without managing a long-lived container yourself.
+
+## Primary routes
+
+```text
+POST   /api/functions
+GET    /api/functions
+GET    /api/functions/<function_id>
+GET    /api/functions/by-name/<name>
+PUT    /api/functions/<function_id>
+DELETE /api/functions/<function_id>
+POST   /api/functions/<function_id>/deploy
+POST   /api/functions/<function_id>/pause
+POST   /api/functions/<function_id>/resume
+POST   /api/functions/<function_id>/invoke
+POST   /api/functions/invoke/<name>
+GET    /api/functions/<function_id>/invocations?limit=<n>
+GET    /api/functions/<function_id>/versions
+GET    /api/functions/<function_id>/pool
+GET    /api/functions/pool/stats
+GET    /api/functions/<function_id>/invocations/<invocation_id>
+POST   /api/functions/<function_id>/rollback
+```
+
+## Create a function
+
+```json create-function.json
+{
+  "name": "my-function",
+  "cluster_id": "cluster_123",
+  "description": "Processes incoming data",
+  "handler": "echo hello",
+  "runtime": "shell",
+  "memory_limit_mb": 256,
+  "cpu_limit_percent": 25.0,
+  "timeout_seconds": 30,
+  "environment": {
+    "NODE_ENV": "production"
+  },
+  "min_instances": 0,
+  "max_instances": 5,
+  "cleanup_on_exit": true,
+  "working_directory": "/app"
+}
+```
+
+Important notes:
+
+- the create contract does **not** include `source_code`
+- creation is driven by `handler`, `runtime`, and the runtime-owned execution image
+- `runtime` is optional and defaults to `shell`
+- `memory_limit_mb` must be at least `256`
+- `working_directory` must already exist in the execution image if you set it
+
+## Function lifecycle in plain English
+
+- **create**: register the function and start its versioned lifecycle
+- **deploy**: warm and start capacity
+- **invoke**: run it
+- **pause**: scale it to zero
+- **resume**: route through deploy again so it becomes invocable
+- **update**: create a new version instead of mutating the active version in place
+- **rollback**: point back to an older version
+
+## Invoke a function
+
+```json invoke-function.json
+{
+  "payload": "{\"key\":\"value\"}",
+  "environment": {
+    "EXTRA_VAR": "value"
+  },
+  "timeout_seconds": 30
+}
+```
+
+Invocation response:
+
+```json invocation-response.json
+{
+  "invocation_id": "uuid",
+  "function_id": "uuid",
+  "function_name": "my-function",
+  "execution_node_id": "node-a",
+  "status": "success",
+  "started_at": 1760000000,
+  "ended_at": 1760000001,
+  "duration_ms": 1200,
+  "exit_code": 0,
+  "stdout": "Result output",
+  "stderr": "",
+  "error_message": null,
+  "cold_start": true
+}
+```
+
+## Pool state
+
+Function pool status:
+
+```json function-pool-status.json
+{
+  "function_id": "uuid",
+  "warming_count": 1,
+  "ready_count": 2,
+  "busy_count": 1,
+  "total_count": 4
+}
+```
+
+Global pool stats:
+
+```json global-pool-stats.json
+{
+  "total_count": 4,
+  "warming_count": 1,
+  "ready_count": 2,
+  "busy_count": 1,
+  "recycling_count": 0,
+  "terminating_count": 0
+}
+```
+
+### The field that matters most
+
+`ready_count` tells you how many function containers are already started and invocable.
+
+That is the closest thing to "warm and ready right now."
+
+## Rollback
+
+Rollback requires this exact body shape:
+
+```json rollback-function.json
+{
+  "version": 3
+}
+```
+
+## A sensible debugging flow
+
+<Steps>
+  <Step title="Inspect function state">
+    Confirm the function exists and the version state looks right.
+  </Step>
+  <Step title="Check recent invocations">
+    Look for failures, duration, stderr, and cold starts.
+  </Step>
+  <Step title="Check pool status">
+    Make sure capacity is actually warm enough for your expectations.
+  </Step>
+  <Step title="Only then change config">
+    Adjust pool targets, deploy, pause/resume, or roll back with real evidence.
+  </Step>
+</Steps>
+
+## Common mistakes
+
+<AccordionGroup>
+  <Accordion title="Is `cold_start` an error?">
+    No. It is execution metadata. It tells you the invocation started from a cold path, not that the platform failed.
+  </Accordion>
+  <Accordion title="Does update change the active version in place?">
+    No. Update creates a new version.
+  </Accordion>
+  <Accordion title="If a function exists, is it ready to invoke?">
+    Not necessarily. Existence, deployment state, and warm pool capacity are different things.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,66 @@
+---
+title: "Network, activity, and cleanup"
+description: "Inspect networking, routes, notifications, monitors, and cleanup tasks before you assume an app-level issue."
+sidebarTitle: "Network"
+---
+
+This page groups together the platform surfaces that usually answer "is the environment healthy?" before you start blaming application code.
+
+Primary routes:
+
+```text
+GET  /api/network/allocations
+GET  /api/containers/<container_id>/network
+PUT  /api/containers/<container_id>/network
+POST /api/containers/<container_id>/network/setup
+GET  /api/containers/<container_id>/network/diagnostics
+GET  /api/containers/<container_id>/egress
+POST /api/containers/<container_id>/routes
+DELETE /api/containers/<container_id>/routes
+GET  /api/activity?limit=<n>
+GET  /api/notifications
+PUT  /api/notifications/<notification_id>/read
+POST /api/notifications/mark-all-read
+GET  /api/monitors
+GET  /api/monitors/processes
+GET  /api/monitors/profile
+GET  /api/monitors/<container_id>
+GET  /api/dns/entries
+POST /api/dns/entries/<current_name>/rename
+GET  /api/cleanup/status
+GET  /api/cleanup/tasks
+GET  /api/containers/<container_id>/cleanup/tasks
+POST /api/containers/<container_id>/cleanup/force
+```
+
+## Payloads
+
+```json set-network.json
+{
+  "ip_address": "10.42.0.7"
+}
+```
+
+```json add-route.json
+{
+  "destination": "10.0.0.0/24"
+}
+```
+
+```json force-cleanup.json
+{
+  "confirm": true
+}
+```
+
+## Important semantics
+
+- `GET /api/activity` is tenant-scoped and only accepts `limit`
+- notifications are tenant-scoped and the list route does not take `limit`
+- forced cleanup requires `confirm=true`
+- forced cleanup only works on stopped containers
+- monitor routes distinguish monitor records, monitor processes, and per-container status
+
+## Rule of thumb
+
+Inspect network diagnostics before assuming a connectivity issue is application-level.

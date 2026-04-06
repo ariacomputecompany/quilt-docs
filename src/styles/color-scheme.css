@@ -1,7 +1,7 @@
-@custom-variant dark (&:not(*));
+html[data-theme='light'] {
+  color-scheme: light;
+}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light !important;
-  }
+html[data-theme='dark'] {
+  color-scheme: dark;
 }

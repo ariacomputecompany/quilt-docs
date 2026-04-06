@@ -1,0 +1,189 @@
+---
+title: "Elasticity"
+description: "Scale containers, functions, workloads, and node groups without losing the orchestration trail."
+sidebarTitle: "Elasticity"
+---
+
+Elasticity is Quilt's policy and control surface for resource changes.
+
+Use it when you need to:
+
+- resize containers
+- change function pool targets
+- bind workloads to functions
+- rotate workload-function bindings
+- change placement preferences
+- scale node groups
+- rollback orchestrator actions
+
+## Primary routes
+
+```text
+GET  /api/elasticity/node/status
+GET  /api/elasticity/control/contract
+GET  /api/elasticity/control/operations/<operation_id>
+GET  /api/elasticity/control/actions/<action_id>/operations
+POST /api/elasticity/containers/<container_id>/resize
+POST /api/elasticity/functions/<function_id>/pool-target
+POST /api/elasticity/control/containers/<container_id>/resize
+POST /api/elasticity/control/functions/<function_id>/pool-target
+PUT  /api/elasticity/control/workloads/<workload_id>/function-binding
+GET  /api/elasticity/control/workloads/<workload_id>/function-binding
+POST /api/elasticity/control/workloads/<workload_id>/function-binding/rotate
+PUT  /api/elasticity/control/workloads/<workload_id>/placement-preference
+GET  /api/elasticity/control/workloads/<workload_id>/placement-preference
+POST /api/elasticity/control/node-groups/<node_group>/scale
+POST /api/elasticity/control/actions/<action_id>/rollback
+```
+
+## Direct routes vs control routes
+
+This is the distinction to learn first.
+
+| Route type | What it does |
+|------|---------|
+| Direct elasticity route | Mutates the target directly and returns updated state synchronously |
+| Control route | Persists durable operation records, executes inline, and returns the current operation body |
+
+Analogy:
+
+- direct route = changing a thermostat in the room
+- control route = changing it through the building management system, where the action is recorded and traceable
+
+## Required headers
+
+All elasticity routes require:
+
+```text
+X-Tenant-Id: <tenant_id>
+```
+
+Control writes also require:
+
+```text
+Idempotency-Key: <idempotency_key>
+X-Orch-Action-Id: <orchestrator_action_id>
+```
+
+<Warning>
+  The tenant header must match the authenticated tenant. Quilt treats elasticity as tenant-scoped control work, not a best-effort convenience API.
+</Warning>
+
+## Source of truth for control endpoints
+
+Use this route when you need the canonical control contract:
+
+```text
+GET /api/elasticity/control/contract
+```
+
+Also note:
+
+- `control_base_url` is derived from the request-visible public base URL
+- examples may show `https://backend.quilt.sh`, but the runtime value is not hardcoded
+- control responses are not guaranteed to include `status_url`
+
+## Common payloads
+
+Resize:
+
+```json resize-container.json
+{
+  "memory_limit_mb": 1536,
+  "cpu_limit_percent": 75
+}
+```
+
+Pool target:
+
+```json set-function-pool-target.json
+{
+  "min_instances": 1,
+  "max_instances": 4
+}
+```
+
+Workload function binding:
+
+```json bind-workload-function.json
+{
+  "function_id": "fn_123"
+}
+```
+
+Workload function rotation:
+
+```json rotate-workload-function.json
+{
+  "next_function_id": "fn_456",
+  "cutover_at": 1893456000
+}
+```
+
+Placement preference:
+
+```json set-placement-preference.json
+{
+  "node_group": "group-a",
+  "anti_affinity": true
+}
+```
+
+Node group scale:
+
+```json scale-node-group.json
+{
+  "delta_units": 1
+}
+```
+
+`delta_units` must be non-zero:
+
+- positive = scale out
+- negative = scale in
+
+Rollback:
+
+```json rollback-action.json
+{
+  "target_action_id": "elastic-action-123",
+  "reason_code": "manual_rollback",
+  "reason_message": "rollback requested by orchestrator"
+}
+```
+
+`target_action_id` is required.
+
+## A safe elasticity workflow
+
+<Steps>
+  <Step title="Confirm elasticity health">
+    ```bash
+    curl -H "X-Api-Key: $QUILT_API_KEY" \
+      https://backend.quilt.sh/api/elasticity/health
+    ```
+  </Step>
+  <Step title="Choose direct or control mode intentionally">
+    Use direct routes for straightforward mutations. Use control routes when you need durable orchestration records.
+  </Step>
+  <Step title="Send the tenant and orchestration headers">
+    This is required for safe, scoped changes.
+  </Step>
+  <Step title="Inspect the resulting operation body">
+    Especially for control writes, treat the returned operation as part of the contract.
+  </Step>
+</Steps>
+
+## Things people miss
+
+<AccordionGroup>
+  <Accordion title="Is resize part of some other resource model?">
+    No. Resize belongs to elasticity. There is no separate resize surface outside this section.
+  </Accordion>
+  <Accordion title="Do control routes always give me a `status_url`?">
+    No. Control-route responses are not guaranteed to include one.
+  </Accordion>
+  <Accordion title="Can I omit `Idempotency-Key` for control writes if I trust my caller?">
+    You should not. The control surface expects idempotent orchestration behavior.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,72 @@
+---
+title: "Decision rules"
+description: "Use the shortest correct path for common Quilt tasks without re-reading the whole docs set."
+sidebarTitle: "Rules"
+---
+
+This page is the fast lane.
+
+When you already know what you want, use these rules to pick the correct Quilt surface quickly.
+
+## Core rules
+
+- If the platform may be down, check `GET /health` first, then the relevant concern health route.
+- If the task targets a specific runtime, resolve the container and check readiness before mutating it.
+- If a mutation returns `202`, follow the operation instead of issuing duplicate requests.
+- If shell parsing is required, invoke the shell explicitly in argv form.
+- If state must survive container replacement, use a volume.
+- If state must be reproducible, snapshot first and clone from the snapshot.
+- If you want a writable branch from a live container, use fork.
+- If diagnosing connectivity, inspect network diagnostics before changing routes or IP assignments.
+- If the task is interactive, use terminal sessions instead of ad hoc exec polling.
+- If the task is about clusters, nodes, workloads, placements, join tokens, or manifests, use the cluster and agent surfaces.
+
+## Goal-driven lookup
+
+| Goal | Best tool |
+|------|---------|
+| Run one command and inspect the result later | exec job |
+| Watch live output | `/stream` |
+| Work in a shell interactively | terminal session |
+| Save reproducible state | snapshot |
+| Create an editable branch from a live runtime | fork |
+| Keep files across container replacement | volume |
+| Bulk upload a codebase or bundle | archive upload |
+| Debug networking | network diagnostics |
+| Open a desktop-like GUI | `prod-gui` + `gui-url` |
+| Send structured container-to-container protocol messages | ICC |
+| Scale runtime resources with orchestration traceability | elasticity control routes |
+| Run event-style compute | functions |
+| Manage a fleet of nodes and workloads | clusters + agents |
+| Apply Kubernetes-style manifests | Quilt k8s compatibility routes or `quiltc` |
+
+## Tiny examples
+
+<AccordionGroup>
+  <Accordion title="I need persistence">
+    Use a volume if the data should outlive the container. Use a snapshot if you need a reproducible saved point. Use a fork if you want a writable branch from a live runtime.
+  </Accordion>
+  <Accordion title="I need interactivity">
+    Use terminal sessions. Exec jobs are better for scripted, submit-and-track work.
+  </Accordion>
+  <Accordion title="I need to debug a failed change">
+    Inspect the returned operation or job. Do not assume retrying is the fix.
+  </Accordion>
+  <Accordion title="I need to use shell syntax">
+    Wrap the command explicitly:
+
+    ```json
+    {
+      "command": ["/bin/sh", "-lc", "npm test && npm run lint"]
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## The shortest safe workflow
+
+```text
+health -> concern health -> resolve target -> check readiness -> act -> inspect result
+```
+
+If you follow that order, you will avoid most beginner mistakes.

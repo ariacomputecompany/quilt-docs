@@ -1,0 +1,126 @@
+---
+title: "Mental model"
+description: "Learn Quilt's core concepts in plain English before you touch the API."
+sidebarTitle: "Mental model"
+---
+
+Quilt gets much easier once you stop thinking of it as "just containers" and start thinking of it as a **runtime platform with a few durable building blocks**.
+
+<Tip>
+  If you are brand new, read this page before the route-by-route pages. It gives you the map before you start driving.
+</Tip>
+
+## The simple version
+
+Here is the shortest useful explanation:
+
+- A **container** is the running machine you care about.
+- An **exec job** is a command you launch inside that container.
+- An **operation** is Quilt's receipt for async work like create, stop, delete, snapshot, or fork.
+- A **snapshot** is a saved moment in time.
+- A **fork** is a writable branch from a live container.
+- A **volume** is storage that survives when containers come and go.
+- A **terminal session** is the interactive shell surface.
+- A **cluster** is the control plane for nodes, workloads, and placements.
+- A **function** is Quilt's serverless surface.
+
+## A real-world analogy
+
+Think about Quilt like a movie production:
+
+- The **container** is the soundstage.
+- The **volume** is the props warehouse that stays around after filming ends.
+- The **exec job** is a crew instruction like "run tests" or "build this project."
+- The **operation** is the production ticket that tells you whether setup is still in progress or finished.
+- The **snapshot** is a photo of the set.
+- The **fork** is building a second copy of the set so someone can experiment without touching the original.
+
+If you keep that framing in your head, most of the API starts to feel predictable.
+
+## The runtime flow Quilt expects
+
+<Steps>
+  <Step title="Check health first">
+    Before doing real work, confirm the platform is alive:
+
+    ```bash
+    curl https://backend.quilt.sh/health
+    ```
+  </Step>
+  <Step title="Find the right concern">
+    Quilt exposes concern-specific help, examples, and health routes:
+
+    ```bash
+    curl -H "X-Api-Key: $QUILT_API_KEY" \
+      https://backend.quilt.sh/api/containers/help
+    ```
+  </Step>
+  <Step title="Target the right resource">
+    Resolve the container, function, workload, or cluster you actually mean.
+  </Step>
+  <Step title="Act">
+    Create, exec, snapshot, scale, invoke, or deploy.
+  </Step>
+  <Step title="Inspect the result">
+    If the route returned `202`, follow the operation. If it returned a job handle, inspect the job. If it was synchronous, read the response body directly.
+  </Step>
+</Steps>
+
+## The most important rule
+
+**Do not confuse "created" with "ready."**
+
+That matters because Quilt separates lifecycle phases:
+
+- A container can exist without being exec-ready.
+- Network allocation is not the same as app health.
+- GUI workloads have an extra readiness layer.
+- Functions can exist before capacity is warmed.
+
+<Warning>
+  The most common beginner mistake is to create something and immediately assume it can already accept commands or traffic.
+</Warning>
+
+## Resource cheat sheet
+
+| Resource | What it is | When to use it |
+|------|---------|
+| Container | Main runtime unit | Run apps, jobs, services, and dev environments |
+| Exec job | Non-interactive command inside a container | Build, test, inspect, script |
+| Stream | Live non-PTY output surface | Watch command output in real time |
+| Terminal session | Interactive PTY shell | Debugging and manual work |
+| Operation | Async lifecycle handle | Track create, stop, fork, snapshot, delete |
+| Snapshot | Saved state | Reproducibility and safe cloning |
+| Fork | Writable branch from a live container | Experiment without touching the original |
+| Volume | Persistent storage | Keep files across container replacement |
+| Function | Serverless execution surface | Event-driven workloads |
+| Cluster | Desired-state control plane | Nodes, workloads, placements, manifests |
+
+## Concern guides are your friend
+
+Most major surfaces expose these routes:
+
+```text
+GET /api/<concern>/help
+GET /api/<concern>/examples
+GET /api/<concern>/health
+```
+
+That means Quilt documents itself per concern. If you are unsure where to start, ask the concern for its own contract before guessing.
+
+## What to read next
+
+<Columns cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Make your first successful API calls.
+  </Card>
+  <Card title="Auth and health" icon="shield-check" href="/api/authentication-and-health">
+    Learn headers, health checks, and concern discovery.
+  </Card>
+  <Card title="Containers" icon="container" href="/runtime/containers">
+    Work with the main Quilt runtime primitive.
+  </Card>
+  <Card title="Decision rules" icon="list-checks" href="/reference/decision-rules">
+    Use the fast path when you already know the goal.
+  </Card>
+</Columns>

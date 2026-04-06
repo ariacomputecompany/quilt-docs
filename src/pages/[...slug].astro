@@ -82,13 +82,13 @@ const page = resolvePageData(docsConfig as DocsConfig, {
               >
                 <div class="flex flex-col gap-2.5">
                   <h1
-                    class="text-2xl sm:text-3xl text-gray-900 tracking-tight font-bold wrap-anywhere"
+                    class="app-page-title text-2xl sm:text-3xl text-gray-900 tracking-tight font-bold wrap-anywhere"
                   >
                     {doc.data.title || doc.id}
                   </h1>
                   {
                     doc.data.description && (
-                      <div class="text-lg prose prose-gray max-w-2xl">
+                      <div class="app-page-description text-lg prose prose-gray max-w-2xl">
                         <p>{doc.data.description}</p>
                       </div>
                     )

@@ -1,0 +1,113 @@
+---
+title: "ICC"
+description: "Use Quilt's structured container messaging surface when normal application HTTP is not the right transport."
+sidebarTitle: "ICC"
+---
+
+ICC is the platform surface for structured container messaging without going through the normal app HTTP path.
+
+## Common routes
+
+```text
+GET  /api/icc
+GET  /api/icc/health
+GET  /api/icc/streams
+GET  /api/icc/schema
+GET  /api/icc/types
+GET  /api/icc/proto
+GET  /api/icc/descriptor
+GET  /api/icc/messages?container_id=<tenant_owned_container_id>&limit=<n>
+GET  /api/icc/inbox/<container_id>
+GET  /api/icc/containers/<container_id>/state-version
+GET  /api/icc/dlq
+GET  /api/containers/<container_id>/icc
+GET  /api/containers/<container_id>/inbox
+GET  /api/containers/<container_id>/messages
+POST /api/icc/messages
+POST /api/icc/messages/broadcast
+POST /api/icc/exec/broadcast
+POST /api/icc/publish
+POST /api/icc/ack
+POST /api/icc/replay
+POST /api/icc/dlq/<stream_seq>/replay
+POST /api/containers/<container_id>/icc/publish
+POST /api/containers/<container_id>/inbox/ack
+POST /api/containers/<container_id>/inbox/replay
+POST /api/icc/inbox/<container_id>/ack
+POST /api/icc/messages/<msg_id>/ack
+POST /api/icc/inbox/<container_id>/replay
+```
+
+## Payloads
+
+Publish:
+
+```json
+{
+  "envelope_b64": "<base64 protobuf envelope>"
+}
+```
+
+Broadcast:
+
+```json
+{
+  "envelope_b64": "<base64 protobuf envelope>",
+  "targets": {
+    "container_ids": ["a", "b"],
+    "include_non_running": true,
+    "limit": 10
+  }
+}
+```
+
+Exec broadcast:
+
+```json
+{
+  "command": ["echo", "icc-broadcast-ok"],
+  "timeout_ms": 10000,
+  "targets": {
+    "container_ids": ["ctr_123"]
+  }
+}
+```
+
+Ack:
+
+```json
+{
+  "msg_id": "msg_123",
+  "action": "ack",
+  "reason": "handled"
+}
+```
+
+Accepted `action` values:
+
+- `ack`
+- `nack`
+
+Replay:
+
+```json
+{
+  "container_id": "ctr_123",
+  "state": "acked",
+  "limit": 10
+}
+```
+
+## Important semantics
+
+- `GET /api/icc/messages` requires `container_id`
+- inbox, replay, and state-version reads require a real tenant-owned container id
+- placeholder ids in examples are illustrative, not universally runnable
+
+## When it fits
+
+Use ICC when you need a structured, protocol-oriented message path between Quilt-managed runtimes. If ordinary request-response HTTP is enough, keep the simpler transport.
+
+<Warning>
+  Use ICC when you need direct structured messaging with a real protocol. Do not reach for it when normal HTTP is the actual requirement.
+</Warning>

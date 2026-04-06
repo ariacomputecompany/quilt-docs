@@ -65,7 +65,7 @@ export default function TableOfContents({
         <nav className="overflow-y-auto text-sm leading-6 pt-2 pb-8">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
-            className="font-medium text-gray-900 mb-3 flex items-center gap-2 cursor-pointer hover:text-gray-600 transition-colors"
+            className="app-toc-button font-medium mb-3 flex items-center gap-2 cursor-pointer transition-colors"
           >
             <LinesIcon />
             <span>On this page</span>
@@ -79,11 +79,9 @@ export default function TableOfContents({
                   <a
                     href={`#${heading.slug}`}
                     className={cn(
-                      'block py-1 wrap-break-word transition-colors',
+                      'app-toc-link block py-1 wrap-break-word transition-colors',
                       heading.depth > 2 ? 'pl-4' : 'pl-0',
-                      isActive
-                        ? 'font-medium text-(--primary)'
-                        : 'text-gray-500 hover:text-gray-900',
+                      isActive ? 'font-medium text-(--primary)' : '',
                     )}
                   >
                     {heading.text}

@@ -26,9 +26,21 @@ const { title = 'Mintlify Docs', description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <script is:inline>
+      (() => {
+        const themeKey = 'mintlify-theme';
+        const storedTheme = localStorage.getItem(themeKey);
+        const theme =
+          storedTheme === 'light' || storedTheme === 'dark'
+            ? storedTheme
+            : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <ClientRouter />
   </head>
-  <body>
+  <body class="app-shell">
     <AssistantProvider client:only="react" />
     <div class="flex antialiased">
       <div class="flex-1 min-w-0 max-w-[1400px] mx-auto w-full">

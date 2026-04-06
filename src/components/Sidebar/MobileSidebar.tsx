@@ -62,7 +62,7 @@ export function MobileSidebar({
         <button
           type="button"
           onClick={() => setIsOpen(false)}
-          className="fixed bg-white rounded-full top-4 right-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-600 shadow-md z-80 lg:hidden"
+          className="app-mobile-sidebar-close fixed rounded-full top-4 right-4 w-8 h-8 flex items-center justify-center shadow-md z-80 lg:hidden"
           aria-label="Close navigation"
         >
           <Icon icon="x" iconLibrary="lucide" size={18} />
@@ -71,7 +71,7 @@ export function MobileSidebar({
 
       <div
         className={cn(
-          'fixed top-0 left-0 bottom-0 w-[20rem] bg-white z-70 transition-transform duration-300 ease-in-out lg:hidden',
+          'app-mobile-sidebar fixed top-0 left-0 bottom-0 w-[20rem] z-70 transition-transform duration-300 ease-in-out lg:hidden',
           isOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
@@ -80,7 +80,12 @@ export function MobileSidebar({
             <img
               src="/logo/light.svg"
               alt="Mint Starter Kit"
-              className="h-7 w-auto"
+              className="theme-logo-light h-7 w-auto"
+            />
+            <img
+              src="/logo/dark.svg"
+              alt="Mint Starter Kit"
+              className="theme-logo-dark h-7 w-auto"
             />
           </div>
 

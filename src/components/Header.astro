@@ -3,6 +3,7 @@ import type { TabInfo } from '@mintlify/astro/helpers';
 import { SearchBar } from './SearchBar';
 import AssistantBar from './AssistantBar';
 import { MobileActionButtons, MobileNavToggle } from './MobileHeaderActions';
+import { ThemeToggle } from './ThemeToggle';
 
 interface Props {
   tabs: TabInfo[] | null;
@@ -16,7 +17,7 @@ const usingTabs = tabs && tabs.length > 0;
 
 <header class="sticky top-0 w-full px-8 z-50">
   <div
-    class="absolute left-1/2 -translate-x-1/2 w-screen h-full backdrop-blur flex-none transition-colors duration-500 border-b border-gray-500/5 bg-white/95 supports-backdrop-blur:bg-white/60"
+    class="app-header-shell absolute left-1/2 -translate-x-1/2 w-screen h-full backdrop-blur flex-none transition-colors duration-500 border-b border-gray-500/5 bg-white/95 supports-backdrop-blur:bg-white/60"
   >
   </div>
   <div class="relative">
@@ -25,13 +26,22 @@ const usingTabs = tabs && tabs.length > 0;
         <div class:list={['flex items-center h-16 min-w-0']}>
           <div
             class:list={[
-              'h-full relative flex-1 flex items-center justify-between gap-x-4 min-w-0 border-b border-gray-500/5',
+              'app-header-bar h-full relative flex-1 flex items-center justify-between gap-x-4 min-w-0 border-b border-gray-500/5',
               !usingTabs && 'lg:border-none',
             ]}
           >
             <div class="flex items-center shrink-0 lg:flex-1">
               <a href="/" class="flex items-center shrink-0">
-                <img src="/logo/light.svg" alt="Mint Starter Kit" class="h-7" />
+                <img
+                  src="/logo/light.svg"
+                  alt="Mint Starter Kit"
+                  class="theme-logo-light h-7"
+                />
+                <img
+                  src="/logo/dark.svg"
+                  alt="Mint Starter Kit"
+                  class="theme-logo-dark h-7"
+                />
               </a>
             </div>
             <div
@@ -42,6 +52,9 @@ const usingTabs = tabs && tabs.length > 0;
               </div>
               <div class="shrink-0" transition:persist="assistant-bar">
                 <AssistantBar client:load />
+              </div>
+              <div class="shrink-0">
+                <ThemeToggle client:load />
               </div>
             </div>
             <MobileActionButtons client:load />
@@ -60,24 +73,24 @@ const usingTabs = tabs && tabs.length > 0;
       </div>
       {
         usingTabs && (
-          <div class="hidden lg:flex h-12">
+          <div class="app-header-tabs hidden lg:flex h-12">
             <div class="h-full flex text-sm gap-x-6">
               {tabs.map((tab) => (
                 <a
                   href={tab.href}
+                  aria-current={tab.isActive ? 'page' : undefined}
                   class:list={[
-                    'group relative h-full gap-2 flex items-center font-medium text-gray-600 hover:text-gray-800',
+                    'app-header-tab group relative h-full gap-2 flex items-center font-medium',
+                    tab.isActive && 'is-active',
                     tab.isActive &&
-                      'text-gray-800 [text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]',
+                      '[text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]',
                   ]}
                 >
                   {tab.name}
                   <div
                     class:list={[
-                      'absolute bottom-0 h-[1.5px] w-full left-0',
-                      tab.isActive
-                        ? 'bg-(--primary)'
-                        : 'group-hover:bg-gray-200',
+                      'app-tab-underline absolute bottom-0 h-[1.5px] w-full left-0',
+                      tab.isActive && 'is-active',
                     ]}
                   />
                 </a>

@@ -1,0 +1,43 @@
+---
+title: "Terminal sessions"
+description: "Open managed interactive PTY sessions when you need a real shell instead of submit-and-track execution."
+sidebarTitle: "Terminal"
+---
+
+Terminal sessions are Quilt's interactive shell surface.
+
+Use them when a human needs a real PTY instead of a fire-and-forget command.
+
+Managed terminal session routes:
+
+```text
+GET    /api/terminal/sessions
+POST   /api/terminal/sessions
+GET    /api/terminal/sessions/<session_id>
+DELETE /api/terminal/sessions/<session_id>
+POST   /api/terminal/sessions/<session_id>/resize
+GET    /ws/terminal/attach
+```
+
+## Create payload
+
+```json
+{
+  "container_id": "ctr_123",
+  "cols": 120,
+  "rows": 40,
+  "shell": "/bin/bash"
+}
+```
+
+## Important semantics
+
+- create returns `201`
+- the response includes `attach_url`
+- the websocket attach route requires the `terminal` subprotocol
+- the websocket path can attach an existing session or create one when `session_id` is omitted and `container_id` is supplied
+- terminal sessions are tenant-scoped and capped per tenant
+
+## When to use them
+
+Use terminal sessions for interactive shell behavior. Use `/stream` for live non-PTY output and exec jobs for submit-and-track commands.

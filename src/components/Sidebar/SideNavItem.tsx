@@ -17,33 +17,29 @@ const sidebarStyles: Record<
   container: {
     base: 'rounded-xl w-full outline-offset-[-1px]',
     active: `bg-(--primary)/10 ${ACTIVE_TEXT}`,
-    inactive: 'hover:bg-gray-600/5 text-gray-700 hover:text-gray-900',
+    inactive: '',
   },
   card: {
     base: 'ml-4 border-l outline-offset-[-1px]',
     active: `border-(--primary) bg-(--primary)/10 ${ACTIVE_TEXT}`,
-    inactive:
-      'border-gray-950/5 hover:bg-gray-600/5 text-gray-700 hover:text-gray-900',
+    inactive: '',
   },
   border: {
     base: 'ml-4 border-l py-2 lg:py-1.5 w-[calc(100%-1rem)]',
     active: `border-(--primary) ${ACTIVE_TEXT}`,
-    inactive:
-      'border-gray-950/5 hover:border-gray-950/20 text-gray-700 hover:text-gray-900',
+    inactive: '',
   },
   undecorated: {
     active: `border-(--primary) ${ACTIVE_TEXT}`,
-    inactive:
-      'border-gray-950/5 hover:border-gray-950/20 text-gray-700 hover:text-gray-950',
+    inactive: '',
   },
   arrow: {
     active: `border-(--primary) ${ACTIVE_TEXT}`,
-    inactive:
-      'border-gray-950/5 hover:border-gray-950/20 text-gray-700 hover:text-gray-950',
+    inactive: '',
   },
   plain: {
     active: ACTIVE_TEXT,
-    inactive: 'text-gray-950 hover:text-(--primary)',
+    inactive: '',
   },
 };
 
@@ -62,7 +58,7 @@ export function SideNavItem({
       <a
         href={page.href}
         className={cn(
-          'group flex items-center pl-4 pr-3 py-1.5 cursor-pointer gap-x-3 text-left',
+          'app-sidebar-link group flex items-center pl-4 pr-3 py-1.5 cursor-pointer gap-x-3 text-left',
           isOneWord && 'wrap-break-word hyphens-auto',
           variant.base,
           isActive ? variant.active : variant.inactive,
@@ -80,16 +76,14 @@ export function SideNavItem({
         {page.icon && (
           <span
             className={cn(
-              'w-5 h-5 p-0.5 inline-flex items-center justify-center rounded',
-              isActive ? 'bg-(--primary)' : 'bg-gray-400',
+              'app-sidebar-page-icon w-5 h-5 p-0.5 inline-flex items-center justify-center rounded border',
+              isActive && 'is-active',
             )}
           >
             <Icon
               icon={page.icon}
               iconLibrary="lucide"
-              className={cn(
-                isActive ? 'bg-white' : 'bg-gray-600 group-hover:bg-white',
-              )}
+              className={cn(isActive && 'text-white')}
               overrideColor
               size={12}
             />
@@ -97,7 +91,7 @@ export function SideNavItem({
         )}
         <span className="flex-1 truncate min-w-0">{title}</span>
         {page.deprecated && (
-          <span className="shrink-0 text-xs font-medium px-2 py-0.5 rounded-md bg-gray-100 text-gray-600">
+          <span className="app-sidebar-badge shrink-0 text-xs font-medium px-2 py-0.5 rounded-md border">
             Deprecated
           </span>
         )}

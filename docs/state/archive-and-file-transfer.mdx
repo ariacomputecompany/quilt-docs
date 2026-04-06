@@ -1,0 +1,50 @@
+---
+title: "Archive and file transfer"
+description: "Upload archives to containers or volumes and write single files when you only need a precise change."
+sidebarTitle: "Transfer"
+---
+
+Use archive upload when you need to sync many files at once. Use the single-file route when you need a small, precise write.
+
+Archive upload routes:
+
+```text
+POST /api/containers/<container_id>/archive
+POST /api/volumes/<name>/archive
+```
+
+Archive payload:
+
+```json
+{
+  "content": "<base64 tar.gz>",
+  "strip_components": 1,
+  "path": "/app"
+}
+```
+
+Single-file volume write:
+
+```text
+POST /api/volumes/<name>/files
+```
+
+Payload:
+
+```json
+{
+  "path": "/remote.txt",
+  "content": "<base64>",
+  "mode": 644
+}
+```
+
+## Notes
+
+- archive uploads are operation-driven
+- single-file volume reads and writes are synchronous
+- `mode` is an octal permission encoded as an integer like `644` or `755`
+
+## Rule of thumb
+
+Archive upload is the normal shape for syncing a codebase or bundle into a target filesystem.

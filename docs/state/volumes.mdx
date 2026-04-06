@@ -1,0 +1,60 @@
+---
+title: "Volumes"
+description: "Use volumes for persistent state that must survive container replacement."
+sidebarTitle: "Volumes"
+---
+
+Volumes are the persistence primitive in Quilt.
+
+If data needs to outlive the container using it, a volume is usually the right choice.
+
+Primary routes:
+
+```text
+GET    /api/volumes
+POST   /api/volumes
+GET    /api/volumes/<name>
+GET    /api/volumes/<name>/inspect
+GET    /api/volumes/<name>/ls
+GET    /api/volumes/<name>/ls?path=<path>
+GET    /api/volumes/<name>/files/<path>
+DELETE /api/volumes/<name>/files/<path>
+POST   /api/volumes/<name>/rename
+DELETE /api/volumes/<name>
+```
+
+## Create payload
+
+```json
+{
+  "name": "data-volume",
+  "driver": "local",
+  "labels": {
+    "team": "qa"
+  }
+}
+```
+
+## Rename payload
+
+```json
+{
+  "new_name": "renamed-volume"
+}
+```
+
+## Important semantics
+
+- volume delete is operation-driven
+- list, inspect, `ls`, rename, and single-file operations are direct request-response routes
+- file download and delete use the wildcard path segment after `/files/`
+
+## Common uses
+
+- keep app data across container replacement
+- preserve caches or datasets between runs
+- share stable filesystem state with newly created containers
+
+<Tip>
+  Choose volumes for state that should outlive the container using it.
+</Tip>

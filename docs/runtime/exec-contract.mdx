@@ -1,0 +1,90 @@
+---
+title: "Exec contract"
+description: "Submit commands as jobs, stream output when needed, and format commands the way Quilt expects."
+sidebarTitle: "Exec"
+---
+
+Exec is Quilt's submit-and-track command surface.
+
+Use it when you want a command to run inside a container without opening an interactive terminal session.
+
+Primary routes:
+
+```text
+POST /api/containers/<container_id>/exec
+POST /api/containers/<container_id>/stream
+```
+
+## Exec request
+
+```json
+{
+  "command": ["npm", "test"],
+  "workdir": "/app",
+  "timeout_ms": 30000
+}
+```
+
+## Important semantics
+
+- `command` must be a JSON array of strings
+- exec is submit-and-track, not inline final output
+- if shell parsing is required, invoke the shell explicitly
+- the container must be running and `minit` must be healthy
+- `/stream` returns `application/x-ndjson`, one JSON frame per line
+- `stdout` and `stderr` frames carry base64 bytes in `data_b64`
+
+## Choose the right surface
+
+| Need | Best route |
+|------|---------|
+| Run a command and inspect it later | `/exec` |
+| Watch output as it happens | `/stream` |
+| Work interactively in a shell | terminal sessions |
+
+## Accepted response
+
+```json
+{
+  "success": true,
+  "container_id": "ctr_123",
+  "job_id": "job_123",
+  "status": "running",
+  "status_url": "/api/containers/ctr_123/jobs/job_123"
+}
+```
+
+## Live stream request
+
+```json
+{
+  "command": ["/bin/sh", "-lc", "echo hello && echo warn 1>&2"],
+  "working_directory": "/app",
+  "environment": {
+    "NODE_ENV": "production"
+  },
+  "timeout_ms": 30000
+}
+```
+
+## Example frames
+
+```json
+{"type":"started","container_id":"ctr_123","pid":1234}
+{"type":"stdout","data_b64":"aGVsbG8K"}
+{"type":"stderr","data_b64":"d2Fybgo="}
+{"type":"exit","code":0,"elapsed_ms":25}
+```
+
+## Related job inspection routes
+
+```text
+GET    /api/containers/<container_id>/jobs
+GET    /api/containers/<container_id>/jobs/<job_id>?include_output=true
+GET    /api/containers/<container_id>/processes
+DELETE /api/containers/<container_id>/processes/<pid>?signal=<signal>
+```
+
+## Rule of thumb
+
+Use exec for automation and terminal sessions for human interaction. If you need shell features, make the shell invocation explicit in the `command` array.

@@ -1,0 +1,127 @@
+---
+title: "quiltc"
+description: "Use Quilt's Kubernetes-like CLI for clusters, nodes, workloads, runtime operations, and k8s workflows."
+sidebarTitle: "quiltc"
+---
+
+`quiltc` is Quilt's control-plane CLI.
+
+If the HTTP API is the engine, `quiltc` is a well-designed dashboard over that engine.
+
+GitHub: [ariacomputecompany/quiltc](https://github.com/ariacomputecompany/quiltc)
+
+## What `quiltc` is for
+
+- create and inspect clusters
+- mint join tokens
+- register, heartbeat, drain, or delete nodes
+- create, update, or delete workloads
+- reconcile placements
+- watch long-running operations
+- validate, diff, and apply Kubernetes manifests against Quilt backend endpoints
+
+## Auth inputs
+
+```text
+QUILT_BASE_URL
+QUILT_API_KEY
+QUILT_JWT
+QUILT_JOIN_TOKEN
+```
+
+Use `QUILT_JOIN_TOKEN` specifically for node registration flows.
+
+## Core mental model
+
+- cluster = desired-state control plane
+- node = participating host
+- workload = replicated application spec
+- placement = scheduler assignment
+
+This matches the control-plane nouns from the cluster API page.
+
+## Common flows
+
+<CodeGroup>
+  ```bash Cluster lifecycle
+  quiltc clusters create --name demo --pod-cidr 10.70.0.0/16 --node-cidr-prefix 24
+  quiltc clusters list
+  quiltc clusters get <cluster_id>
+  ```
+
+  ```bash Node enrollment
+  quiltc clusters join-token-create <cluster_id> --ttl-secs 600 --max-uses 1
+  quiltc agent register <cluster_id> --join-token <join_token> --name node-a --public-ip 203.0.113.10 --private-ip 10.0.0.10 --agent-version quiltc-test --labels-json '{}' --bridge-name quilt0 --dns-port 53 --egress-limit-mbit 0
+  quiltc agent heartbeat <cluster_id> <node_id> --state ready
+  ```
+
+  ```bash Desired-state scheduling
+  quiltc clusters workload-create <cluster_id> '{"name":"demo","replicas":3,"command":["sh","-lc","echo hi; tail -f /dev/null"],"memory_limit_mb":256}'
+  quiltc clusters reconcile <cluster_id>
+  quiltc clusters placements <cluster_id>
+  ```
+
+  ```bash Runtime surface
+  quiltc containers create '{"name":"demo","command":["sh","-lc","echo hi; tail -f /dev/null"],"memory_limit_mb":256}'
+  quiltc containers exec <container_id> -- sh -lc 'id && ip addr && ip route'
+  quiltc operations watch <operation_id> --timeout-secs 300
+  ```
+
+  ```bash Kubernetes workflows
+  quiltc k8s validate -f ./manifests --namespace default
+  quiltc k8s apply -f ./manifests --cluster-id <cluster_id> --application default --follow
+  quiltc k8s diff -f ./manifests --cluster-id <cluster_id>
+  quiltc k8s status --operation <operation_id> --cluster-id <cluster_id> --follow
+  ```
+</CodeGroup>
+
+## Behavioral notes
+
+- `quiltc` wraps the platform over HTTP
+- do not assume local runtime CLIs are the canonical interface
+- `apply` and `diff` require `--cluster-id`
+- `apply` validates first by default
+- `--dry-run` on `k8s apply` gives validate-plus-diff behavior without mutating backend state
+
+## Why people like `quiltc`
+
+It removes the little mistakes that hand-written HTTP calls often introduce:
+
+- missing auth env vars
+- wrong body shape
+- missing registration fields
+- forgetting to follow long-running operations
+
+## When to use the CLI vs raw HTTP
+
+| Situation | Better choice |
+|------|---------|
+| Repeated human workflows | `quiltc` |
+| Scripting against the raw control plane | HTTP API |
+| Learning the platform surface | both together |
+
+## A very practical starting point
+
+<Steps>
+  <Step title="Set your base URL and auth">
+    ```bash
+    export QUILT_BASE_URL="https://backend.quilt.sh"
+    export QUILT_API_KEY="..."
+    ```
+  </Step>
+  <Step title="Inspect the cluster surface">
+    ```bash
+    quiltc clusters list
+    ```
+  </Step>
+  <Step title="Try a runtime call too">
+    ```bash
+    quiltc containers create '{"name":"demo","command":["sh","-lc","echo hi; tail -f /dev/null"],"memory_limit_mb":256}'
+    ```
+  </Step>
+  <Step title="Watch the returned operation">
+    ```bash
+    quiltc operations watch <operation_id> --timeout-secs 300
+    ```
+  </Step>
+</Steps>

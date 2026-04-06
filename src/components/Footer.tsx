@@ -14,7 +14,7 @@ export default function Footer({ prev, next }: FooterProps) {
       {prev ? (
         <a
           href={prev.href}
-          className="group flex items-center gap-1.5 text-sm font-medium text-gray-500 no-underline! hover:text-gray-900 transition-colors duration-150"
+          className="app-pager-link group flex items-center gap-1.5 text-sm font-medium no-underline! transition-colors duration-150"
         >
           <Icon
             icon="chevron-left"
@@ -31,7 +31,7 @@ export default function Footer({ prev, next }: FooterProps) {
       {next ? (
         <a
           href={next.href}
-          className="group flex items-center gap-1.5 text-sm font-medium text-gray-500 no-underline! hover:text-gray-900 transition-colors duration-150"
+          className="app-pager-link group flex items-center gap-1.5 text-sm font-medium no-underline! transition-colors duration-150"
         >
           {next.title}
           <Icon

@@ -15,7 +15,7 @@ const socialIconMap: Record<string, string> = {
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-gray-200 mt-24">
+    <footer className="app-site-footer border-t mt-24">
       <div className="flex gap-12 justify-between items-center py-10">
         <div className="flex gap-6 flex-wrap">
           {socials.map((social) => {
@@ -27,7 +27,7 @@ export default function SiteFooter() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="app-social-link transition-colors"
                 aria-label={social.type}
               >
                 <Icon icon={iconName} size={20} color="currentColor" />
@@ -35,7 +35,7 @@ export default function SiteFooter() {
             );
           })}
         </div>
-        <div className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 transition-colors">
+        <div className="app-powered-by flex items-center gap-1 text-sm transition-colors">
           <a
             href="https://www.mintlify.com?utm_campaign=poweredBy&utm_medium=referral"
             target="_blank"

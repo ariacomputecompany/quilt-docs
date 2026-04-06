@@ -1,0 +1,216 @@
+---
+title: "Containers"
+description: "Create, inspect, start, stop, resume, rename, and troubleshoot Quilt containers with confidence."
+sidebarTitle: "Containers"
+---
+
+Containers are the main runtime unit in Quilt.
+
+If Quilt were a city, containers would be the individual buildings where the actual work happens. Almost everything else either prepares them, inspects them, or manages how they evolve over time.
+
+## Primary routes
+
+```text
+GET    /api/containers
+GET    /api/containers?state=<state>
+GET    /api/containers/<container_id>
+GET    /api/containers/by-name/<name>
+GET    /api/containers/<container_id>/ready
+GET    /api/containers/<container_id>/metrics
+GET    /api/containers/<container_id>/logs?limit=<n>
+POST   /api/containers
+POST   /api/containers/batch
+POST   /api/containers/<container_id>/start
+POST   /api/containers/<container_id>/rename
+POST   /api/containers/<container_id>/kill
+POST   /api/containers/<container_id>/stop
+POST   /api/containers/<container_id>/resume
+POST   /api/containers/<container_id>/snapshot
+POST   /api/containers/<container_id>/fork
+DELETE /api/containers/<container_id>
+```
+
+## A clean mental model
+
+- `POST /api/containers` asks Quilt to create a container.
+- `GET /api/containers/<id>` tells you what runtime state it is in now.
+- `GET /api/containers/<id>/ready` tells you whether it is actually ready for specific kinds of work.
+
+That distinction matters a lot.
+
+## Create a container
+
+```json create-container.json
+{
+  "name": "demo",
+  "image": "prod",
+  "oci": false,
+  "volumes": ["data-volume:/workspace"],
+  "working_directory": "/app",
+  "memory_limit_mb": 1024,
+  "cpu_limit_percent": 50,
+  "strict": true,
+  "labels": {
+    "team": "qa"
+  },
+  "environment": {
+    "FOO": "bar"
+  },
+  "command": ["/bin/sh", "-lc", "echo hello"]
+}
+```
+
+### Important rules
+
+- `name` is required.
+- `command` must be an argv array, not a single shell string.
+- Use `volumes`, not `mounts`, for persistent storage attachment.
+- Volume attachments use `<volume-name>:<target-path>`.
+- `prod-gui` is special and does not accept a custom `command`.
+
+## What Quilt returns
+
+Create, batch create, start, stop, resume, fork, snapshot, and delete are **operation-driven** and typically return `202`.
+
+That means the response is a receipt, not proof that the work is already done.
+
+```json operation-accepted.json
+{
+  "success": true,
+  "operation_id": "op_123",
+  "status_url": "/api/operations/op_123"
+}
+```
+
+<Note>
+  Read that as "Quilt accepted your request and is working on it." Not as "the container is ready now."
+</Note>
+
+## Readiness: the field people skip too often
+
+Readiness checks tell you what the container can actually do.
+
+Important fields:
+
+- `exec_ready`: the container is running, `minit` is responsive, and the managed image contract is valid.
+- `network_ready`: network allocation is configured.
+- `gui_ready`: only present for `prod-gui`, and adds GUI backend reachability on top of `exec_ready` and `network_ready`.
+
+### Readiness example
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  https://backend.quilt.sh/api/containers/ctr_123/ready
+```
+
+### What `exec_ready` does not mean
+
+`exec_ready` is **not** the same as:
+
+- your app being healthy
+- your web server already listening
+- the GUI being reachable
+- your custom bootstrap script being finished
+
+It only means the container is ready for Quilt's exec contract.
+
+## Resolve by name, operate by ID
+
+You can resolve a container by name:
+
+```text
+GET /api/containers/by-name/<name>
+```
+
+But once you know the real `container_id`, use that instead. IDs are safer and less ambiguous.
+
+## Rename, stop, kill, resume
+
+Rename is a direct mutation:
+
+```json rename-container.json
+{
+  "new_name": "renamed-container"
+}
+```
+
+Behavior summary:
+
+- `rename` is direct, not operation-driven
+- `kill` is direct, not operation-driven
+- `stop`, `resume`, and `start` are operation-driven
+
+## Batch create
+
+If you want several similar containers at once:
+
+```json batch-create.json
+{
+  "items": [
+    { "name": "web-1" },
+    { "name": "web-2", "command": ["/bin/sh", "-lc", "echo ready"] }
+  ]
+}
+```
+
+## A beginner-friendly first workflow
+
+<Steps>
+  <Step title="Create the container">
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "X-Api-Key: $QUILT_API_KEY" \
+      https://backend.quilt.sh/api/containers \
+      -d '{
+        "name": "demo",
+        "image": "prod",
+        "command": ["/bin/sh", "-lc", "echo hello && sleep 300"]
+      }'
+    ```
+  </Step>
+  <Step title="Follow the operation">
+    Watch the returned `operation_id` until it succeeds.
+  </Step>
+  <Step title="Check readiness">
+    Poll `GET /api/containers/<container_id>/ready` until `exec_ready=true`.
+  </Step>
+  <Step title="Then run commands">
+    Once exec-ready, use the exec API or a terminal session.
+  </Step>
+</Steps>
+
+## GPU note
+
+GPU requests belong in the create payload using `gpu_count` and optionally `gpu_ids`. The platform validates bad GPU shapes before creating an operation.
+
+Possible deterministic failures:
+
+- `400` for invalid GPU shapes
+- `403` for plan-gated requests
+- `503 CAPACITY_FULL` when the host does not have GPU capacity
+
+## Common mistakes
+
+<AccordionGroup>
+  <Accordion title="Why does `GET /api/containers/<id>` not show my full create spec?">
+    Because container detail returns runtime status, not the original create-time request. Do not expect it to echo fields like image, command, or attached volumes in full.
+  </Accordion>
+  <Accordion title="Can I send a raw shell string like `npm test && npm run lint`?">
+    Not directly. Quilt expects argv. If you need shell parsing, wrap it explicitly:
+
+    ```json
+    {
+      "command": ["/bin/sh", "-lc", "npm test && npm run lint"]
+    }
+    ```
+  </Accordion>
+  <Accordion title="What does `strict` do?">
+    It is a boolean hardening flag that is echoed back on list and detail responses when supplied, which lets you confirm the container was created with stricter behavior.
+  </Accordion>
+</AccordionGroup>
+
+## Next step
+
+Once you can create and inspect containers, move to [Exec and operations](/runtime/exec-and-operations) to actually run work inside them.
