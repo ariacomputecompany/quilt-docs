@@ -462,19 +462,25 @@ html[data-theme='dark'] .theme-logo-dark {
 /* ─── Accordion (dark bg with light text) ─── */
 .mdx-content [data-component='accordion'],
 .mdx-content [data-component='accordion-group'] {
-  color: var(--app-text-muted) !important;
+  color: #e4e4e7 !important;
 }
 
 .mdx-content [data-component='accordion'] [data-component-part='accordion-trigger'],
-.mdx-content [data-component='accordion'] button {
-  color: var(--app-text) !important;
+.mdx-content [data-component='accordion'] button,
+.mdx-content [data-component='accordion'] [data-component-part='accordion-trigger'] * {
+  color: #ffffff !important;
 }
 
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'],
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'] p,
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'] li,
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'] code {
-  color: var(--app-text-muted) !important;
+  color: #d4d4d8 !important;
+}
+
+/* Accordion chevron/arrow icon */
+.mdx-content [data-component='accordion'] svg {
+  color: #a1a1aa !important;
 }
 
 /* ─── Tabs ─── */
@@ -671,19 +677,23 @@ a:focus-visible {
 
 /* Accordion dark bg text fix — ensure content and nested elements are readable */
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'] * {
-  color: var(--app-text-muted);
+  color: #d4d4d8;
 }
 
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'] strong {
-  color: var(--app-text) !important;
+  color: #ffffff !important;
 }
 
 .mdx-content [data-component='accordion'] [data-component-part='accordion-content'] code {
-  color: var(--app-text) !important;
-  background: var(--app-bg-panel-strong) !important;
-  border: 1px solid var(--app-border);
+  color: #f4f4f5 !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.375rem;
   padding: 0.125rem 0.375rem;
+}
+
+.mdx-content [data-component='accordion'] [data-component-part='accordion-content'] a {
+  color: #4ade80 !important;
 }
 
 /* Steps component accessibility */
