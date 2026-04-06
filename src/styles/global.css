@@ -221,7 +221,7 @@ html[data-theme='dark'] .theme-logo-dark {
 }
 
 .app-sidebar-group-toggle svg {
-  color: var(--app-text-soft) !important;
+  color: var(--app-text-muted) !important;
   transition:
     transform 160ms ease,
     color 160ms ease;
@@ -229,6 +229,11 @@ html[data-theme='dark'] .theme-logo-dark {
 
 .app-sidebar-group-toggle:hover svg {
   color: var(--app-text) !important;
+}
+
+/* Ensure chevron icon mask SVGs are visible in both themes */
+.app-sidebar-group-toggle svg.icon {
+  background-color: var(--app-text-muted) !important;
 }
 
 .app-sidebar-subgroup {
