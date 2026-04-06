@@ -58,129 +58,131 @@
   max-width: 65ch;
 }
 
-/* ─── Code Blocks ─── */
+/* ─── Code Blocks (both themes) ─── */
 .mdx-content pre {
-  background-color: var(--app-bg-panel-strong) !important;
-  color: var(--app-text) !important;
-}
-
-.mdx-content pre:not(.shiki) {
-  border: 1px solid var(--app-border);
   border-radius: 0.75rem;
   padding: 1rem 1.25rem;
   font-size: 0.8125rem;
   line-height: 1.625;
+  border: 1px solid var(--app-border);
   overflow-x: auto;
 }
 
-.mdx-content pre.shiki {
-  border-radius: 0.75rem;
-  padding: 1rem 1.25rem;
-  font-size: 0.8125rem;
-  line-height: 1.625;
-  border: 1px solid var(--app-border);
-}
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE — code blocks
+   Target: pre.astro-code (Astro-rendered) and pre.shiki (Mintlify)
+   ═══════════════════════════════════════════════════════════ */
 
-/* ─── Dark Mode: Code blocks, syntax highlighting, wrappers ─── */
-/* Use both html.dark and html[data-theme='dark'] for full coverage */
-
-/* Shiki pre — dark bg and text */
-html.dark .mdx-content pre.shiki,
-html[data-theme='dark'] .mdx-content pre.shiki {
-  background-color: #0b0c0e !important;
-  color: #d4d4d4 !important;
-}
-
-html.dark .mdx-content pre.shiki code,
-html[data-theme='dark'] .mdx-content pre.shiki code {
-  color: #d4d4d4 !important;
-}
-
-/* Shiki spans — use dark token color var */
-html.dark .mdx-content pre.shiki span,
-html[data-theme='dark'] .mdx-content pre.shiki span,
-html.dark .mdx-content pre.shiki .line span,
-html[data-theme='dark'] .mdx-content pre.shiki .line span {
-  color: var(--shiki-dark, #d4d4d4) !important;
-  background-color: transparent !important;
-  font-style: var(--shiki-dark-font-style, inherit) !important;
-  font-weight: var(--shiki-dark-font-weight, inherit) !important;
-  text-decoration: var(--shiki-dark-text-decoration, inherit) !important;
-}
-
-/* Non-shiki pre blocks */
-html.dark .mdx-content pre:not(.shiki),
-html[data-theme='dark'] .mdx-content pre:not(.shiki) {
-  background-color: #0b0c0e !important;
-  color: #d4d4d4 !important;
-}
-
-/* Mintlify code-block wrappers — kill bg-white everywhere */
-html.dark .mdx-content .code-block,
-html[data-theme='dark'] .mdx-content .code-block {
-  background-color: #0b0c0e !important;
+/* Pre element background + default text */
+html.dark pre.astro-code,
+html.dark pre.shiki,
+html.dark .mdx-content pre,
+html[data-theme='dark'] pre.astro-code,
+html[data-theme='dark'] pre.shiki,
+html[data-theme='dark'] .mdx-content pre {
+  background-color: #0d1117 !important;
+  color: #e6edf3 !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-html.dark .mdx-content .code-block [data-component-part='code-block-root'],
-html[data-theme='dark'] .mdx-content .code-block [data-component-part='code-block-root'],
-html.dark .mdx-content .code-block div[class*='bg-white'],
-html[data-theme='dark'] .mdx-content .code-block div[class*='bg-white'],
-html.dark .mdx-content .code-block .rounded-2xl,
-html[data-theme='dark'] .mdx-content .code-block .rounded-2xl {
-  background-color: #0b0c0e !important;
+/* Code element inside pre */
+html.dark pre.astro-code code,
+html.dark pre.shiki code,
+html.dark .mdx-content pre code,
+html[data-theme='dark'] pre.astro-code code,
+html[data-theme='dark'] pre.shiki code,
+html[data-theme='dark'] .mdx-content pre code {
+  color: #e6edf3 !important;
 }
 
-/* Tab panels containing code blocks */
-html.dark .mdx-content [role='tabpanel'] .code-block [data-component-part='code-block-root'],
-html[data-theme='dark'] .mdx-content [role='tabpanel'] .code-block [data-component-part='code-block-root'],
-html.dark .mdx-content [role='tabpanel'] .code-block div[class*='bg-white'],
-html[data-theme='dark'] .mdx-content [role='tabpanel'] .code-block div[class*='bg-white'] {
-  background-color: #0b0c0e !important;
+/* Every span inside code — use the --shiki-dark variable for syntax color */
+html.dark pre.astro-code span[style],
+html.dark pre.shiki span[style],
+html[data-theme='dark'] pre.astro-code span[style],
+html[data-theme='dark'] pre.shiki span[style] {
+  color: var(--shiki-dark, #e6edf3) !important;
+  background-color: transparent !important;
 }
 
-/* Code block text */
-html.dark .mdx-content .code-block code,
-html[data-theme='dark'] .mdx-content .code-block code {
-  color: #d4d4d4 !important;
+/* ─── Mintlify code-block component wrappers ─── */
+
+html.dark .code-block,
+html[data-theme='dark'] .code-block {
+  background-color: #0d1117 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Fade overlay — hide in dark */
-html.dark .mdx-content .code-block [data-fade-overlay],
-html[data-theme='dark'] .mdx-content .code-block [data-fade-overlay] {
+html.dark .code-block [data-component-part='code-block-root'],
+html.dark .code-block div[class*='bg-white'],
+html.dark .code-block .rounded-2xl,
+html[data-theme='dark'] .code-block [data-component-part='code-block-root'],
+html[data-theme='dark'] .code-block div[class*='bg-white'],
+html[data-theme='dark'] .code-block .rounded-2xl {
+  background-color: #0d1117 !important;
+}
+
+/* Mintlify code-block spans */
+html.dark .code-block pre span[style],
+html[data-theme='dark'] .code-block pre span[style] {
+  color: var(--shiki-dark, #e6edf3) !important;
+  background-color: transparent !important;
+}
+
+html.dark .code-block code,
+html[data-theme='dark'] .code-block code {
+  color: #e6edf3 !important;
+}
+
+/* Tab panels with code blocks */
+html.dark [role='tabpanel'] .code-block [data-component-part='code-block-root'],
+html.dark [role='tabpanel'] .code-block div[class*='bg-white'],
+html[data-theme='dark'] [role='tabpanel'] .code-block [data-component-part='code-block-root'],
+html[data-theme='dark'] [role='tabpanel'] .code-block div[class*='bg-white'] {
+  background-color: #0d1117 !important;
+}
+
+html.dark [role='tabpanel'] pre span[style],
+html[data-theme='dark'] [role='tabpanel'] pre span[style] {
+  color: var(--shiki-dark, #e6edf3) !important;
+  background-color: transparent !important;
+}
+
+/* Fade overlay — hide */
+html.dark .code-block [data-fade-overlay],
+html[data-theme='dark'] .code-block [data-fade-overlay] {
   display: none !important;
 }
 
 /* Borders */
-html.dark .mdx-content .code-block div[class*='border-b'],
-html[data-theme='dark'] .mdx-content .code-block div[class*='border-b'] {
+html.dark .code-block div[class*='border-b'],
+html[data-theme='dark'] .code-block div[class*='border-b'] {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Copy button */
-html.dark .mdx-content .code-block [data-testid='copy-code-button'] svg,
-html[data-theme='dark'] .mdx-content .code-block [data-testid='copy-code-button'] svg {
+html.dark .code-block [data-testid='copy-code-button'] svg,
+html[data-theme='dark'] .code-block [data-testid='copy-code-button'] svg {
   color: rgba(255, 255, 255, 0.4) !important;
 }
 
-html.dark .mdx-content .code-block [data-testid='copy-code-button']:hover svg,
-html[data-theme='dark'] .mdx-content .code-block [data-testid='copy-code-button']:hover svg {
+html.dark .code-block [data-testid='copy-code-button']:hover svg,
+html[data-theme='dark'] .code-block [data-testid='copy-code-button']:hover svg {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
 /* CodeGroup tabs */
-html.dark .mdx-content .code-block [role='tablist'],
-html[data-theme='dark'] .mdx-content .code-block [role='tablist'] {
+html.dark .code-block [role='tablist'],
+html[data-theme='dark'] .code-block [role='tablist'] {
   border-color: rgba(255, 255, 255, 0.1) !important;
-  background-color: #0b0c0e !important;
+  background-color: #0d1117 !important;
 }
 
-html.dark .mdx-content .code-block [role='tab'],
-html[data-theme='dark'] .mdx-content .code-block [role='tab'] {
+html.dark .code-block [role='tab'],
+html[data-theme='dark'] .code-block [role='tab'] {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-html.dark .mdx-content .code-block [role='tab'][aria-selected='true'],
-html[data-theme='dark'] .mdx-content .code-block [role='tab'][aria-selected='true'] {
+html.dark .code-block [role='tab'][aria-selected='true'],
+html[data-theme='dark'] .code-block [role='tab'][aria-selected='true'] {
   color: rgba(255, 255, 255, 0.9) !important;
 }
