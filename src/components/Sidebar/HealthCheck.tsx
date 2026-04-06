@@ -27,7 +27,7 @@ export function HealthCheck() {
 
   const statusColor =
     status === 'success'
-      ? '#16a34a'
+      ? '#4ade80'
       : status === 'error'
         ? '#ef4444'
         : 'var(--app-text-soft)';

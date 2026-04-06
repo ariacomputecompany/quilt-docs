@@ -3,9 +3,9 @@
   "name": "Quilt",
   "theme": "mint",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#a0a0a8",
+    "light": "#1a1a20",
+    "dark": "#e8e8ed"
   },
   "navigation": {
     "tabs": [

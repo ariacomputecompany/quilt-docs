@@ -10,6 +10,10 @@ const links: LinkItem[] = [
     name: 'Open Source',
     href: 'https://github.com/ariacomputecompany',
   },
+  {
+    name: 'Get an API Key',
+    href: 'https://backend.quilt.sh',
+  },
 ];
 
 export function SidebarLinks() {
