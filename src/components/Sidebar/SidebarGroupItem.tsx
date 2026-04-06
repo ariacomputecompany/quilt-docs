@@ -52,7 +52,7 @@ export function SidebarGroupItem({
       </button>
 
       {isOpen && (
-        <ul className="app-sidebar-group-list">
+        <ul className="app-sidebar-group-list ml-4 pl-2 border-l border-[var(--app-border)]">
           {group.pages.map((entry) => {
             if (isNavPage(entry)) {
               return (

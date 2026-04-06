@@ -40,7 +40,7 @@ export function HealthCheck() {
       style={{ border: 'none', background: 'none', padding: '0.25rem 0' }}
       aria-label="Check backend health status"
     >
-      <span className="flex-1 text-sm">Check Health</span>
+      <span className="flex-1 text-[0.8125rem]">Check Health</span>
       {status === 'loading' && (
         <span
           className="ml-2 w-3 h-3 rounded-full border-2 animate-spin shrink-0"

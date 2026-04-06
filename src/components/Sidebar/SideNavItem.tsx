@@ -58,7 +58,7 @@ export function SideNavItem({
       <a
         href={page.href}
         className={cn(
-          'app-sidebar-link group flex items-center pl-4 pr-3 py-1.5 cursor-pointer gap-x-3 text-left',
+          'app-sidebar-link group flex items-center pl-3 pr-3 py-1 cursor-pointer gap-x-3 text-left text-[0.8125rem]',
           isOneWord && 'wrap-break-word hyphens-auto',
           variant.base,
           isActive ? variant.active : variant.inactive,
