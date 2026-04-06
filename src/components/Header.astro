@@ -31,23 +31,17 @@ const usingTabs = tabs && tabs.length > 0;
             ]}
           >
             <div class="flex items-center shrink-0 lg:flex-1">
-              <a href="/" class="flex items-center shrink-0">
-                <img
-                  src="/logo/light.svg"
-                  alt="Mint Starter Kit"
-                  class="theme-logo-light h-7"
-                />
-                <img
-                  src="/logo/dark.svg"
-                  alt="Mint Starter Kit"
-                  class="theme-logo-dark h-7"
-                />
+              <a href="/" class="flex items-center shrink-0 gap-2 no-underline">
+                <span class="text-base tracking-tight" style="color: var(--app-text);">
+                  <span class="font-bold">Quilt</span>
+                  <span class="font-normal" style="color: var(--app-text-soft);">Developer Docs</span>
+                </span>
               </a>
             </div>
             <div
-              class="flex-1 hidden lg:flex items-center justify-center gap-3 min-w-0"
+              class="flex-1 hidden lg:flex items-center justify-center gap-2 min-w-0"
             >
-              <div class="w-full max-w-sm">
+              <div class="flex-1 min-w-0">
                 <SearchBar client:load />
               </div>
               <div class="shrink-0" transition:persist="assistant-bar">
@@ -71,34 +65,6 @@ const usingTabs = tabs && tabs.length > 0;
           )
         }
       </div>
-      {
-        usingTabs && (
-          <div class="app-header-tabs hidden lg:flex h-12">
-            <div class="h-full flex text-sm gap-x-6">
-              {tabs.map((tab) => (
-                <a
-                  href={tab.href}
-                  aria-current={tab.isActive ? 'page' : undefined}
-                  class:list={[
-                    'app-header-tab group relative h-full gap-2 flex items-center font-medium',
-                    tab.isActive && 'is-active',
-                    tab.isActive &&
-                      '[text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]',
-                  ]}
-                >
-                  {tab.name}
-                  <div
-                    class:list={[
-                      'app-tab-underline absolute bottom-0 h-[1.5px] w-full left-0',
-                      tab.isActive && 'is-active',
-                    ]}
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
-        )
-      }
     </div>
   </div>
 </header>

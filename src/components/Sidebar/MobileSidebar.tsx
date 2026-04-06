@@ -74,17 +74,13 @@ export function MobileSidebar({
         )}
       >
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between px-4 pt-6 pb-4">
-            <img
-              src="/logo/light.svg"
-              alt="Mint Starter Kit"
-              className="theme-logo-light h-7 w-auto"
-            />
-            <img
-              src="/logo/dark.svg"
-              alt="Mint Starter Kit"
-              className="theme-logo-dark h-7 w-auto"
-            />
+          <div className="flex items-center px-4 pt-6 pb-4">
+            <a href="/" className="flex items-center gap-2 no-underline">
+              <span className="text-base tracking-tight" style={{ color: 'var(--app-text)' }}>
+                <span className="font-bold">Quilt</span>{' '}
+                <span className="font-normal" style={{ color: 'var(--app-text-soft)' }}>Developer Docs</span>
+              </span>
+            </a>
           </div>
 
           <nav className="flex-1 overflow-y-auto pt-4 pb-8">

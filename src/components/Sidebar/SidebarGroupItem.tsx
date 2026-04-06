@@ -21,7 +21,7 @@ export function SidebarGroupItem({
     if (isNavGroup(entry)) return groupHasActiveChild(entry, currentPath);
     return false;
   });
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(hasActiveChild);
 
   return (
     <>

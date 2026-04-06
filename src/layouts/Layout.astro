@@ -33,7 +33,7 @@ const { title = 'Mintlify Docs', description } = Astro.props;
         const theme =
           storedTheme === 'light' || storedTheme === 'dark'
             ? storedTheme
-            : 'light';
+            : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
         document.documentElement.style.colorScheme = theme;
         if (theme === 'dark') {
