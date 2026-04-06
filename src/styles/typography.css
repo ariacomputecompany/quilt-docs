@@ -9,11 +9,15 @@
 
 html {
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer base {
   body {
     font-family: var(--font-family-body-custom, var(--font-sans));
+    font-size: 0.9375rem;
+    line-height: 1.7;
   }
 
   :is(h1, h2, h3, h4, h5, h6) {

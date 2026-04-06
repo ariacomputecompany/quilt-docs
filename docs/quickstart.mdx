@@ -1,6 +1,6 @@
 ---
 title: "Quickstart"
-description: "Your first Quilt success path: authenticate, check health, create a container, and run a command."
+description: "Authenticate, check health, create a container, and run a command."
 sidebarTitle: "Quickstart"
 ---
 
@@ -19,7 +19,7 @@ We are going to do four things:
 - access to `https://backend.quilt.sh`
 - `curl` available locally
 
-## Step 1: set your base URL and credentials
+## Step 1: Set Your Base URL and Credentials
 
 <Steps>
   <Step title="Choose your auth style">
@@ -38,7 +38,7 @@ We are going to do four things:
   </Step>
 </Steps>
 
-## Step 2: check health the safe way
+## Step 2: Check Health the Safe Way
 
 ```bash
 curl "$QUILT_BASE_URL/health"
@@ -56,7 +56,7 @@ curl \
   `/health` means "the backend is alive." It does not mean "containers are ready for new work."
 </Note>
 
-## Step 3: create a container
+## Step 3: Create a Container
 
 ```bash
 curl -X POST \
@@ -83,7 +83,7 @@ Example shape:
 }
 ```
 
-## Step 4: wait for readiness
+## Step 4: Wait for Readiness
 
 First inspect the operation until it succeeds, then poll readiness:
 
@@ -95,7 +95,7 @@ curl \
 
 You want `exec_ready=true` before you run commands.
 
-## Step 5: run a command
+## Step 5: Run a Command
 
 ```bash
 curl -X POST \
@@ -129,7 +129,7 @@ curl \
   "$QUILT_BASE_URL/api/containers/<container_id>/jobs/<job_id>?include_output=true"
 ```
 
-## The one command-format rule to remember
+## The One Command-Format Rule to Remember
 
 Quilt expects argv arrays, not a single shell string.
 
@@ -157,22 +157,3 @@ Quilt expects argv arrays, not a single shell string.
   </Tab>
 </Tabs>
 
-## What to do next
-
-<Columns cols={2}>
-  <Card title="Mental model" icon="map" href="/concepts/mental-model">
-    Understand the platform's core nouns and flows.
-  </Card>
-  <Card title="Core resource model" icon="boxes" href="/concepts/core-resource-model">
-    See how containers, jobs, operations, snapshots, and volumes connect.
-  </Card>
-  <Card title="Containers" icon="container" href="/runtime/containers">
-    Learn the container lifecycle in detail.
-  </Card>
-  <Card title="Exec contract" icon="terminal-square" href="/runtime/exec-contract">
-    Go deeper on command execution and live output tracking.
-  </Card>
-  <Card title="Snapshots and state" icon="database" href="/state/snapshots-and-forking">
-    Learn when to use snapshots, forks, volumes, and archive upload.
-  </Card>
-</Columns>

@@ -6,5 +6,7 @@ export { SidebarGroupItem } from './SidebarGroupItem';
 export { SideNavItem } from './SideNavItem';
 export { Anchor } from './Anchor';
 export { Anchors } from './Anchors';
+export { SidebarLinks } from './SidebarLinks';
+export { HealthCheck } from './HealthCheck';
 export { TabsDropdown } from './TabsDropdown';
 export * from './types';

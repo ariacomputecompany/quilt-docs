@@ -1,6 +1,6 @@
 ---
-title: "GPU passthrough"
-description: "Request GPUs through Quilt's explicit contract instead of unsupported device mount workarounds."
+title: "GPU Passthrough"
+description: "Request GPUs through Quilt's explicit scheduling contract."
 sidebarTitle: "GPU"
 ---
 
@@ -8,14 +8,14 @@ GPU support in Quilt is an explicit platform feature, not a mount workaround.
 
 If a workload needs GPU capacity, ask for it through Quilt's scheduling contract from the start. Retrofitting raw device access later is not the supported path.
 
-## Use GPUs when
+## Use GPUs When
 
 - creating containers that need NVIDIA access
 - placing workloads on GPU-capable nodes
 - reporting node GPU inventory during registration or heartbeat
 - debugging why a workload did or did not receive GPU assignment
 
-## Example container request
+## Example Container Request
 
 ```json
 {
@@ -27,7 +27,7 @@ If a workload needs GPU capacity, ask for it through Quilt's scheduling contract
 }
 ```
 
-## Important rules
+## Important Rules
 
 - raw `/dev/nvidia*` bind mounts remain blocked
 - `gpu_count` is the main request field
@@ -42,10 +42,10 @@ Expected deterministic failures:
 503 CAPACITY_FULL
 ```
 
-## Cluster tie-in
+## Cluster Tie-In
 
 Node GPU inventory is agent-reported control-plane state and is exposed as `gpu_inventory` on node list and detail responses. Scheduler placement must satisfy that inventory before assigning workloads.
 
-## Rule of thumb
+## Rule of Thumb
 
 Request GPUs declaratively in the create or scheduling payload. If you find yourself thinking about device mounts, you are probably leaving the supported Quilt path.

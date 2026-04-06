@@ -1,6 +1,6 @@
 ---
 title: "Elasticity"
-description: "Scale containers, functions, workloads, and node groups without losing the orchestration trail."
+description: "Scale containers, functions, workloads, and node groups with orchestration traceability."
 sidebarTitle: "Elasticity"
 ---
 
@@ -16,7 +16,7 @@ Use it when you need to:
 - scale node groups
 - rollback orchestrator actions
 
-## Primary routes
+## Primary Routes
 
 ```text
 GET  /api/elasticity/node/status
@@ -36,7 +36,7 @@ POST /api/elasticity/control/node-groups/<node_group>/scale
 POST /api/elasticity/control/actions/<action_id>/rollback
 ```
 
-## Direct routes vs control routes
+## Direct Routes vs Control Routes
 
 This is the distinction to learn first.
 
@@ -50,7 +50,7 @@ Analogy:
 - direct route = changing a thermostat in the room
 - control route = changing it through the building management system, where the action is recorded and traceable
 
-## Required headers
+## Required Headers
 
 All elasticity routes require:
 
@@ -69,7 +69,7 @@ X-Orch-Action-Id: <orchestrator_action_id>
   The tenant header must match the authenticated tenant. Quilt treats elasticity as tenant-scoped control work, not a best-effort convenience API.
 </Warning>
 
-## Source of truth for control endpoints
+## Source of Truth for Control Endpoints
 
 Use this route when you need the canonical control contract:
 
@@ -83,7 +83,7 @@ Also note:
 - examples may show `https://backend.quilt.sh`, but the runtime value is not hardcoded
 - control responses are not guaranteed to include `status_url`
 
-## Common payloads
+## Common Payloads
 
 Resize:
 
@@ -154,7 +154,7 @@ Rollback:
 
 `target_action_id` is required.
 
-## A safe elasticity workflow
+## A Safe Elasticity Workflow
 
 <Steps>
   <Step title="Confirm elasticity health">
@@ -174,7 +174,7 @@ Rollback:
   </Step>
 </Steps>
 
-## Things people miss
+## Things People Miss
 
 <AccordionGroup>
   <Accordion title="Is resize part of some other resource model?">

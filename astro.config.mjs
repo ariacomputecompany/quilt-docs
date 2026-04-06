@@ -9,7 +9,10 @@ export default defineConfig({
   integrations: [mintlify({ docsDir: './docs' }), react(), mdx()],
   markdown: {
     shikiConfig: {
-      theme: 'github-light-default',
+      themes: {
+        light: 'github-light-default',
+        dark: 'github-dark-default',
+      },
     },
   },
   vite: {

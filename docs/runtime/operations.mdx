@@ -1,20 +1,20 @@
 ---
 title: "Operations"
 description: "Track accepted Quilt lifecycle work instead of issuing duplicate mutations."
-sidebarTitle: "Operations"
+sidebarTitle: "Ops"
 ---
 
 Async lifecycle routes typically return an operation handle.
 
 Treat that handle as part of the contract, not as optional bookkeeping.
 
-## Operation lookup
+## Operation Lookup
 
 ```text
 GET /api/operations/<operation_id>
 ```
 
-## Event stream
+## Event Stream
 
 ```text
 GET /api/events
@@ -22,7 +22,7 @@ GET /api/events
 
 `GET /api/events` is an SSE stream returning `text/event-stream`, not a JSON array.
 
-## Accepted response
+## Accepted Response
 
 ```json
 {
@@ -42,10 +42,10 @@ Observed statuses:
 - `cancelled`
 - `timed_out`
 
-## What operations are for
+## What Operations Are For
 
 Operations show up when Quilt accepts work that may take time, including create, stop, resume, snapshot, fork, and delete flows.
 
-## Rule of thumb
+## Rule of Thumb
 
 If a mutation returned an operation, Quilt already has your request. Prefer tracking that handle over retrying blindly.

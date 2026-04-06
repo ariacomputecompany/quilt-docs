@@ -1,105 +1,45 @@
 ---
-title: "Quilt platform docs"
-description: "Production-ready docs for Quilt containers, clusters, functions, storage, orchestration, and control-plane workflows."
-sidebarTitle: "Overview"
+title: "Quilt"
+description: "Runtime and control plane for containers, orchestration, serverless functions, and Kubernetes-style workflows."
+sidebarTitle: "Quilt"
 ---
 
 Quilt is a runtime and control plane for containers, storage, orchestration, clusters, serverless functions, and Kubernetes-style workflows.
 
-These docs are designed for two kinds of readers at the same time:
-
-- someone touching Quilt for the first time
-- someone who already knows the product and needs exact API behavior fast
-
-<Tip>
-  If you are new, start with <a href="/quickstart">Quickstart</a>, then read <a href="/concepts/mental-model">Mental model</a>. That path gives you confidence before you dive into the larger API surface.
-</Tip>
-
-## Start here
-
 <Columns cols={2}>
-  <Card
-    title="Quickstart"
-    icon="rocket"
-    href="/quickstart"
-  >
-    Make your first successful Quilt API calls in minutes.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    First API calls in minutes.
   </Card>
-  <Card
-    title="Mental model"
-    icon="map"
-    href="/concepts/mental-model"
-  >
-    Learn the core nouns like containers, operations, snapshots, and workloads.
+  <Card title="Mental Model" icon="map" href="/concepts/mental-model">
+    Core nouns: containers, operations, snapshots, workloads.
   </Card>
-  <Card
-    title="Auth and health"
-    icon="shield-check"
-    href="/api/authentication-and-health"
-  >
-    Authenticate cleanly and check the right subsystem before you mutate anything.
+  <Card title="Authentication" icon="shield-check" href="/api/authentication-and-health">
+    Auth headers, health checks, and concern discovery.
   </Card>
-  <Card
-    title="Decision rules"
-    icon="list-checks"
-    href="/reference/decision-rules"
-  >
-    Pick the right Quilt surface quickly when you already know the goal.
+  <Card title="Decision Rules" icon="list-checks" href="/reference/decision-rules">
+    Pick the right Quilt surface for the job.
   </Card>
 </Columns>
 
-## What Quilt covers
+## Platform Areas
 
 <Columns cols={2}>
   <Card title="Runtime" icon="container" href="/runtime/containers">
-    Containers, OCI images, GPU passthrough, exec jobs, and operations.
+    Containers, OCI images, exec jobs, and operations.
   </Card>
   <Card title="State" icon="database" href="/state/snapshots-and-forking">
-    Snapshots, forks, environment variables, transfer flows, and volumes.
+    Snapshots, forks, environment variables, and volumes.
   </Card>
   <Card title="Access" icon="network" href="/access/network-activity-and-cleanup">
-    Networking, terminals, GUI access, ICC messaging, and cleanup surfaces.
+    Networking, terminals, GUI access, and ICC messaging.
   </Card>
   <Card title="Orchestration" icon="workflow" href="/orchestration/elasticity">
-    Elasticity, cluster control, nodes, workloads, placements, and k8s-style workflows.
+    Elasticity, clusters, nodes, workloads, and placements.
   </Card>
-  <Card title="Functions and CLI" icon="terminal-square" href="/tooling/quiltc">
-    `quiltc` control-plane workflows plus serverless functions.
+  <Card title="Tooling" icon="terminal-square" href="/tooling/quiltc">
+    `quiltc` CLI and GPU passthrough.
   </Card>
-</Columns>
-
-## The Quilt way to troubleshoot
-
-When something feels confusing, do this in order:
-
-<Steps>
-  <Step title="Check health">
-    Start with `GET /health`, then use the concern-specific health route like `/api/containers/health`.
-  </Step>
-  <Step title="Find the exact target">
-    Resolve the container, function, workload, or cluster you actually mean.
-  </Step>
-  <Step title="Check readiness, not just existence">
-    Created is not the same thing as ready.
-  </Step>
-  <Step title="Inspect the returned handle">
-    Operations and exec jobs are part of the product contract. Follow them.
-  </Step>
-</Steps>
-
-## Read next
-
-<Columns cols={2}>
-  <Card title="Containers" icon="container" href="/runtime/containers">
-    Learn the main runtime contract and the readiness model that drives most workflows.
-  </Card>
-  <Card title="Snapshots" icon="copy-plus" href="/state/snapshots-and-forking">
-    Save reproducible state, clone safely, and branch live runtimes.
-  </Card>
-  <Card title="Elasticity" icon="workflow" href="/orchestration/elasticity">
-    Scale resources with the right control-plane semantics.
-  </Card>
-  <Card title="Functions" icon="zap" href="/functions/serverless-functions">
-    Use Quilt's serverless surface when you do not want a long-lived container.
+  <Card title="Serverless" icon="zap" href="/functions/serverless-functions">
+    Event-driven compute without long-lived containers.
   </Card>
 </Columns>

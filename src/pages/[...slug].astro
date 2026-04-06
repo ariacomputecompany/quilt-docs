@@ -49,7 +49,6 @@ const page = resolvePageData(docsConfig as DocsConfig, {
       navigation={page.navigation}
       currentPath={currentPath}
       tabs={page.tabs || []}
-      anchors={page.anchors}
       client:load
     />
 
@@ -62,7 +61,6 @@ const page = resolvePageData(docsConfig as DocsConfig, {
           <Sidebar
             navigation={page.navigation}
             currentPath={currentPath}
-            anchors={page.anchors}
             client:load
           />
         </div>

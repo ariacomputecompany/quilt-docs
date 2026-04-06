@@ -7,6 +7,11 @@ const THEME_KEY = 'mintlify-theme';
 function applyTheme(theme: Theme) {
   document.documentElement.setAttribute('data-theme', theme);
   document.documentElement.style.colorScheme = theme;
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
   localStorage.setItem(THEME_KEY, theme);
   window.dispatchEvent(new CustomEvent('themechange', { detail: theme }));
 }

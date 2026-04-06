@@ -1,6 +1,6 @@
 ---
 title: "Containers"
-description: "Create, inspect, start, stop, resume, rename, and troubleshoot Quilt containers with confidence."
+description: "Create, inspect, start, stop, resume, rename, and troubleshoot Quilt containers."
 sidebarTitle: "Containers"
 ---
 
@@ -8,7 +8,7 @@ Containers are the main runtime unit in Quilt.
 
 If Quilt were a city, containers would be the individual buildings where the actual work happens. Almost everything else either prepares them, inspects them, or manages how they evolve over time.
 
-## Primary routes
+## Primary Routes
 
 ```text
 GET    /api/containers
@@ -30,7 +30,7 @@ POST   /api/containers/<container_id>/fork
 DELETE /api/containers/<container_id>
 ```
 
-## A clean mental model
+## A Clean Mental Model
 
 - `POST /api/containers` asks Quilt to create a container.
 - `GET /api/containers/<id>` tells you what runtime state it is in now.
@@ -38,7 +38,7 @@ DELETE /api/containers/<container_id>
 
 That distinction matters a lot.
 
-## Create a container
+## Create a Container
 
 ```json create-container.json
 {
@@ -60,7 +60,7 @@ That distinction matters a lot.
 }
 ```
 
-### Important rules
+### Important Rules
 
 - `name` is required.
 - `command` must be an argv array, not a single shell string.
@@ -68,7 +68,7 @@ That distinction matters a lot.
 - Volume attachments use `<volume-name>:<target-path>`.
 - `prod-gui` is special and does not accept a custom `command`.
 
-## What Quilt returns
+## What Quilt Returns
 
 Create, batch create, start, stop, resume, fork, snapshot, and delete are **operation-driven** and typically return `202`.
 
@@ -86,7 +86,7 @@ That means the response is a receipt, not proof that the work is already done.
   Read that as "Quilt accepted your request and is working on it." Not as "the container is ready now."
 </Note>
 
-## Readiness: the field people skip too often
+## Readiness: The Field People Skip Too Often
 
 Readiness checks tell you what the container can actually do.
 
@@ -96,7 +96,7 @@ Important fields:
 - `network_ready`: network allocation is configured.
 - `gui_ready`: only present for `prod-gui`, and adds GUI backend reachability on top of `exec_ready` and `network_ready`.
 
-### Readiness example
+### Readiness Example
 
 ```bash
 curl \
@@ -104,7 +104,7 @@ curl \
   https://backend.quilt.sh/api/containers/ctr_123/ready
 ```
 
-### What `exec_ready` does not mean
+### What `exec_ready` Does Not Mean
 
 `exec_ready` is **not** the same as:
 
@@ -115,7 +115,7 @@ curl \
 
 It only means the container is ready for Quilt's exec contract.
 
-## Resolve by name, operate by ID
+## Resolve by Name, Operate by ID
 
 You can resolve a container by name:
 
@@ -125,7 +125,7 @@ GET /api/containers/by-name/<name>
 
 But once you know the real `container_id`, use that instead. IDs are safer and less ambiguous.
 
-## Rename, stop, kill, resume
+## Rename, Stop, Kill, Resume
 
 Rename is a direct mutation:
 
@@ -141,7 +141,7 @@ Behavior summary:
 - `kill` is direct, not operation-driven
 - `stop`, `resume`, and `start` are operation-driven
 
-## Batch create
+## Batch Create
 
 If you want several similar containers at once:
 
@@ -154,7 +154,7 @@ If you want several similar containers at once:
 }
 ```
 
-## A beginner-friendly first workflow
+## A Beginner-Friendly First Workflow
 
 <Steps>
   <Step title="Create the container">
@@ -181,7 +181,7 @@ If you want several similar containers at once:
   </Step>
 </Steps>
 
-## GPU note
+## GPU Note
 
 GPU requests belong in the create payload using `gpu_count` and optionally `gpu_ids`. The platform validates bad GPU shapes before creating an operation.
 
@@ -191,7 +191,7 @@ Possible deterministic failures:
 - `403` for plan-gated requests
 - `503 CAPACITY_FULL` when the host does not have GPU capacity
 
-## Common mistakes
+## Common Mistakes
 
 <AccordionGroup>
   <Accordion title="Why does `GET /api/containers/<id>` not show my full create spec?">
@@ -211,6 +211,6 @@ Possible deterministic failures:
   </Accordion>
 </AccordionGroup>
 
-## Next step
+## Next Step
 
-Once you can create and inspect containers, move to [Exec and operations](/runtime/exec-and-operations) to actually run work inside them.
+Once you can create and inspect containers, move to [Exec](/runtime/exec-contract) to run work inside them.

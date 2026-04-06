@@ -1,6 +1,6 @@
 ---
-title: "GUI access"
-description: "Open Quilt GUI containers safely using the signed noVNC URL flow."
+title: "GUI Access"
+description: "Open Quilt GUI containers using the signed noVNC URL flow."
 sidebarTitle: "GUI"
 ---
 
@@ -16,7 +16,7 @@ GET /api/containers/<container_id>/gui-url
 
 Use GUI access only for `prod-gui` containers.
 
-## GUI-capable create shape
+## GUI-Capable Create Shape
 
 ```json
 {
@@ -32,7 +32,7 @@ Use GUI access only for `prod-gui` containers.
 }
 ```
 
-## Typical GUI flow
+## Typical GUI Flow
 
 <Steps>
   <Step title="Create a `prod-gui` container">
@@ -56,6 +56,6 @@ Use GUI access only for `prod-gui` containers.
 - Quilt keeps browser assets and the VNC websocket container-scoped
 - `GET /api/containers/<container_id>/gui` is not part of the current contract
 
-## Rule of thumb
+## Rule of Thumb
 
 Wait for `gui_ready=true` before requesting the signed URL. `exec_ready` alone is not enough for a working GUI session.

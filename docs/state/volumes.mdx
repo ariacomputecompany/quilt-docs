@@ -1,6 +1,6 @@
 ---
 title: "Volumes"
-description: "Use volumes for persistent state that must survive container replacement."
+description: "Persistent storage that survives container replacement."
 sidebarTitle: "Volumes"
 ---
 
@@ -23,7 +23,7 @@ POST   /api/volumes/<name>/rename
 DELETE /api/volumes/<name>
 ```
 
-## Create payload
+## Create Payload
 
 ```json
 {
@@ -35,7 +35,7 @@ DELETE /api/volumes/<name>
 }
 ```
 
-## Rename payload
+## Rename Payload
 
 ```json
 {
@@ -43,13 +43,13 @@ DELETE /api/volumes/<name>
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - volume delete is operation-driven
 - list, inspect, `ls`, rename, and single-file operations are direct request-response routes
 - file download and delete use the wildcard path segment after `/files/`
 
-## Common uses
+## Common Uses
 
 - keep app data across container replacement
 - preserve caches or datasets between runs

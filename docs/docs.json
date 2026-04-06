@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "Quilt Docs",
+  "name": "Quilt",
   "theme": "mint",
   "colors": {
     "primary": "#16A34A",
@@ -18,7 +18,12 @@
               "index",
               "quickstart",
               "concepts/mental-model",
-              "concepts/core-resource-model",
+              "concepts/core-resource-model"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
               "api/authentication-and-health",
               "api/concern-guides"
             ]
@@ -28,9 +33,9 @@
             "pages": [
               "runtime/containers",
               "runtime/oci-images",
-              "runtime/gpu-passthrough",
               "runtime/exec-contract",
-              "runtime/operations"
+              "runtime/operations",
+              "functions/serverless-functions"
             ]
           },
           {
@@ -60,7 +65,10 @@
           },
           {
             "group": "Tooling",
-            "pages": ["tooling/quiltc", "functions/serverless-functions"]
+            "pages": [
+              "tooling/quiltc",
+              "runtime/gpu-passthrough"
+            ]
           },
           {
             "group": "Reference",
@@ -70,18 +78,7 @@
       }
     ],
     "global": {
-      "anchors": [
-        {
-          "anchor": "Backend health",
-          "href": "https://backend.quilt.sh/health",
-          "icon": "heart-pulse"
-        },
-        {
-          "anchor": "quiltc GitHub",
-          "href": "https://github.com/ariacomputecompany/quiltc",
-          "icon": "github"
-        }
-      ]
+      "anchors": []
     }
   }
 }

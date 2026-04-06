@@ -1,6 +1,6 @@
 ---
-title: "Clusters, agents, and Kubernetes compatibility"
-description: "Manage clusters, nodes, workloads, placements, join tokens, and Quilt's Kubernetes-style manifest workflows."
+title: "Clusters and Kubernetes"
+description: "Manage clusters, nodes, workloads, placements, join tokens, and Kubernetes-style manifest workflows."
 sidebarTitle: "Clusters"
 ---
 
@@ -53,19 +53,19 @@ GET  /api/k8s/resources/<resource_id>
 DELETE /api/k8s/resources/<resource_id>
 ```
 
-## Parameter rules
+## Parameter Rules
 
 - `POST /api/k8s/validate` uses singular `manifest` and does not require `cluster_id`
 - `POST /api/k8s/diff`, `POST /api/k8s/apply`, and `POST /api/k8s/export` require `cluster_id` in the JSON body
 - `GET /api/k8s/applies/<operation_id>`, `GET /api/k8s/resources`, `GET /api/k8s/resources/<resource_id>`, and `DELETE /api/k8s/resources/<resource_id>` require `cluster_id` in the query string
 - `POST /api/k8s/apply` returns `202` and already includes `operation_id`, `status`, `summary`, `warnings`, `errors`, and `diff`
 
-## Important auth headers
+## Important Auth Headers
 
 - join token registration uses `X-Quilt-Join-Token`
 - node-authenticated calls use `X-Quilt-Node-Token`
 
-## Node registration request
+## Node Registration Request
 
 ```json
 {
@@ -83,7 +83,7 @@ DELETE /api/k8s/resources/<resource_id>
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - the live registration route is `POST /api/agent/clusters/<cluster_id>/nodes/register`
 - `name`, `bridge_name`, `dns_port`, and `egress_limit_mbit` are required
@@ -92,6 +92,6 @@ DELETE /api/k8s/resources/<resource_id>
 - node list and detail routes expose persisted `gpu_inventory`
 - deregistered nodes are no longer part of the stable read surface
 
-## Rule of thumb
+## Rule of Thumb
 
 Use the cluster routes for tenant-owned desired state, the agent routes for host participation, and the k8s routes when you want manifest-driven workflows over the same backend.

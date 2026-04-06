@@ -1,6 +1,6 @@
 ---
-title: "Exec contract"
-description: "Submit commands as jobs, stream output when needed, and format commands the way Quilt expects."
+title: "Exec Contract"
+description: "Submit commands as jobs, stream output, and format commands the way Quilt expects."
 sidebarTitle: "Exec"
 ---
 
@@ -15,7 +15,7 @@ POST /api/containers/<container_id>/exec
 POST /api/containers/<container_id>/stream
 ```
 
-## Exec request
+## Exec Request
 
 ```json
 {
@@ -25,7 +25,7 @@ POST /api/containers/<container_id>/stream
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - `command` must be a JSON array of strings
 - exec is submit-and-track, not inline final output
@@ -34,7 +34,7 @@ POST /api/containers/<container_id>/stream
 - `/stream` returns `application/x-ndjson`, one JSON frame per line
 - `stdout` and `stderr` frames carry base64 bytes in `data_b64`
 
-## Choose the right surface
+## Choose the Right Surface
 
 | Need | Best route |
 |------|---------|
@@ -42,7 +42,7 @@ POST /api/containers/<container_id>/stream
 | Watch output as it happens | `/stream` |
 | Work interactively in a shell | terminal sessions |
 
-## Accepted response
+## Accepted Response
 
 ```json
 {
@@ -54,7 +54,7 @@ POST /api/containers/<container_id>/stream
 }
 ```
 
-## Live stream request
+## Live Stream Request
 
 ```json
 {
@@ -67,7 +67,7 @@ POST /api/containers/<container_id>/stream
 }
 ```
 
-## Example frames
+## Example Frames
 
 ```json
 {"type":"started","container_id":"ctr_123","pid":1234}
@@ -76,7 +76,7 @@ POST /api/containers/<container_id>/stream
 {"type":"exit","code":0,"elapsed_ms":25}
 ```
 
-## Related job inspection routes
+## Related Job Inspection Routes
 
 ```text
 GET    /api/containers/<container_id>/jobs
@@ -85,6 +85,6 @@ GET    /api/containers/<container_id>/processes
 DELETE /api/containers/<container_id>/processes/<pid>?signal=<signal>
 ```
 
-## Rule of thumb
+## Rule of Thumb
 
 Use exec for automation and terminal sessions for human interaction. If you need shell features, make the shell invocation explicit in the `command` array.

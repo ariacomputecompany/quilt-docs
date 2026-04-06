@@ -1,6 +1,6 @@
 ---
-title: "Terminal sessions"
-description: "Open managed interactive PTY sessions when you need a real shell instead of submit-and-track execution."
+title: "Terminal Sessions"
+description: "Open managed interactive PTY sessions for real shell access."
 sidebarTitle: "Terminal"
 ---
 
@@ -19,7 +19,7 @@ POST   /api/terminal/sessions/<session_id>/resize
 GET    /ws/terminal/attach
 ```
 
-## Create payload
+## Create Payload
 
 ```json
 {
@@ -30,7 +30,7 @@ GET    /ws/terminal/attach
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - create returns `201`
 - the response includes `attach_url`
@@ -38,6 +38,6 @@ GET    /ws/terminal/attach
 - the websocket path can attach an existing session or create one when `session_id` is omitted and `container_id` is supplied
 - terminal sessions are tenant-scoped and capped per tenant
 
-## When to use them
+## When to Use Them
 
 Use terminal sessions for interactive shell behavior. Use `/stream` for live non-PTY output and exec jobs for submit-and-track commands.

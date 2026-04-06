@@ -1,6 +1,6 @@
 ---
-title: "Network, activity, and cleanup"
-description: "Inspect networking, routes, notifications, monitors, and cleanup tasks before you assume an app-level issue."
+title: "Network and Cleanup"
+description: "Inspect networking, routes, notifications, monitors, and cleanup tasks."
 sidebarTitle: "Network"
 ---
 
@@ -53,7 +53,7 @@ POST /api/containers/<container_id>/cleanup/force
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - `GET /api/activity` is tenant-scoped and only accepts `limit`
 - notifications are tenant-scoped and the list route does not take `limit`
@@ -61,6 +61,6 @@ POST /api/containers/<container_id>/cleanup/force
 - forced cleanup only works on stopped containers
 - monitor routes distinguish monitor records, monitor processes, and per-container status
 
-## Rule of thumb
+## Rule of Thumb
 
 Inspect network diagnostics before assuming a connectivity issue is application-level.

@@ -1,7 +1,7 @@
 ---
-title: "Environment variables"
-description: "Read, patch, or replace a container's environment map intentionally."
-sidebarTitle: "Env vars"
+title: "Environment Variables"
+description: "Read, patch, or replace a container's environment map."
+sidebarTitle: "Env"
 ---
 
 Use these routes when you need to inspect or change a running container's environment map without recreating the container.
@@ -24,7 +24,7 @@ Payload:
 }
 ```
 
-## Use the right verb
+## Use the Right Verb
 
 - `PATCH` to add or update keys
 - `PUT` to replace the environment map with a new desired state
@@ -33,6 +33,6 @@ Payload:
   `PUT` is destructive replacement, not additive merge.
 </Warning>
 
-## Rule of thumb
+## Rule of Thumb
 
 Reach for `PATCH` first. Use `PUT` only when you intentionally want the server-side environment to match a brand-new full map.

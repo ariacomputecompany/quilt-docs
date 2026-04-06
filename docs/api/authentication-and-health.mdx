@@ -1,5 +1,5 @@
 ---
-title: "Authentication and health"
+title: "Authentication and Health"
 description: "Authenticate correctly, check the right health endpoint, and discover each API concern safely."
 sidebarTitle: "Auth"
 ---
@@ -45,7 +45,7 @@ curl \
   Do not send both styles unless your own client explicitly standardizes that behavior. Pick one auth scheme and stay consistent.
 </Warning>
 
-## Health checks: what each one means
+## Health Checks: What Each One Means
 
 Quilt uses different health endpoints for different questions.
 
@@ -56,7 +56,7 @@ Quilt uses different health endpoints for different questions.
 | "Can functions run?" | `GET /api/functions/health` | Function concern readiness |
 | "Is elasticity healthy?" | `GET /api/elasticity/health` | Elasticity concern readiness |
 
-### Why `/health` is not enough
+### Why `/health` Is Not Enough
 
 `GET /health` is a front-door heartbeat. It does **not** prove that a specific subsystem is ready for your next action.
 
@@ -67,7 +67,7 @@ Analogy:
 
 Both matter, but they are not the same question.
 
-## Concern guides
+## Concern Guides
 
 Most major API families expose:
 
@@ -88,7 +88,7 @@ curl \
   https://backend.quilt.sh/api/oci/help
 ```
 
-## Safe startup checklist
+## Safe Startup Checklist
 
 <Steps>
   <Step title="Check platform liveness">
@@ -115,7 +115,7 @@ curl \
   </Step>
 </Steps>
 
-## Common mistakes
+## Common Mistakes
 
 <AccordionGroup>
   <Accordion title="I checked `/health`, so why did my container call still fail?">
@@ -129,7 +129,7 @@ curl \
   </Accordion>
 </AccordionGroup>
 
-## Minimal working check
+## Minimal Working Check
 
 ```bash
 curl https://backend.quilt.sh/health
@@ -143,6 +143,6 @@ curl \
   https://backend.quilt.sh/api/containers/health
 ```
 
-## Next step
+## Next Step
 
-Once auth and health are working, move to [Containers](/runtime/containers). That is the fastest way to do something tangible in Quilt.
+Once auth and health are working, move to [Containers](/runtime/containers).

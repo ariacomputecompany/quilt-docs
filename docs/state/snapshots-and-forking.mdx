@@ -1,6 +1,6 @@
 ---
-title: "Snapshots and forking"
-description: "Save reproducible state, clone from snapshots, and branch live containers safely."
+title: "Snapshots and Forking"
+description: "Save reproducible state, clone from snapshots, and branch live containers."
 sidebarTitle: "Snapshots"
 ---
 
@@ -30,7 +30,7 @@ These routes require:
 X-Tenant-Id: <tenant_id>
 ```
 
-## Snapshot payload
+## Snapshot Payload
 
 ```json
 {
@@ -50,7 +50,7 @@ Accepted values:
 - `network_mode`: `reset`, `preserve_ns`, `preserve_conn_best_effort`
 - `volume_mode`: `exclude`, `include_named`, `include_all_allowed`
 
-## Clone payload
+## Clone Payload
 
 ```json
 {
@@ -67,7 +67,7 @@ Accepted `resume_policy` values:
 - `manual`
 - `immediate`
 
-## Fork payload
+## Fork Payload
 
 ```json
 {
@@ -84,7 +84,7 @@ Accepted `resume_policy` values:
 
 Fork validates `resume_policy` during request validation rather than deferring the enum failure to background work.
 
-## Snapshot source fields
+## Snapshot Source Fields
 
 Snapshot responses include:
 
@@ -93,7 +93,7 @@ Snapshot responses include:
 
 `source_container_name` may be `null`.
 
-## Practical rule
+## Practical Rule
 
 - use snapshots plus clone when reproducibility matters
 - use fork when you want a writable branch from a live container

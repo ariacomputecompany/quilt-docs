@@ -1,12 +1,12 @@
 ---
-title: "OCI images"
-description: "Pull, inspect, build, and delete OCI images, then launch containers from them correctly."
-sidebarTitle: "OCI images"
+title: "OCI Images"
+description: "Pull, inspect, build, and delete OCI images, then launch containers from them."
+sidebarTitle: "Images"
 ---
 
 Quilt supports Docker-compatible image ingress through OCI registry pulls and OCI-backed container create.
 
-## Primary routes
+## Primary Routes
 
 ```text
 POST   /api/build-contexts
@@ -18,7 +18,7 @@ GET    /api/oci/images/history?reference=<ref>
 DELETE /api/oci/images?reference=<ref>
 ```
 
-## Pull from a registry
+## Pull From a Registry
 
 ```json
 {
@@ -37,7 +37,7 @@ After the pull, launch it with normal container create plus `oci: true`:
 }
 ```
 
-## Build from your own context
+## Build From Your Own Context
 
 Upload the context first:
 
@@ -61,7 +61,7 @@ Then build from that `context_id`:
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - build contexts are uploaded as JSON, not raw archive bytes
 - `content` contains base64-encoded `tar` or `tar.gz`
@@ -69,6 +69,6 @@ Then build from that `context_id`:
 - this is image compatibility, not Docker Engine API compatibility
 - image metadata such as env, entrypoint, and working directory come from the pulled image unless you override them
 
-## Next step
+## Next Step
 
 Once your image is available, continue with [Containers](/runtime/containers).

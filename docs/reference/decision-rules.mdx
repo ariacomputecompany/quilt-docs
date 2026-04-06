@@ -1,6 +1,6 @@
 ---
-title: "Decision rules"
-description: "Use the shortest correct path for common Quilt tasks without re-reading the whole docs set."
+title: "Decision Rules"
+description: "Use the shortest correct path for common Quilt tasks."
 sidebarTitle: "Rules"
 ---
 
@@ -8,7 +8,7 @@ This page is the fast lane.
 
 When you already know what you want, use these rules to pick the correct Quilt surface quickly.
 
-## Core rules
+## Core Rules
 
 - If the platform may be down, check `GET /health` first, then the relevant concern health route.
 - If the task targets a specific runtime, resolve the container and check readiness before mutating it.
@@ -21,7 +21,7 @@ When you already know what you want, use these rules to pick the correct Quilt s
 - If the task is interactive, use terminal sessions instead of ad hoc exec polling.
 - If the task is about clusters, nodes, workloads, placements, join tokens, or manifests, use the cluster and agent surfaces.
 
-## Goal-driven lookup
+## Goal-Driven Lookup
 
 | Goal | Best tool |
 |------|---------|
@@ -40,7 +40,7 @@ When you already know what you want, use these rules to pick the correct Quilt s
 | Manage a fleet of nodes and workloads | clusters + agents |
 | Apply Kubernetes-style manifests | Quilt k8s compatibility routes or `quiltc` |
 
-## Tiny examples
+## Tiny Examples
 
 <AccordionGroup>
   <Accordion title="I need persistence">
@@ -63,7 +63,7 @@ When you already know what you want, use these rules to pick the correct Quilt s
   </Accordion>
 </AccordionGroup>
 
-## The shortest safe workflow
+## The Shortest Safe Workflow
 
 ```text
 health -> concern health -> resolve target -> check readiness -> act -> inspect result

@@ -1,6 +1,6 @@
 ---
 title: "quiltc"
-description: "Use Quilt's Kubernetes-like CLI for clusters, nodes, workloads, runtime operations, and k8s workflows."
+description: "Quilt's control-plane CLI for clusters, nodes, workloads, and k8s workflows."
 sidebarTitle: "quiltc"
 ---
 
@@ -10,7 +10,7 @@ If the HTTP API is the engine, `quiltc` is a well-designed dashboard over that e
 
 GitHub: [ariacomputecompany/quiltc](https://github.com/ariacomputecompany/quiltc)
 
-## What `quiltc` is for
+## What `quiltc` Is For
 
 - create and inspect clusters
 - mint join tokens
@@ -20,7 +20,7 @@ GitHub: [ariacomputecompany/quiltc](https://github.com/ariacomputecompany/quiltc
 - watch long-running operations
 - validate, diff, and apply Kubernetes manifests against Quilt backend endpoints
 
-## Auth inputs
+## Auth Inputs
 
 ```text
 QUILT_BASE_URL
@@ -31,7 +31,7 @@ QUILT_JOIN_TOKEN
 
 Use `QUILT_JOIN_TOKEN` specifically for node registration flows.
 
-## Core mental model
+## Core Mental Model
 
 - cluster = desired-state control plane
 - node = participating host
@@ -40,7 +40,7 @@ Use `QUILT_JOIN_TOKEN` specifically for node registration flows.
 
 This matches the control-plane nouns from the cluster API page.
 
-## Common flows
+## Common Flows
 
 <CodeGroup>
   ```bash Cluster lifecycle
@@ -75,7 +75,7 @@ This matches the control-plane nouns from the cluster API page.
   ```
 </CodeGroup>
 
-## Behavioral notes
+## Behavioral Notes
 
 - `quiltc` wraps the platform over HTTP
 - do not assume local runtime CLIs are the canonical interface
@@ -83,7 +83,7 @@ This matches the control-plane nouns from the cluster API page.
 - `apply` validates first by default
 - `--dry-run` on `k8s apply` gives validate-plus-diff behavior without mutating backend state
 
-## Why people like `quiltc`
+## Why People Like `quiltc`
 
 It removes the little mistakes that hand-written HTTP calls often introduce:
 
@@ -92,7 +92,7 @@ It removes the little mistakes that hand-written HTTP calls often introduce:
 - missing registration fields
 - forgetting to follow long-running operations
 
-## When to use the CLI vs raw HTTP
+## When to Use the CLI vs Raw HTTP
 
 | Situation | Better choice |
 |------|---------|
@@ -100,7 +100,7 @@ It removes the little mistakes that hand-written HTTP calls often introduce:
 | Scripting against the raw control plane | HTTP API |
 | Learning the platform surface | both together |
 
-## A very practical starting point
+## A Very Practical Starting Point
 
 <Steps>
   <Step title="Set your base URL and auth">

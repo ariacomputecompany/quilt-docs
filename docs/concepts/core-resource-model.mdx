@@ -1,5 +1,5 @@
 ---
-title: "Core resource model"
+title: "Core Resource Model"
 description: "Understand the stable Quilt resources and the troubleshooting flow they imply."
 sidebarTitle: "Resources"
 ---
@@ -8,7 +8,7 @@ Quilt's API is broad, but the underlying model is stable.
 
 If you understand the resources on this page, the rest of the docs become much easier to reason about.
 
-## The stable resources
+## The Stable Resources
 
 - **containers** are the primary runtime unit
 - **exec jobs** are commands launched inside a container
@@ -19,7 +19,7 @@ If you understand the resources on this page, the rest of the docs become much e
 - **network resources** expose addressing and diagnostics
 - **terminal sessions** are managed interactive PTY sessions
 
-## Why this matters
+## Why This Matters
 
 These are not random endpoint families. They describe the lifecycle of real work:
 
@@ -28,7 +28,7 @@ These are not random endpoint families. They describe the lifecycle of real work
 3. run commands or open a session
 4. save, clone, scale, or delete it
 
-## The default troubleshooting flow
+## The Default Troubleshooting Flow
 
 ```text
 1. confirm API health
@@ -42,7 +42,7 @@ These are not random endpoint families. They describe the lifecycle of real work
   If you follow this sequence, Quilt feels predictable. If you skip it, the platform can feel more magical and confusing than it really is.
 </Tip>
 
-## Readiness before action
+## Readiness Before Action
 
 The resource model assumes you will check readiness intentionally:
 
@@ -52,7 +52,7 @@ The resource model assumes you will check readiness intentionally:
 
 That is why the docs repeatedly separate **existence**, **accepted mutation**, and **actual readiness**.
 
-## How the resources connect
+## How the Resources Connect
 
 | Resource | Depends on | Produces |
 |------|---------|---------|
@@ -64,16 +64,3 @@ That is why the docs repeatedly separate **existence**, **accepted mutation**, a
 | Volume attach | existing volume + create payload | persistent filesystem |
 | Terminal session | existing container | session + websocket attach |
 
-## Related pages
-
-<Columns cols={2}>
-  <Card title="Containers" icon="container" href="/runtime/containers">
-    See the primary runtime contract in detail.
-  </Card>
-  <Card title="Operations" icon="loader-circle" href="/runtime/operations">
-    Learn how async Quilt work is tracked.
-  </Card>
-  <Card title="Decision rules" icon="list-checks" href="/reference/decision-rules">
-    Use the shortest safe path for common goals.
-  </Card>
-</Columns>

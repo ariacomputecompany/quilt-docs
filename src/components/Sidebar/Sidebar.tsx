@@ -1,13 +1,12 @@
 import type { NavNode } from '@mintlify/astro/helpers';
 import { unwrapNav } from '@mintlify/astro/helpers';
-import { type SidebarItemStyle, type AnchorItem } from './types';
+import type { SidebarItemStyle } from './types';
 import { SidebarEntries } from './SidebarEntries';
-import { Anchors } from './Anchors';
+import { SidebarLinks } from './SidebarLinks';
 
 interface SidebarProps {
   navigation: NavNode;
   currentPath: string;
-  anchors?: AnchorItem[];
   sidebarItemStyle?: SidebarItemStyle;
   showDivider?: boolean;
 }
@@ -15,7 +14,6 @@ interface SidebarProps {
 export default function Sidebar({
   navigation,
   currentPath,
-  anchors = [],
   sidebarItemStyle = 'container',
   showDivider = false,
 }: SidebarProps) {
@@ -26,7 +24,7 @@ export default function Sidebar({
       <nav className="relative lg:text-sm lg:leading-6 flex-1 overflow-y-auto pr-8 pb-10">
         <div className="app-sidebar-top-fade sticky top-0 h-8 z-5 bg-linear-to-b from-white" />
 
-        {anchors.length > 0 && <Anchors anchors={anchors} />}
+        <SidebarLinks />
 
         <SidebarEntries
           entries={entries}

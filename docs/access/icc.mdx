@@ -1,12 +1,12 @@
 ---
 title: "ICC"
-description: "Use Quilt's structured container messaging surface when normal application HTTP is not the right transport."
+description: "Structured container messaging when normal HTTP is not the right transport."
 sidebarTitle: "ICC"
 ---
 
 ICC is the platform surface for structured container messaging without going through the normal app HTTP path.
 
-## Common routes
+## Common Routes
 
 ```text
 GET  /api/icc
@@ -98,13 +98,13 @@ Replay:
 }
 ```
 
-## Important semantics
+## Important Semantics
 
 - `GET /api/icc/messages` requires `container_id`
 - inbox, replay, and state-version reads require a real tenant-owned container id
 - placeholder ids in examples are illustrative, not universally runnable
 
-## When it fits
+## When It Fits
 
 Use ICC when you need a structured, protocol-oriented message path between Quilt-managed runtimes. If ordinary request-response HTTP is enough, keep the simpler transport.
 

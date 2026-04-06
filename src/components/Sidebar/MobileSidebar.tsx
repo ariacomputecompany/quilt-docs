@@ -2,16 +2,15 @@ import { useState, useEffect } from 'react';
 import { cn, Icon } from '@mintlify/components';
 import type { NavNode, TabInfo } from '@mintlify/astro/helpers';
 import { unwrapNav } from '@mintlify/astro/helpers';
-import { type SidebarItemStyle, type AnchorItem } from './types';
+import type { SidebarItemStyle } from './types';
 import { SidebarEntries } from './SidebarEntries';
-import { Anchors } from './Anchors';
+import { SidebarLinks } from './SidebarLinks';
 import { TabsDropdown } from './TabsDropdown';
 
 interface MobileSidebarProps {
   navigation: NavNode;
   currentPath: string;
   tabs?: TabInfo[];
-  anchors?: AnchorItem[];
   sidebarItemStyle?: SidebarItemStyle;
   showDivider?: boolean;
 }
@@ -20,7 +19,6 @@ export function MobileSidebar({
   navigation,
   currentPath,
   tabs = [],
-  anchors = [],
   sidebarItemStyle = 'container',
   showDivider = false,
 }: MobileSidebarProps) {
@@ -96,11 +94,9 @@ export function MobileSidebar({
               </div>
             )}
 
-            {anchors.length > 0 && (
-              <div className="px-2">
-                <Anchors anchors={anchors} />
-              </div>
-            )}
+            <div className="px-2">
+              <SidebarLinks />
+            </div>
 
             <div className="px-4">
               <SidebarEntries

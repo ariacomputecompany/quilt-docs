@@ -1,14 +1,14 @@
 ---
-title: "Serverless functions"
-description: "Create, deploy, invoke, pause, resume, inspect pool state, and roll back Quilt functions."
-sidebarTitle: "Functions"
+title: "Serverless Functions"
+description: "Create, deploy, invoke, pause, resume, and roll back Quilt functions."
+sidebarTitle: "Serverless"
 ---
 
 Functions are Quilt's serverless surface.
 
 Use them when you want execution without managing a long-lived container yourself.
 
-## Primary routes
+## Primary Routes
 
 ```text
 POST   /api/functions
@@ -30,7 +30,7 @@ GET    /api/functions/<function_id>/invocations/<invocation_id>
 POST   /api/functions/<function_id>/rollback
 ```
 
-## Create a function
+## Create a Function
 
 ```json create-function.json
 {
@@ -60,7 +60,7 @@ Important notes:
 - `memory_limit_mb` must be at least `256`
 - `working_directory` must already exist in the execution image if you set it
 
-## Function lifecycle in plain English
+## Function Lifecycle in Plain English
 
 - **create**: register the function and start its versioned lifecycle
 - **deploy**: warm and start capacity
@@ -70,7 +70,7 @@ Important notes:
 - **update**: create a new version instead of mutating the active version in place
 - **rollback**: point back to an older version
 
-## Invoke a function
+## Invoke a Function
 
 ```json invoke-function.json
 {
@@ -102,7 +102,7 @@ Invocation response:
 }
 ```
 
-## Pool state
+## Pool State
 
 Function pool status:
 
@@ -129,7 +129,7 @@ Global pool stats:
 }
 ```
 
-### The field that matters most
+### The Field That Matters Most
 
 `ready_count` tells you how many function containers are already started and invocable.
 
@@ -145,7 +145,7 @@ Rollback requires this exact body shape:
 }
 ```
 
-## A sensible debugging flow
+## A Sensible Debugging Flow
 
 <Steps>
   <Step title="Inspect function state">
@@ -162,7 +162,7 @@ Rollback requires this exact body shape:
   </Step>
 </Steps>
 
-## Common mistakes
+## Common Mistakes
 
 <AccordionGroup>
   <Accordion title="Is `cold_start` an error?">

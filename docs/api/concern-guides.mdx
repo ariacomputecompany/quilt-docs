@@ -1,5 +1,5 @@
 ---
-title: "Concern guides"
+title: "Concern Guides"
 description: "Use help, examples, and health endpoints per concern so you do not have to guess the platform contract."
 sidebarTitle: "Guides"
 ---
@@ -8,7 +8,7 @@ Quilt exposes concern-scoped discovery endpoints for major API families.
 
 These are some of the highest-leverage endpoints in the product because they let you inspect the contract for the exact surface you are about to use.
 
-## The pattern
+## The Pattern
 
 ```text
 GET /api/<concern>/help
@@ -23,7 +23,7 @@ You can also request Markdown:
 - add `?format=markdown`
 - or send `Accept: text/markdown`
 
-## What each route is for
+## What Each Route Is For
 
 | Route | Use it for |
 |------|---------|
@@ -54,7 +54,7 @@ curl \
   "$QUILT_BASE_URL/api/oci/health"
 ```
 
-## Why this is better than guessing
+## Why This Is Better Than Guessing
 
 Without concern guides, teams often:
 
@@ -64,7 +64,7 @@ Without concern guides, teams often:
 
 With concern guides, you can discover what the live backend expects right now.
 
-## Recommended habit
+## Recommended Habit
 
 <Steps>
   <Step title="Check the concern's health">
