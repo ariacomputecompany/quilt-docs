@@ -549,3 +549,196 @@ html[data-theme='dark'] .theme-logo-dark {
 .mdx-content [data-component='code-group'] {
   border-color: var(--app-border) !important;
 }
+
+/* ─── Mintlify Code Block Overrides ─── */
+
+/* Code block containers in both themes */
+.mdx-content .code-block {
+  border-color: var(--app-border) !important;
+}
+
+/* Code block inner background — override hardcoded bg-white */
+.mdx-content .code-block [data-component-part='code-block-root'] {
+  background-color: var(--app-bg-panel-strong) !important;
+}
+
+/* Shiki pre inside Mintlify code blocks */
+.mdx-content .code-block pre.shiki {
+  background-color: var(--app-bg-panel-strong) !important;
+}
+
+/* Override the fade overlay gradient to use theme colors */
+.mdx-content .code-block [data-fade-overlay] {
+  --fade-color-light: var(--app-bg-panel-strong) !important;
+  --fade-color-dark: var(--app-bg-panel-strong) !important;
+  background: none !important;
+}
+
+/* Tab list borders */
+.mdx-content .tabs [data-component-part='tabs-list'],
+.mdx-content .tab-container [role='tablist'] {
+  border-color: var(--app-border) !important;
+}
+
+/* Tab buttons - inactive */
+.mdx-content .tabs [data-component-part='tab-button'][data-active='false'],
+.mdx-content .tab-container [role='tab'] [data-active='false'] {
+  color: var(--app-text-soft) !important;
+  border-color: transparent !important;
+}
+
+/* Tab buttons - active */
+.mdx-content .tabs [data-component-part='tab-button'][data-active='true'],
+.mdx-content .tab-container [role='tab'] [data-active='true'] {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Tab button hover */
+.mdx-content .tabs [data-component-part='tab-button'][data-active='false']:hover,
+.mdx-content .tab-container [role='tab'] [data-active='false']:hover {
+  border-color: var(--app-border-strong) !important;
+  color: var(--app-text) !important;
+}
+
+/* Tab panel content */
+.mdx-content .tabs [data-component-part='tab-content'],
+.mdx-content .tab-container [role='tabpanel'] {
+  color: var(--app-text-muted) !important;
+}
+
+/* Code group tab bar */
+.mdx-content .code-block .code-block-title-bar,
+.mdx-content [data-component='code-group'] > div:first-child {
+  background: var(--app-bg-panel) !important;
+  border-color: var(--app-border) !important;
+  color: var(--app-text-soft) !important;
+}
+
+/* Copy button inside code blocks */
+.mdx-content .code-block [data-testid='copy-code-button'] svg {
+  color: var(--app-text-soft) !important;
+}
+
+.mdx-content .code-block [data-testid='copy-code-button']:hover svg {
+  color: var(--app-text) !important;
+}
+
+/* ─── Accessibility ─── */
+
+/* Focus visible outlines for all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Ensure links have underline on focus for keyboard users */
+a:focus-visible {
+  text-decoration: underline;
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Ensure all text meets WCAG AA contrast ratio */
+.mdx-content.prose code {
+  font-size: 0.8125em;
+}
+
+/* Accordion trigger has clear focus */
+.mdx-content [data-component='accordion'] button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Accordion dark bg text fix — ensure content and nested elements are readable */
+.mdx-content [data-component='accordion'] [data-component-part='accordion-content'] * {
+  color: var(--app-text-muted);
+}
+
+.mdx-content [data-component='accordion'] [data-component-part='accordion-content'] strong {
+  color: var(--app-text) !important;
+}
+
+.mdx-content [data-component='accordion'] [data-component-part='accordion-content'] code {
+  color: var(--app-text) !important;
+  background: var(--app-bg-panel-strong) !important;
+  border: 1px solid var(--app-border);
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.375rem;
+}
+
+/* Steps component accessibility */
+.mdx-content [data-component='steps'] [data-component-part='step-indicator'] {
+  color: var(--primary) !important;
+}
+
+/* Callout accessibility — ensure icon and text contrast */
+.mdx-content [data-component='callout'] [data-component-part='callout-title'] {
+  color: var(--app-text) !important;
+  font-weight: 600;
+}
+
+/* Card focus state */
+.mdx-content.prose a.card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Sidebar focus states */
+.app-sidebar-link:focus-visible,
+.app-anchor-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  border-radius: 0.5rem;
+}
+
+/* TOC link focus */
+.app-toc-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .app-sidebar-link,
+  .app-anchor-link,
+  .app-toc-link {
+    forced-color-adjust: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid LinkText;
+  }
+}

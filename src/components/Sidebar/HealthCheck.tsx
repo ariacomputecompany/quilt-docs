@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { Icon } from '@mintlify/components';
 
 type HealthStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -37,19 +36,11 @@ export function HealthCheck() {
     <button
       type="button"
       onClick={checkHealth}
-      className="app-anchor-link group flex items-center lg:text-sm lg:leading-6 mb-1 font-medium outline-offset-4 w-full cursor-pointer"
-      style={{ border: 'none', background: 'none', padding: 0 }}
+      className="app-sidebar-link group flex items-center py-1 cursor-pointer text-left w-full"
+      style={{ border: 'none', background: 'none', padding: '0.25rem 0' }}
+      aria-label="Check backend health status"
     >
-      <span className="app-anchor-icon mr-3 rounded-md inline-flex items-center justify-center w-6 h-6 p-1 ring-1 ring-inset shrink-0">
-        <Icon
-          icon="heart-pulse"
-          iconLibrary="lucide"
-          className="group-hover:text-white"
-          overrideColor
-          size={14}
-        />
-      </span>
-      <span className="flex-1 text-left">Check Health</span>
+      <span className="flex-1 text-sm">Check Health</span>
       {status === 'loading' && (
         <span
           className="ml-2 w-3 h-3 rounded-full border-2 animate-spin shrink-0"
@@ -57,12 +48,15 @@ export function HealthCheck() {
             borderColor: 'var(--app-text-soft)',
             borderTopColor: 'transparent',
           }}
+          aria-label="Loading"
+          role="status"
         />
       )}
       {status === 'success' && (
         <span
           className="ml-2 text-xs font-semibold tabular-nums shrink-0"
           style={{ color: statusColor }}
+          aria-label={`Status code ${statusCode}`}
         >
           {statusCode}
         </span>
@@ -71,6 +65,7 @@ export function HealthCheck() {
         <span
           className="ml-2 text-xs font-semibold tabular-nums shrink-0"
           style={{ color: statusColor }}
+          aria-label={`Error: status code ${statusCode || 'unreachable'}`}
         >
           {statusCode || 'ERR'}
         </span>
