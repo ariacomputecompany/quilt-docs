@@ -7,8 +7,8 @@ interface LinkItem {
 
 const links: LinkItem[] = [
   {
-    name: 'quiltc',
-    href: 'https://github.com/ariacomputecompany/quiltc',
+    name: 'Open Source',
+    href: 'https://github.com/ariacomputecompany',
   },
 ];
 
