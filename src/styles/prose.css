@@ -82,15 +82,26 @@
 }
 
 /* ─── Dark Mode: Code blocks, syntax highlighting, wrappers ─── */
+/* Use both html.dark and html[data-theme='dark'] for full coverage */
 
-/* Shiki pre element — use dark token colors */
+/* Shiki pre — dark bg and text */
+html.dark .mdx-content pre.shiki,
 html[data-theme='dark'] .mdx-content pre.shiki {
   background-color: #0b0c0e !important;
   color: #d4d4d4 !important;
 }
 
-html[data-theme='dark'] .mdx-content pre.shiki span {
-  color: var(--shiki-dark, inherit) !important;
+html.dark .mdx-content pre.shiki code,
+html[data-theme='dark'] .mdx-content pre.shiki code {
+  color: #d4d4d4 !important;
+}
+
+/* Shiki spans — use dark token color var */
+html.dark .mdx-content pre.shiki span,
+html[data-theme='dark'] .mdx-content pre.shiki span,
+html.dark .mdx-content pre.shiki .line span,
+html[data-theme='dark'] .mdx-content pre.shiki .line span {
+  color: var(--shiki-dark, #d4d4d4) !important;
   background-color: transparent !important;
   font-style: var(--shiki-dark-font-style, inherit) !important;
   font-weight: var(--shiki-dark-font-weight, inherit) !important;
@@ -98,73 +109,78 @@ html[data-theme='dark'] .mdx-content pre.shiki span {
 }
 
 /* Non-shiki pre blocks */
+html.dark .mdx-content pre:not(.shiki),
 html[data-theme='dark'] .mdx-content pre:not(.shiki) {
   background-color: #0b0c0e !important;
   color: #d4d4d4 !important;
 }
 
-/* Mintlify code-block wrapper — override bg-white */
-html[data-theme='dark'] .mdx-content .code-block [data-component-part='code-block-root'] {
-  background-color: #0b0c0e !important;
-}
-
+/* Mintlify code-block wrappers — kill bg-white everywhere */
+html.dark .mdx-content .code-block,
 html[data-theme='dark'] .mdx-content .code-block {
   background-color: #0b0c0e !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Catch any bg-white on code block inner wrappers */
-html[data-theme='dark'] .mdx-content .code-block div[class*='bg-white'] {
-  background-color: #0b0c0e !important;
-}
-
+html.dark .mdx-content .code-block [data-component-part='code-block-root'],
+html[data-theme='dark'] .mdx-content .code-block [data-component-part='code-block-root'],
+html.dark .mdx-content .code-block div[class*='bg-white'],
+html[data-theme='dark'] .mdx-content .code-block div[class*='bg-white'],
+html.dark .mdx-content .code-block .rounded-2xl,
 html[data-theme='dark'] .mdx-content .code-block .rounded-2xl {
   background-color: #0b0c0e !important;
 }
 
-/* Code block fade overlay */
-html[data-theme='dark'] .mdx-content .code-block [data-fade-overlay] {
-  display: none !important;
-}
-
-/* Code group title bar */
-html[data-theme='dark'] .mdx-content .code-block div[class*='border-b'] {
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
 /* Tab panels containing code blocks */
-html[data-theme='dark'] .mdx-content [role='tabpanel'] .code-block [data-component-part='code-block-root'] {
-  background-color: #0b0c0e !important;
-}
-
+html.dark .mdx-content [role='tabpanel'] .code-block [data-component-part='code-block-root'],
+html[data-theme='dark'] .mdx-content [role='tabpanel'] .code-block [data-component-part='code-block-root'],
+html.dark .mdx-content [role='tabpanel'] .code-block div[class*='bg-white'],
 html[data-theme='dark'] .mdx-content [role='tabpanel'] .code-block div[class*='bg-white'] {
   background-color: #0b0c0e !important;
 }
 
-/* Code block text colors for non-shiki (plain text/bash blocks) */
+/* Code block text */
+html.dark .mdx-content .code-block code,
 html[data-theme='dark'] .mdx-content .code-block code {
   color: #d4d4d4 !important;
 }
 
-/* Copy button visibility */
+/* Fade overlay — hide in dark */
+html.dark .mdx-content .code-block [data-fade-overlay],
+html[data-theme='dark'] .mdx-content .code-block [data-fade-overlay] {
+  display: none !important;
+}
+
+/* Borders */
+html.dark .mdx-content .code-block div[class*='border-b'],
+html[data-theme='dark'] .mdx-content .code-block div[class*='border-b'] {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Copy button */
+html.dark .mdx-content .code-block [data-testid='copy-code-button'] svg,
 html[data-theme='dark'] .mdx-content .code-block [data-testid='copy-code-button'] svg {
   color: rgba(255, 255, 255, 0.4) !important;
 }
 
+html.dark .mdx-content .code-block [data-testid='copy-code-button']:hover svg,
 html[data-theme='dark'] .mdx-content .code-block [data-testid='copy-code-button']:hover svg {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* CodeGroup tabs in dark mode */
+/* CodeGroup tabs */
+html.dark .mdx-content .code-block [role='tablist'],
 html[data-theme='dark'] .mdx-content .code-block [role='tablist'] {
   border-color: rgba(255, 255, 255, 0.1) !important;
   background-color: #0b0c0e !important;
 }
 
+html.dark .mdx-content .code-block [role='tab'],
 html[data-theme='dark'] .mdx-content .code-block [role='tab'] {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
+html.dark .mdx-content .code-block [role='tab'][aria-selected='true'],
 html[data-theme='dark'] .mdx-content .code-block [role='tab'][aria-selected='true'] {
   color: rgba(255, 255, 255, 0.9) !important;
 }
