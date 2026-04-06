@@ -28,19 +28,24 @@ const { title = 'Mintlify Docs', description } = Astro.props;
     {description && <meta name="description" content={description} />}
     <script is:inline>
       (() => {
-        const themeKey = 'mintlify-theme';
-        const storedTheme = localStorage.getItem(themeKey);
-        const theme =
-          storedTheme === 'light' || storedTheme === 'dark'
-            ? storedTheme
-            : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-        document.documentElement.style.colorScheme = theme;
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
+        function applyStoredTheme() {
+          const themeKey = 'mintlify-theme';
+          const storedTheme = localStorage.getItem(themeKey);
+          const theme =
+            storedTheme === 'light' || storedTheme === 'dark'
+              ? storedTheme
+              : 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.colorScheme = theme;
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
         }
+        applyStoredTheme();
+        document.addEventListener('astro:after-swap', applyStoredTheme);
+        document.addEventListener('astro:page-load', applyStoredTheme);
       })();
     </script>
     <ClientRouter />
