@@ -16,7 +16,7 @@ Here is the shortest useful explanation:
 
 - A **container** is the running machine you care about.
 - An **exec job** is a command you launch inside that container.
-- An **operation** is Quilt's receipt for async work like create, stop, delete, snapshot, or fork.
+- An **operation** is Quilt's receipt for async work like start, resume, snapshot, fork, or batch create.
 - A **snapshot** is a saved moment in time.
 - A **fork** is a writable branch from a live container.
 - A **volume** is storage that survives when containers come and go.
@@ -89,7 +89,7 @@ That matters because Quilt separates lifecycle phases:
 | Exec Job | Non-interactive command inside a container | Build, test, inspect, script |
 | Stream | Live non-PTY output surface | Watch command output in real time |
 | Terminal | Interactive PTY shell | Debugging and manual work |
-| Operation | Async lifecycle handle | Track create, stop, fork, snapshot, delete |
+| Operation | Async lifecycle handle | Track start, resume, fork, snapshot, batch create |
 | Snapshot | Saved state | Reproducibility and safe cloning |
 | Fork | Writable branch from a live container | Experiment without touching the original |
 | Volume | Persistent storage | Keep files across container replacement |

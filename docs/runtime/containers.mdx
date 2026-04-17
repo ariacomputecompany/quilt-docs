@@ -32,7 +32,7 @@ DELETE /api/containers/<container_id>
 
 ## A Clean Mental Model
 
-- `POST /api/containers` asks Quilt to create a container.
+- `POST /api/containers` creates and starts a container in one atomic request.
 - `GET /api/containers/<id>` tells you what runtime state it is in now.
 - `GET /api/containers/<id>/ready` tells you whether it is actually ready for specific kinds of work.
 
@@ -70,9 +70,22 @@ That distinction matters a lot.
 
 ## What Quilt Returns
 
-Create, batch create, start, stop, resume, fork, snapshot, and delete are **operation-driven** and typically return `202`.
+Quilt lifecycle routes are split into two categories.
 
-That means the response is a receipt, not proof that the work is already done.
+**Direct synchronous routes** — these complete before returning:
+
+- `POST /api/containers` — returns `201 Created` with the full container and readiness payload after create, startup, and readiness evaluation complete
+- `POST /api/containers/:id/stop` — returns `200 OK` after graceful stop, state transition, and usage emission complete
+- `POST /api/containers/:id/kill` — returns `200 OK` after force kill and exited-state bookkeeping complete
+- `DELETE /api/containers/:id` — returns `200 OK` after teardown and state removal complete
+
+For these routes, success means the action is already done — not queued.
+
+**Operation-driven routes** — these return `202 Accepted` with an operation handle:
+
+- `POST /api/containers/:id/start`
+- `POST /api/containers/:id/resume`
+- Batch create, snapshot, fork, and clone flows
 
 ```json operation-accepted.json
 {
@@ -83,7 +96,46 @@ That means the response is a receipt, not proof that the work is already done.
 ```
 
 <Note>
-  Read that as "Quilt accepted your request and is working on it." Not as "the container is ready now."
+  For operation-driven routes, the response is a receipt, not proof that the work is already done.
+</Note>
+
+### Create Response Shape
+
+`POST /api/containers` returns the full created container on `201 Created`:
+
+```json create-response.json
+{
+  "container_id": "ctr_123",
+  "tenant_id": "ten_abc",
+  "name": "demo",
+  "state": "running",
+  "pid": 12345,
+  "exit_code": null,
+  "ip_address": "10.0.0.5",
+  "created_at": "2026-04-17T10:00:00Z",
+  "started_at": "2026-04-17T10:00:01Z",
+  "exited_at": null,
+  "working_directory": "/app",
+  "memory_limit_mb": 1024,
+  "cpu_limit_percent": 50,
+  "strict": true,
+  "gpu_count": 0,
+  "gpu_ids": [],
+  "labels": { "team": "qa" },
+  "exec_ready": true,
+  "network_ready": true,
+  "checks": {
+    "state_running": true,
+    "minit_responsive": true,
+    "network_configured": true,
+    "managed_image_valid": true,
+    "gui_backend_reachable": null
+  }
+}
+```
+
+<Note>
+  `gui_ready` and `gui_backend_reachable` are only present for managed GUI containers.
 </Note>
 
 ## Readiness: The Field People Skip Too Often
@@ -139,7 +191,8 @@ Behavior summary:
 
 - `rename` is direct, not operation-driven
 - `kill` is direct, not operation-driven
-- `stop`, `resume`, and `start` are operation-driven
+- `stop` is direct, not operation-driven
+- `resume` and `start` are operation-driven
 
 ## Batch Create
 
@@ -169,14 +222,15 @@ If you want several similar containers at once:
         "command": ["/bin/sh", "-lc", "echo hello && sleep 300"]
       }'
     ```
+
+    The response is `201 Created` with the full container and readiness payload. No operation polling needed.
   </Step>
-  <Step title="Follow the operation">
-    Watch the returned `operation_id` until it succeeds.
+  <Step title="Check readiness in the response">
+    Inspect `exec_ready` and `network_ready` in the create response. If `exec_ready=true`, the container is already ready.
+
+    You can also poll `GET /api/containers/<container_id>/ready` if you need to recheck later.
   </Step>
-  <Step title="Check readiness">
-    Poll `GET /api/containers/<container_id>/ready` until `exec_ready=true`.
-  </Step>
-  <Step title="Then run commands">
+  <Step title="Run commands">
     Once exec-ready, use the exec API or a terminal session.
   </Step>
 </Steps>

@@ -56,7 +56,7 @@ That is why the docs repeatedly separate **existence**, **accepted mutation**, a
 
 | Resource | Depends on | Produces |
 |------|---------|---------|
-| Container create | image or managed runtime | operation |
+| Container create | image or managed runtime | 201 Created + full container status |
 | Exec request | running, exec-ready container | job |
 | Snapshot | existing container | operation + snapshot |
 | Clone | existing snapshot | operation + container |

@@ -12,7 +12,7 @@ When you already know what you want, use these rules to pick the correct Quilt s
 
 - If the platform may be down, check `GET /health` first, then the relevant concern health route.
 - If the task targets a specific runtime, resolve the container and check readiness before mutating it.
-- If a mutation returns `202`, follow the operation instead of issuing duplicate requests.
+- If a mutation returns `202`, follow the operation instead of issuing duplicate requests. Note: container create, stop, kill, and delete are synchronous and do not return `202`.
 - If shell parsing is required, invoke the shell explicitly in argv form.
 - If state must survive container replacement, use a volume.
 - If state must be reproducible, snapshot first and clone from the snapshot.

@@ -71,21 +71,32 @@ curl -X POST \
   }'
 ```
 
-This usually returns a `202` with an operation handle.
+This returns `201 Created` with the full container and readiness payload. No operation polling required — the container has already been created and started by the time you get a response.
 
 Example shape:
 
 ```json
 {
-  "success": true,
-  "operation_id": "op_123",
-  "status_url": "/api/operations/op_123"
+  "container_id": "ctr_123",
+  "name": "hello-quilt",
+  "state": "running",
+  "exec_ready": true,
+  "network_ready": true,
+  "checks": {
+    "state_running": true,
+    "minit_responsive": true,
+    "network_configured": true,
+    "managed_image_valid": true,
+    "gui_backend_reachable": null
+  }
 }
 ```
 
-## Step 4: Wait for Readiness
+## Step 4: Confirm Readiness
 
-First inspect the operation until it succeeds, then poll readiness:
+Check `exec_ready` in the create response. If it is `true`, the container is already ready and you can proceed.
+
+If you need to recheck later, poll the readiness route:
 
 ```bash
 curl \
