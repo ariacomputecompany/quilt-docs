@@ -120,24 +120,17 @@ curl -X POST \
   }'
 ```
 
-That returns a job handle:
+That returns the completed result inline:
 
 ```json
 {
-  "success": true,
   "container_id": "ctr_123",
-  "job_id": "job_123",
-  "status": "running",
-  "status_url": "/api/containers/ctr_123/jobs/job_123"
+  "exit_code": 0,
+  "stdout": "uid=0(root) gid=0(root) groups=0(root)\n/\nready\n",
+  "stderr": "",
+  "execution_time_ms": 14,
+  "timed_out": false
 }
-```
-
-Then inspect the job:
-
-```bash
-curl \
-  -H "X-Api-Key: $QUILT_API_KEY" \
-  "$QUILT_BASE_URL/api/containers/<container_id>/jobs/<job_id>?include_output=true"
 ```
 
 ## The One Command-Format Rule to Remember

@@ -1,12 +1,12 @@
 ---
 title: "Exec Contract"
-description: "Submit commands as jobs, stream output, and format commands the way Quilt expects."
+description: "Run commands synchronously inside a container, stream live output, or open an interactive terminal."
 sidebarTitle: "Exec"
 ---
 
-Exec is Quilt's submit-and-track command surface.
+Exec is Quilt's synchronous command surface.
 
-Use it when you want a command to run inside a container without opening an interactive terminal session.
+Use it when you want a command to run inside a container and get the result back immediately, without opening an interactive terminal session.
 
 Primary routes:
 
@@ -28,9 +28,11 @@ POST /api/containers/<container_id>/stream
 ## Important Semantics
 
 - `command` must be a JSON array of strings
-- exec is submit-and-track, not inline final output
+- exec blocks until the command exits and returns the result inline
 - if shell parsing is required, invoke the shell explicitly
 - the container must be running and `minit` must be healthy
+- a non-zero `exit_code` is still returned as `200 OK` if the command ran and failed
+- `timed_out: true` means the command hit `timeout_ms` and was terminated
 - `/stream` returns `application/x-ndjson`, one JSON frame per line
 - `stdout` and `stderr` frames carry base64 bytes in `data_b64`
 
@@ -38,21 +40,26 @@ POST /api/containers/<container_id>/stream
 
 | Need | Best route |
 |------|---------|
-| Run a command and inspect it later | `/exec` |
+| Run a command and get the result inline | `/exec` |
 | Watch output as it happens | `/stream` |
 | Work interactively in a shell | terminal sessions |
 
-## Accepted Response
+## Response
+
+`POST /api/containers/:id/exec` returns `200 OK` with the completed result:
 
 ```json
 {
-  "success": true,
   "container_id": "ctr_123",
-  "job_id": "job_123",
-  "status": "running",
-  "status_url": "/api/containers/ctr_123/jobs/job_123"
+  "exit_code": 0,
+  "stdout": "hello\n",
+  "stderr": "",
+  "execution_time_ms": 12,
+  "timed_out": false
 }
 ```
+
+No job handle. No polling. The response body is the final result.
 
 ## Live Stream Request
 
@@ -76,11 +83,9 @@ POST /api/containers/<container_id>/stream
 {"type":"exit","code":0,"elapsed_ms":25}
 ```
 
-## Related Job Inspection Routes
+## Process Inspection Routes
 
 ```text
-GET    /api/containers/<container_id>/jobs
-GET    /api/containers/<container_id>/jobs/<job_id>?include_output=true
 GET    /api/containers/<container_id>/processes
 DELETE /api/containers/<container_id>/processes/<pid>?signal=<signal>
 ```

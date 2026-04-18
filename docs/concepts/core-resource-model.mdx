@@ -11,7 +11,7 @@ If you understand the resources on this page, the rest of the docs become much e
 ## The Stable Resources
 
 - **containers** are the primary runtime unit
-- **exec jobs** are commands launched inside a container
+- **exec** runs a command inside a container synchronously, returning output inline
 - **operations** represent async lifecycle work
 - **snapshots** capture container state for cloning and lineage
 - **forks** create a writable branch from a live container
@@ -35,7 +35,7 @@ These are not random endpoint families. They describe the lifecycle of real work
 2. resolve the target container or function
 3. inspect readiness and current state
 4. act
-5. inspect the resulting operation, exec job, or invocation record
+5. read the result — exec returns inline, operations require polling, invocations have their own record
 ```
 
 <Tip>
@@ -57,7 +57,7 @@ That is why the docs repeatedly separate **existence**, **accepted mutation**, a
 | Resource | Depends on | Produces |
 |------|---------|---------|
 | Container create | image or managed runtime | 201 Created + full container status |
-| Exec request | running, exec-ready container | job |
+| Exec request | running, exec-ready container | 200 OK + inline result |
 | Snapshot | existing container | operation + snapshot |
 | Clone | existing snapshot | operation + container |
 | Fork | existing live container | operation + container |
