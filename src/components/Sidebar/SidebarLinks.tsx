@@ -12,7 +12,7 @@ const links: LinkItem[] = [
   },
   {
     name: 'Get an API Key',
-    href: 'https://backend.quilt.sh',
+    href: 'https://quilt.sh/auth2api',
   },
 ];
 
