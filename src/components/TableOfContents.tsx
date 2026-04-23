@@ -61,7 +61,7 @@ export default function TableOfContents({
           }
         }
       `}</style>
-      <div className="toc-wrapper flex-col sticky top-38 h-[calc(100vh-9.5rem)] w-80 shrink-0 pl-10">
+      <div className="toc-wrapper flex-col sticky top-24 h-[calc(100vh-6rem)] w-80 shrink-0 pl-10">
         <nav className="overflow-y-auto text-sm leading-6 pt-2 pb-8">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}

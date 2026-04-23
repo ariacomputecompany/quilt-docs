@@ -1,6 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "Quilt",
+  "logo": {
+    "light": "/logo/logog.png",
+    "dark": "/logo/logog.png"
+  },
+  "favicon": "/logo/quiltmarkwhite.png",
   "theme": "mint",
   "colors": {
     "primary": "#a0a0a8",

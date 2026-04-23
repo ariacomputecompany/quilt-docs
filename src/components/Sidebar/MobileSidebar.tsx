@@ -75,9 +75,15 @@ export function MobileSidebar({
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center px-4 pt-6 pb-4">
-            <a href="/" className="flex items-center gap-2 no-underline">
+            <a href="/" className="flex items-center gap-2.5 no-underline">
+              <img
+                src="/logo/quiltmarkwhite.png"
+                alt="Quilt"
+                className="h-7 w-auto shrink-0"
+                width={252}
+                height={252}
+              />
               <span className="text-base tracking-tight" style={{ color: 'var(--app-text)' }}>
-                <span className="font-bold">Quilt</span>{' '}
                 <span className="font-normal" style={{ color: 'var(--app-text-soft)' }}>Developer Docs</span>
               </span>
             </a>
