@@ -17,6 +17,7 @@ GET    /api/volumes/<name>
 GET    /api/volumes/<name>/inspect
 GET    /api/volumes/<name>/ls
 GET    /api/volumes/<name>/ls?path=<path>
+GET    /api/volumes/<name>/ls?path=<path>&page=1&page_size=100
 GET    /api/volumes/<name>/files/<path>
 DELETE /api/volumes/<name>/files/<path>
 POST   /api/volumes/<name>/rename
@@ -48,6 +49,8 @@ DELETE /api/volumes/<name>
 - volume delete is operation-driven
 - list, inspect, `ls`, rename, and single-file operations are direct request-response routes
 - file download and delete use the wildcard path segment after `/files/`
+- file download returns `application/octet-stream` and metadata headers such as path and mode
+- `ls` responses include pagination metadata and should be consumed page by page for large directories
 
 ## Common Uses
 

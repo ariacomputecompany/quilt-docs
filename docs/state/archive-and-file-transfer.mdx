@@ -13,14 +13,12 @@ POST /api/containers/<container_id>/archive
 POST /api/volumes/<name>/archive
 ```
 
-Archive payload:
+Archive request shape:
 
-```json
-{
-  "content": "<base64 tar.gz>",
-  "strip_components": 1,
-  "path": "/app"
-}
+```text
+Content-Type: application/gzip or application/x-tar
+Query: ?path=/app&strip_components=1
+Body: raw tar or tar.gz bytes
 ```
 
 Single-file volume write:
@@ -43,6 +41,8 @@ Payload:
 
 - archive uploads are operation-driven
 - single-file volume reads and writes are synchronous
+- volume file download returns raw bytes, not a JSON base64 envelope
+- volume file listing supports `page` and `page_size`
 - `mode` is an octal permission encoded as an integer like `644` or `755`
 
 ## Rule of Thumb
