@@ -177,6 +177,12 @@ GET /api/containers/by-name/<name>
 
 But once you know the real `container_id`, use that instead. IDs are safer and less ambiguous.
 
+## Expose an HTTP Port
+
+If your container is already serving HTTP or WebSocket traffic and you need an external URL, use Quilt's published-service surface instead of bolting on your own proxy contract.
+
+See [Published Services](/access/published-services).
+
 ## Rename, Stop, Kill, Resume
 
 Rename is a direct mutation:

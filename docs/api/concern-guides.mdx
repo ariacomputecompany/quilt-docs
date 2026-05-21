@@ -54,6 +54,22 @@ curl \
   "$QUILT_BASE_URL/api/oci/health"
 ```
 
+## Example: Nightly
+
+Nightly release resolution is covered by the `nightly` concern.
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  "$QUILT_BASE_URL/api/nightly/help"
+```
+
+```bash
+curl \
+  -H "X-Api-Key: $QUILT_API_KEY" \
+  "$QUILT_BASE_URL/api/nightly/examples"
+```
+
 ## Why This Is Better Than Guessing
 
 Without concern guides, teams often:

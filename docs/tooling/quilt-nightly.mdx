@@ -1,0 +1,153 @@
+---
+title: "quilt-nightly"
+description: "Launch curated Nightly developer containers through the JavaScript package instead of hand-assembling runtime calls."
+sidebarTitle: "quilt-nightly"
+---
+
+`quilt-nightly` is Quilt's JavaScript launcher for Nightly developer environments.
+
+This is the surface end users interact with directly. The backend APIs underneath it matter, but most users should think in terms of profiles, launch behavior, auth inputs, and override points.
+
+GitHub: [ariacomputecompany/quilt-nightly](https://github.com/ariacomputecompany/quilt-nightly)
+
+## What `quilt-nightly` Is For
+
+- start a curated Nightly environment with one command
+- choose a supported profile such as Claude Code or Codex
+- reuse a named environment when you want continuity
+- keep low-level OCI pull and container-attach details out of your day-to-day workflow
+
+## Supported Entry Points
+
+```bash
+npx quilt-nightly --cc
+npx quilt-nightly --codex
+npx quilt-nightly --cc --name my-session
+npx quilt-nightly --codex --keep
+```
+
+Current supported profile flags:
+
+- `--cc`
+- `--codex`
+
+## Auth and Base URL Inputs
+
+```text
+QUILT_API_URL
+QUILT_API_KEY
+QUILT_TOKEN
+```
+
+Behavior summary:
+
+- `QUILT_API_URL` defaults to `https://backend.quilt.sh`
+- auth precedence is `QUILT_API_KEY` first, then `QUILT_TOKEN`
+- if neither auth variable is set, the package prompts interactively for an API key
+
+## Environment Loading
+
+`quilt-nightly` auto-loads environment values from the current working directory in this order:
+
+1. `.env`
+2. `.env.local`
+
+Use the package's `.env.example` as the template shape.
+
+## Profile Image Overrides
+
+The package ships with default image references for the supported profiles, but you can override them:
+
+```text
+QUILT_NIGHTLY_CC_REF
+QUILT_NIGHTLY_CODEX_REF
+QUILT_NIGHTLY_REGISTRY_USERNAME
+QUILT_NIGHTLY_REGISTRY_PASSWORD
+QUILT_NIGHTLY_START_TIMEOUT_MS
+```
+
+This is the part that matters operationally: users choose a Nightly profile, and the package decides which curated runtime image to launch unless you deliberately override it.
+
+## Named Session Behavior
+
+`--name` changes the lifecycle contract in an important way.
+
+If the named environment already exists, `quilt-nightly` reuses it instead of blindly creating a fresh one.
+
+That makes named sessions the right tool for:
+
+- continuing work from an earlier Nightly environment
+- keeping one stable container name for a repeated workflow
+- avoiding accidental sprawl from one-off launches
+
+## Keep vs Cleanup
+
+- default behavior is cleanup when the package launched a fresh container for the session
+- `--keep` leaves that container in place after terminal exit
+
+That distinction is useful when you want either:
+
+- disposable Nightly sessions
+- or a longer-lived environment you will reattach to later
+
+## What the Package Abstracts Away
+
+The exact backend implementation can evolve, but the package is responsible for turning a profile choice into a usable interactive environment.
+
+In practice, users should expect it to handle the runtime plumbing needed to:
+
+- prepare the target Nightly image
+- make sure the container session exists
+- attach them to the correct interactive tool inside that environment
+
+## A Practical Starting Point
+
+<Steps>
+  <Step title="Set your API URL and auth">
+    ```bash
+    export QUILT_API_URL="https://backend.quilt.sh"
+    export QUILT_API_KEY="..."
+    ```
+  </Step>
+  <Step title="Launch a profile">
+    ```bash
+    npx quilt-nightly --codex
+    ```
+  </Step>
+  <Step title="Name the session when continuity matters">
+    ```bash
+    npx quilt-nightly --codex --name my-session
+    ```
+  </Step>
+  <Step title="Keep it around when you want to reattach later">
+    ```bash
+    npx quilt-nightly --codex --name my-session --keep
+    ```
+  </Step>
+</Steps>
+
+## Important Semantics
+
+- `quilt-nightly` requires an interactive terminal
+- authentication is not embedded in the Nightly image itself
+- users authenticate inside the selected tool after the TUI opens
+- the package is profile-driven, not a generic image launcher
+
+## Common Mistakes
+
+<AccordionGroup>
+  <Accordion title="Should I call the backend routes manually instead of using `quilt-nightly`?">
+    Usually no. If your goal is a Nightly developer environment, the package is the intended user-facing entry point.
+  </Accordion>
+  <Accordion title="Is `--name` just cosmetic?">
+    No. It changes reuse behavior and can turn a one-off launch into a persistent named environment.
+  </Accordion>
+  <Accordion title="Does `--keep` matter if I reused an existing named session?">
+    The main effect is on freshly created sessions. It tells the launcher not to clean up the new container when the terminal exits.
+  </Accordion>
+</AccordionGroup>
+
+## Related Pages
+
+- [OCI Images](/runtime/oci-images)
+- [Containers](/runtime/containers)

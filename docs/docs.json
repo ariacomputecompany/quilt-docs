@@ -55,6 +55,7 @@
           {
             "group": "Access",
             "pages": [
+              "access/published-services",
               "access/network-activity-and-cleanup",
               "access/terminal-sessions",
               "access/gui-access",
@@ -72,6 +73,7 @@
             "group": "Tooling",
             "pages": [
               "tooling/quiltc",
+              "tooling/quilt-nightly",
               "runtime/gpu-passthrough"
             ]
           },

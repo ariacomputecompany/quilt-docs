@@ -55,6 +55,7 @@ Quilt uses different health endpoints for different questions.
 | "Is container work ready?" | `GET /api/containers/health` | Container concern readiness |
 | "Can functions run?" | `GET /api/functions/health` | Function concern readiness |
 | "Is elasticity healthy?" | `GET /api/elasticity/health` | Elasticity concern readiness |
+| "Can I resolve Nightly release metadata?" | `GET /api/nightly/health` | Nightly concern readiness |
 
 ### Why `/health` Is Not Enough
 
@@ -123,6 +124,9 @@ curl \
   </Accordion>
   <Accordion title="Can I use concern guides for OCI too?">
     Yes. OCI is covered by the `oci` concern, including `GET /api/oci/help`, `GET /api/oci/examples`, and `GET /api/oci/health`.
+  </Accordion>
+  <Accordion title="Is there a concern guide for Nightly too?">
+    Yes. Use `GET /api/nightly/help`, `GET /api/nightly/examples`, and `GET /api/nightly/health` when you are debugging the Nightly control-plane layer underneath `quilt-nightly`.
   </Accordion>
   <Accordion title="Should I retry mutations blindly when something fails?">
     No. First confirm health, then inspect the returned operation or error. Blind retries can create duplicate work or hide the real problem.
