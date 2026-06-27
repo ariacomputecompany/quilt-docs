@@ -8,7 +8,7 @@ interface LinkItem {
 const links: LinkItem[] = [
   {
     name: 'Open Source',
-    href: 'https://github.com/ariacomputecompany',
+    href: 'https://github.com/ariacomputecompany/quilt-core',
   },
   {
     name: 'Get an API Key',
