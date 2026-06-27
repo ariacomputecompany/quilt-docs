@@ -255,7 +255,7 @@ Create from pulled image:
 
 ## GPU Passthrough
 
-GPU support is an explicit platform contract, not a raw mount workaround.
+GPU support is an explicit execution contract, not a raw mount workaround.
 
 Use GPU passthrough when:
 
@@ -281,7 +281,9 @@ Important semantics:
 - raw `/dev/nvidia*` bind mounts remain blocked
 - `gpu_count` is the primary request field
 - `gpu_ids` is optional explicit pinning and must exactly match `gpu_count` when used
-- deterministic GPU request failures are rejected before an operation is created: invalid GPU shapes return `400`, plan gating returns `403`, and unavailable host GPU capacity returns `503 CAPACITY_FULL` with a hint
+- GPU-backed execution runs on a compatible user-owned execution node, while Quilt remains the control plane
+- `strict=true` is incompatible with GPU-backed execution
+- deterministic GPU request failures are rejected before execution begins: invalid GPU shapes return `400`, invalid strict-plus-GPU requests return `400`, and unavailable host GPU capacity returns `503 CAPACITY_FULL` with a hint
 - node GPU inventory is agent-reported control-plane state
 - cluster node list and node detail responses expose that persisted inventory as `gpu_inventory`
 - scheduler placement must satisfy GPU inventory before assigning a workload

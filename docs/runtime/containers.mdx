@@ -243,12 +243,12 @@ If you want several similar containers at once:
 
 ## GPU Note
 
-GPU requests belong in the create payload using `gpu_count` and optionally `gpu_ids`. The platform validates bad GPU shapes before creating an operation.
+GPU requests belong in the create payload using `gpu_count` and optionally `gpu_ids`. GPU-backed containers run on compatible user-owned execution nodes, not on a cloud GPU host. Quilt validates deterministic GPU request failures before execution begins.
 
 Possible deterministic failures:
 
 - `400` for invalid GPU shapes
-- `403` for plan-gated requests
+- `400` for invalid `strict` plus GPU combinations
 - `503 CAPACITY_FULL` when the host does not have GPU capacity
 
 ## Common Mistakes

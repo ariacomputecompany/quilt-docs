@@ -1,12 +1,12 @@
 ---
 title: "GPU Passthrough"
-description: "Request GPUs through Quilt's explicit scheduling contract."
+description: "Request user-owned GPUs through Quilt's explicit execution and scheduling contract."
 sidebarTitle: "GPU"
 ---
 
-GPU support in Quilt is an explicit platform feature, not a mount workaround.
+GPU support in Quilt is an explicit execution feature, not a mount workaround.
 
-If a workload needs GPU capacity, ask for it through Quilt's scheduling contract from the start. Retrofitting raw device access later is not the supported path.
+If a workload needs GPU capacity, ask for it through Quilt's normal container or workload contract from the start. Quilt preserves the normal container UX while routing GPU-backed execution onto the user-owned node that physically owns the GPU.
 
 ## Use GPUs When
 
@@ -14,6 +14,18 @@ If a workload needs GPU capacity, ask for it through Quilt's scheduling contract
 - placing workloads on GPU-capable nodes
 - reporting node GPU inventory during registration or heartbeat
 - debugging why a workload did or did not receive GPU assignment
+
+## Execution Model
+
+Quilt keeps GPU-backed execution inside the normal platform flow:
+
+1. a container or workload requests GPU capacity with `gpu_count` and optional `gpu_ids`
+2. Quilt validates the request and selects a compatible user-owned execution node
+3. that node invokes Quilt's dedicated GPU helper
+4. the helper detects the local NVIDIA substrate, prepares the trusted runtime contract, and launches the workload locally
+5. Quilt continues to expose lifecycle, status, logs, and exec through the standard platform surfaces
+
+GPU-backed execution is local to the user-owned node. Quilt is the control plane, not the physical GPU host.
 
 ## Example Container Request
 
@@ -27,24 +39,65 @@ If a workload needs GPU capacity, ask for it through Quilt's scheduling contract
 }
 ```
 
+## Explicit GPU Targeting
+
+Quilt supports both count-based GPU selection and explicit device targeting.
+
+- use `gpu_count` alone when any compatible local GPU is acceptable
+- use `gpu_ids` when the workload must pin to specific local devices
+
+Example explicit targeting:
+
+```json
+{
+  "name": "gpu-demo",
+  "image": "prod",
+  "gpu_count": 1,
+  "gpu_ids": ["nvidia0"],
+  "command": ["/bin/sh", "-lc", "nvidia-smi"]
+}
+```
+
+When `gpu_ids` is present:
+
+- it must exactly match `gpu_count`
+- each id must resolve against the execution node's reported inventory
+- duplicate or empty ids are rejected
+
 ## Important Rules
 
 - raw `/dev/nvidia*` bind mounts remain blocked
 - `gpu_count` is the main request field
-- `gpu_ids` is optional and must exactly match `gpu_count` when supplied
-- invalid requests are rejected before an operation is created
+- `gpu_ids` is optional explicit pinning and must exactly match `gpu_count` when supplied
+- Quilt treats GPU-backed execution as a distinct execution mode
+- `strict=true` is incompatible with GPU-backed execution
+- invalid deterministic requests are rejected before execution begins
 
 Expected deterministic failures:
 
 ```text
 400 invalid GPU request shape
-403 plan gating
+400 invalid strict plus GPU combination
 503 CAPACITY_FULL
 ```
 
 ## Cluster Tie-In
 
 Node GPU inventory is agent-reported control-plane state and is exposed as `gpu_inventory` on node list and detail responses. Scheduler placement must satisfy that inventory before assigning workloads.
+
+## Trusted Runtime Preparation
+
+GPU access is injected only from trusted runtime data produced by Quilt's dedicated helper.
+
+That trusted runtime contract includes:
+
+- selected GPU ids
+- trusted device nodes
+- trusted NVIDIA control devices
+- trusted host libraries
+- trusted environment variables such as `NVIDIA_VISIBLE_DEVICES`, `CUDA_VISIBLE_DEVICES`, and `NVIDIA_DRIVER_CAPABILITIES`
+
+This is why raw tenant-provided device mounts remain blocked. GPU support is provided through Quilt's trusted execution path, not through ad hoc host access.
 
 ## Rule of Thumb
 
