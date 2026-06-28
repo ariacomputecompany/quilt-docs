@@ -75,7 +75,7 @@ export function MobileSidebar({
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center px-4 pt-6 pb-4">
-            <a href="/" className="flex items-center gap-2.5 no-underline">
+            <a href="https://quilt.sh" className="flex items-center gap-2.5 no-underline">
               <img
                 src="/logo/quiltmarkwhite.png"
                 alt="Quilt"
