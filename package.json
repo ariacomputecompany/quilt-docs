@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/build.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write .",
@@ -32,6 +32,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "ai": "^6.0.68",
     "astro": "^5.16.12",
+    "path-browserify": "^1.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-markdown": "^10.1.0",
