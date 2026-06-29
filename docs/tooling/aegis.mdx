@@ -1,0 +1,62 @@
+---
+title: "Aegis"
+description: "Agentic browser runtime deployed on Quilt infrastructure for persistent, real-browser workflows."
+sidebarTitle: "Aegis"
+---
+
+`Aegis` is an agentic browser runtime that gives Quilt users a real browser engine inside an isolated Quilt environment.
+
+If your workflow needs browser automation, live page interaction, or a persistent browser session that behaves like a real user-facing runtime, Aegis is the right tool surface.
+
+GitHub: [ariacomputecompany/aegis](https://github.com/ariacomputecompany/aegis)
+
+## What Aegis Is For
+
+- persistent browser-based agent workflows
+- real navigation and page interaction
+- headless and headful operation against the same runtime
+- session continuity for longer-running browser tasks
+- isolated deployment on Quilt infrastructure instead of local browser-state dependency
+
+## Why It Matters In Quilt
+
+Quilt is not just a container runtime for generic Linux processes. It is also the place where curated application environments can run as isolated, deployable services.
+
+Aegis matters because it turns that model into a usable browser-runtime product:
+
+- Quilt provides the isolated compute environment
+- Aegis provides the browser-specific control plane and runtime behavior
+- users get one clean path to run browser-native agent workflows without hand-assembling browser infrastructure
+
+## Typical Shape
+
+Users should think about Aegis in terms of:
+
+- one browser runtime
+- one local control plane inside the environment
+- one correct path for browser interaction and session continuity
+
+That is a better mental model than treating it like disposable script snippets over a fake DOM.
+
+## When To Reach For It
+
+| Situation | Better choice |
+|------|---------|
+| Agent needs a real browser engine | Aegis |
+| Workflow needs persistent page state | Aegis |
+| Task is pure API or shell automation | Standard Quilt runtime surfaces |
+| Human wants cluster or workload orchestration | `quiltc` |
+
+## Practical Fit With Quilt
+
+Aegis is a good fit when you want Quilt to host the browser runtime itself:
+
+- isolated from the user's local workstation
+- deployable as part of a repeatable environment
+- compatible with the same runtime, OCI, and container lifecycle model that Quilt already exposes
+
+## Used Through Quilt Nightly
+
+In practice, users typically enter Aegis through `quilt-nightly` rather than by hand-wiring the underlying runtime environment themselves.
+
+That launcher UX is intentionally separate from this page. The important point here is that Aegis is one of the curated application surfaces that Quilt can host directly.

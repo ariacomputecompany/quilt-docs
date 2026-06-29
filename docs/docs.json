@@ -73,7 +73,9 @@
             "group": "Tooling",
             "pages": [
               "tooling/quiltc",
-              "tooling/quilt-nightly",
+              "tooling/aegis",
+              "tooling/rlm",
+              "tooling/amp",
               "runtime/gpu-passthrough"
             ]
           },

@@ -1,0 +1,55 @@
+---
+title: "RLM"
+description: "Curated Quilt-hosted tooling surface for isolated application workflows inside Nightly environments."
+sidebarTitle: "RLM"
+---
+
+`RLM` is a curated tooling surface that Quilt can host as an isolated application environment.
+
+The key idea is the same as the rest of Quilt tooling: users should not have to treat the application like an ad hoc collection of runtime primitives. Quilt hosts the environment; RLM provides the application-specific workflow on top of it.
+
+GitHub: [ariacomputecompany/rlm](https://github.com/ariacomputecompany/rlm)
+
+## What RLM Is For
+
+- running a dedicated application workflow inside Quilt-managed infrastructure
+- giving users an environment that feels product-shaped rather than container-shaped
+- separating application concerns from low-level runtime setup
+- making repeatable, isolated sessions the default instead of an advanced path
+
+## Why It Matters In Quilt
+
+RLM shows why the Quilt tooling layer exists at all.
+
+Quilt already provides:
+
+- isolated containers
+- OCI-backed images
+- networked application access
+- stateful session continuity
+
+RLM matters because it packages those Quilt capabilities into a focused user-facing tool instead of asking every user to compose that environment manually.
+
+## Mental Model
+
+Think about RLM as:
+
+- a dedicated application experience
+- running inside a Quilt-managed environment
+- backed by the same runtime and image model as the rest of the platform
+
+Do not think about it as a raw runtime tutorial or a generic shell-first workflow.
+
+## When To Reach For It
+
+| Situation | Better choice |
+|------|---------|
+| User wants the application itself, not low-level container assembly | RLM |
+| You need raw runtime APIs or direct container control | Quilt runtime docs |
+| You need orchestration across clusters and workloads | `quiltc` |
+
+## Used Through Quilt Nightly
+
+RLM is typically delivered to end users through `quilt-nightly`, which handles the curated environment-launch path on top of Quilt infrastructure.
+
+That launcher flow is intentionally documented separately. This page exists to explain what RLM is in the Quilt tooling model and why it belongs under the Tooling surface.
