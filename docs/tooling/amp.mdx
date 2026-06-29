@@ -1,51 +1,74 @@
 ---
 title: "AMP"
-description: "Curated application tooling hosted on Quilt infrastructure for isolated, user-facing runtime sessions."
+description: "Real-time communication layer for autonomous agents, deployable on Quilt infrastructure as an isolated service runtime."
 sidebarTitle: "AMP"
 ---
 
-`AMP` is a curated application surface that runs inside Quilt-managed infrastructure.
+`AMP` is a production-oriented Agent Mail Protocol implementation in Rust.
 
-Like the other tooling pages, the point is not that AMP happens to use containers underneath. The point is that Quilt can host the application as a real, isolated service environment for end users.
+On Quilt, it fits as a deployable communication service: a real application runtime with its own protocol surface, state model, and operational behavior, hosted inside isolated Quilt infrastructure.
 
-GitHub: [ariacomputecompany/amp](https://github.com/ariacomputecompany/amp)
+GitHub: [saint0x/amp](https://github.com/saint0x/amp)
 
 ## What AMP Is For
 
-- application-specific workflows that should run in a stable isolated environment
-- repeatable sessions that users can launch without manual infrastructure assembly
-- deployment on Quilt infrastructure with the same operational model as other curated tools
+- real-time agent-to-agent messaging
+- token-authenticated agent connections
+- topic, direct, and broadcast routing
+- durable inbox and delivery-state handling
+- WebSocket and HTTP-based operational control
+- isolated service deployment on Quilt infrastructure
 
 ## Why It Matters In Quilt
 
-AMP matters because it represents the product layer on top of Quilt's runtime primitives.
+AMP matters because Quilt is not only a place to launch generic containers. It is also the place where communication-heavy application infrastructure can run as a real service.
 
 Quilt gives the platform:
 
 - isolated execution
 - OCI-backed environment delivery
-- networking and access primitives
-- durable session and lifecycle behavior
+- networking and published access primitives
+- durable runtime and lifecycle behavior
 
-AMP gives the user-facing application experience that rides on those primitives.
+AMP adds the application layer on top:
+
+- message delivery
+- daemon-to-daemon federation
+- agent presence and acknowledgements
+- runtime inspection and metrics
+- a CLI centered on `serve`, `msg`, `agent`, `topic`, `inspect`, and `runtime`
 
 ## Mental Model
 
-Use AMP when the user intent is:
+Think of AMP as:
 
-- launch the application
-- work inside the curated environment
-- let Quilt own the infrastructure boundary
+- a communications daemon
+- exposing both WebSocket and HTTP surfaces
+- with durable or in-memory storage modes
+- running inside a Quilt-hosted service environment
 
-That is different from using Quilt as a generic container toolbox.
+That is different from using Quilt as a generic container toolbox or a one-off interactive shell.
 
 ## Where It Fits
 
 | Need | Better choice |
 |------|---------|
-| Focused application environment hosted by Quilt | AMP |
+| Real-time agent messaging service hosted by Quilt | AMP |
 | Raw runtime operations and container semantics | Quilt runtime docs |
 | Cluster, node, and workload orchestration | `quiltc` |
+
+## Relevant AMP Surface
+
+The upstream AMP project exposes:
+
+- WebSocket ingress at `/ws`
+- health at `/health`
+- peer forwarding at `/v1/peer/messages`
+- agent inspection at `/v1/agents`
+- topic and system inspection endpoints
+- SQLite-backed or in-memory storage
+
+Those details matter in Quilt because they determine how the service should be deployed, exposed, and reasoned about once it is running on platform infrastructure.
 
 ## Used Through Quilt Nightly
 
