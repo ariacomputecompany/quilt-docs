@@ -1,53 +1,72 @@
 ---
 title: "RLM"
-description: "Curated Quilt-hosted tooling surface for isolated application workflows inside Nightly environments."
+description: "Recursive Language Models hosted on Quilt infrastructure for isolated long-context and agentic execution workflows."
 sidebarTitle: "RLM"
 ---
 
-`RLM` is a curated tooling surface that Quilt can host as an isolated application environment.
+`RLM` stands for Recursive Language Models: a long-context inference pattern where a model decomposes work, queries structured context through code or tools, and recursively calls into narrower subproblems instead of trying to force everything into one flat prompt.
 
-The key idea is the same as the rest of Quilt tooling: users should not have to treat the application like an ad hoc collection of runtime primitives. Quilt hosts the environment; RLM provides the application-specific workflow on top of it.
+On Quilt, that maps naturally to an isolated runtime with persistent workspace state, repeatable execution, and the ability to keep the model's working context inside the environment rather than on a local laptop.
 
 ## What RLM Is For
 
-- running a dedicated application workflow inside Quilt-managed infrastructure
-- giving users an environment that feels product-shaped rather than container-shaped
-- separating application concerns from low-level runtime setup
-- making repeatable, isolated sessions the default instead of an advanced path
+- recursive long-context reasoning over large or structured inputs
+- code-backed context access through a REPL or script environment
+- task decomposition where the model decides what to inspect next
+- persistent trajectories, artifacts, and workspace state across runs
+- isolated execution of agentic ML workflows on Quilt infrastructure
 
 ## Why It Matters In Quilt
 
-RLM shows why the Quilt tooling layer exists at all.
+RLM is not just "another CLI inside a container." Its core value comes from the execution pattern itself.
 
-Quilt already provides:
+In practice, Recursive Language Models need an environment that can:
 
-- isolated containers
-- OCI-backed images
-- networked application access
-- stateful session continuity
+- hold substantial local context and artifacts
+- run Python or tool-driven inspection code safely
+- persist trajectories and intermediate outputs
+- resume sessions without rebuilding the environment from scratch
 
-RLM matters because it packages those Quilt capabilities into a focused user-facing tool instead of asking every user to compose that environment manually.
+Quilt provides exactly that isolated runtime layer. RLM provides the recursive inference workflow on top of it.
+
+This is the important split:
+
+- RLM is the reasoning and execution model
+- Quilt is the infrastructure and environment layer that hosts it cleanly
 
 ## Mental Model
 
 Think about RLM as:
 
-- a dedicated application experience
-- running inside a Quilt-managed environment
-- backed by the same runtime and image model as the rest of the platform
+- a model-driven execution loop
+- backed by code, tools, and a working filesystem
+- designed for context retrieval, recursive decomposition, and long-horizon problem solving
+- running inside a Quilt-hosted environment when you want isolation, persistence, and reproducibility
 
-Do not think about it as a raw runtime tutorial or a generic shell-first workflow.
+Do not think about it as a generic prompt wrapper or a one-shot chat interface.
+
+## Practical Shape
+
+The practical RLM workflow usually looks like this:
+
+- start with a task, prompt, or script
+- inspect files, data, or prior outputs from a real runtime
+- recurse into narrower subtasks when needed
+- record trajectories, artifacts, and state for later review or continuation
+
+That execution style is why RLM fits well on Quilt. The environment is part of the product, not an afterthought.
 
 ## When To Reach For It
 
 | Situation | Better choice |
 |------|---------|
-| User wants the application itself, not low-level container assembly | RLM |
+| You need recursive reasoning over large or structured context | RLM |
+| You want isolated, persistent execution for long-running agentic ML workflows | RLM on Quilt |
 | You need raw runtime APIs or direct container control | Quilt runtime docs |
-| You need orchestration across clusters and workloads | `quiltc` |
+| You need infrastructure orchestration across clusters and workloads | `quiltc` |
 
 ## Used Through Quilt Nightly
 
-RLM is typically delivered to end users through `quilt-nightly`, which handles the curated environment-launch path on top of Quilt infrastructure.
+RLM is typically surfaced to end users through `quilt-nightly`, which launches the curated runtime on top of Quilt infrastructure.
 
-That launcher flow is intentionally documented separately. This page exists to explain what RLM is in the Quilt tooling model and why it belongs under the Tooling surface.
+That launcher flow is documented separately. The important point here is that RLM is a real ML execution model first, and Quilt is the infrastructure layer that makes it practical to run as an isolated, persistent product surface.
