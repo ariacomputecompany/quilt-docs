@@ -15,6 +15,7 @@ On Quilt, that maps naturally to an isolated runtime with persistent workspace s
 - task decomposition where the model decides what to inspect next
 - persistent trajectories, artifacts, and workspace state across runs
 - isolated execution of agentic ML workflows on Quilt infrastructure
+- optional GPU-backed execution through Quilt's normal accelerator surface
 
 ## Why It Matters In Quilt
 
@@ -34,6 +35,18 @@ This is the important split:
 - RLM is the reasoning and execution model
 - Quilt is the infrastructure and environment layer that hosts it cleanly
 
+## Quilt RLM Contract
+
+On Quilt, RLM is not treated as an unstructured shell convenience. It has a specific runtime contract:
+
+- the REPL acts only on state inside the Quilt environment
+- admitted context lives inside `/workspace`
+- local files become RLM context only after explicit sync into `/workspace`
+- persistent runtime state lives under `/workspace/.quilt/rlm`
+- manifests, trajectories, and artifacts remain attached to the environment instead of a local workstation
+
+That execution boundary is the point of hosting RLM on Quilt. The environment is where the context lives.
+
 ## Mental Model
 
 Think about RLM as:
@@ -50,11 +63,34 @@ Do not think about it as a generic prompt wrapper or a one-shot chat interface.
 The practical RLM workflow usually looks like this:
 
 - start with a task, prompt, or script
+- sync or generate the files and data the model should work on inside `/workspace`
 - inspect files, data, or prior outputs from a real runtime
 - recurse into narrower subtasks when needed
 - record trajectories, artifacts, and state for later review or continuation
 
 That execution style is why RLM fits well on Quilt. The environment is part of the product, not an afterthought.
+
+## Launcher Modes
+
+Quilt surfaces RLM through two launcher modes:
+
+- `quilt-nightly --rlm` for the single-agent RLM environment
+- `quilt-nightly --rlm-mesh` for the Quilt-native mesh-oriented extension
+
+The single-agent mode is the direct path: one isolated runtime, one workspace, one persistent RLM state tree.
+
+The mesh mode keeps the same environment-local RLM model, but prepares the session for multi-agent orchestration instead of treating that as a separate platform.
+
+## Runtime Shape On Quilt
+
+The RLM runtime on Quilt is designed around:
+
+- a canonical workspace at `/workspace`
+- a canonical RLM state root at `/workspace/.quilt/rlm`
+- repeatable session reuse
+- explicit local context sync
+- optional persistent workspace volume attachment
+- GPU-ready launcher scaffolding when the workflow needs accelerated execution
 
 ## When To Reach For It
 
@@ -62,6 +98,7 @@ That execution style is why RLM fits well on Quilt. The environment is part of t
 |------|---------|
 | You need recursive reasoning over large or structured context | RLM |
 | You want isolated, persistent execution for long-running agentic ML workflows | RLM on Quilt |
+| You want the runtime to stay bound to environment-local context instead of laptop-local state | RLM on Quilt |
 | You need raw runtime APIs or direct container control | Quilt runtime docs |
 | You need infrastructure orchestration across clusters and workloads | `quiltc` |
 
