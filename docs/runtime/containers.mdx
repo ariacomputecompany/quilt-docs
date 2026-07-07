@@ -63,7 +63,7 @@ That distinction matters a lot.
 ### Important Rules
 
 - `name` is required.
-- `image` uses Quilt's native container selector model by default. Common selectors include `prod`, `prod-gui`, and curated runtime selectors such as `nightly/<profile>`.
+- `image` uses Quilt's native container selector model by default. Common selectors include `prod`, `prod-gui`, and curated runtime selectors such as `rlm`, `aegis`, and `amp`.
 - `command` must be an argv array, not a single shell string.
 - Use `volumes`, not `mounts`, for persistent storage attachment.
 - Volume attachments use `<volume-name>:<target-path>`.
