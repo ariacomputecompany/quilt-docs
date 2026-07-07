@@ -63,10 +63,12 @@ That distinction matters a lot.
 ### Important Rules
 
 - `name` is required.
+- `image` uses Quilt's native container selector model by default. Common selectors include `prod`, `prod-gui`, and curated runtime selectors such as `nightly/<profile>`.
 - `command` must be an argv array, not a single shell string.
 - Use `volumes`, not `mounts`, for persistent storage attachment.
 - Volume attachments use `<volume-name>:<target-path>`.
 - `prod-gui` is special and does not accept a custom `command`.
+- Curated runtimes such as RLM, Aegis, and AMP are selected through the same native `image` field rather than through a separate launcher product.
 
 ## What Quilt Returns
 

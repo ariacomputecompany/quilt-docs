@@ -126,7 +126,7 @@ curl \
     Yes. OCI is covered by the `oci` concern, including `GET /api/oci/help`, `GET /api/oci/examples`, and `GET /api/oci/health`.
   </Accordion>
   <Accordion title="Is there a concern guide for Nightly too?">
-    Yes. Use `GET /api/nightly/help`, `GET /api/nightly/examples`, and `GET /api/nightly/health` when you are debugging the Nightly control-plane layer underneath `quilt-nightly`.
+    Yes. Use `GET /api/nightly/help`, `GET /api/nightly/examples`, and `GET /api/nightly/health` when you are debugging Nightly profile and release resolution in the core Quilt control plane.
   </Accordion>
   <Accordion title="Should I retry mutations blindly when something fails?">
     No. First confirm health, then inspect the returned operation or error. Blind retries can create duplicate work or hide the real problem.

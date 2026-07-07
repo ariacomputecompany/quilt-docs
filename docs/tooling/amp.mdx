@@ -70,8 +70,10 @@ The upstream AMP project exposes:
 
 Those details matter in Quilt because they determine how the service should be deployed, exposed, and reasoned about once it is running on platform infrastructure.
 
-## Used Through Quilt Nightly
+## Native Container Selection
 
-AMP is typically surfaced through `quilt-nightly`, which launches the curated environment for the user on top of Quilt infrastructure.
+AMP is accessed through Quilt's normal container create path.
 
-This page keeps the focus on AMP itself. The launcher UX can evolve independently without changing why AMP belongs in the Quilt tooling model.
+Users select the curated AMP runtime the same way they select other first-class Quilt images: through native container image selection inside Quilt itself.
+
+This page keeps the focus on AMP itself. The important point is that AMP belongs in the Quilt tooling model as a direct runtime surface, not as a separate launcher lane.

@@ -55,8 +55,10 @@ Aegis is a good fit when you want Quilt to host the browser runtime itself:
 - deployable as part of a repeatable environment
 - compatible with the same runtime, OCI, and container lifecycle model that Quilt already exposes
 
-## Used Through Quilt Nightly
+## Native Container Selection
 
-In practice, users typically enter Aegis through `quilt-nightly` rather than by hand-wiring the underlying runtime environment themselves.
+Aegis is accessed through Quilt's normal container create path.
 
-That launcher UX is intentionally separate from this page. The important point here is that Aegis is one of the curated application surfaces that Quilt can host directly.
+That means users select the curated Aegis runtime the same way they select other first-class Quilt images: by choosing the appropriate native container image selector at create time rather than treating Aegis as a separate launcher product.
+
+The important point here is that Aegis is one of the curated application surfaces that Quilt can host directly inside the core runtime model.

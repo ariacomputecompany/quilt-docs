@@ -69,11 +69,11 @@ Then build from that `context_id`:
 - this is image compatibility, not Docker Engine API compatibility
 - image metadata such as env, entrypoint, and working directory come from the pulled image unless you override them
 
-## Tooling Builds on OCI
+## Tooling And OCI
 
-Curated Quilt tooling still rides on the OCI image path underneath.
+Curated Quilt tooling still rides on OCI-backed images underneath, even when the user selects those runtimes through Quilt's native container image selectors.
 
-That means tools such as Aegis, RLM, and AMP ultimately depend on the same image pull and OCI-backed container semantics documented here.
+That means tools such as Aegis, RLM, and AMP still depend on the same stored image artifacts and OCI preparation semantics documented here, even though users do not have to create them with `oci: true`.
 
 See [Aegis](/tooling/aegis), [RLM](/tooling/rlm), and [AMP](/tooling/amp).
 

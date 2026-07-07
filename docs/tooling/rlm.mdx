@@ -70,16 +70,13 @@ The practical RLM workflow usually looks like this:
 
 That execution style is why RLM fits well on Quilt. The environment is part of the product, not an afterthought.
 
-## Launcher Modes
+## Native Container Selection
 
-Quilt surfaces RLM through two launcher modes:
+Quilt surfaces RLM through the same native container selection model it uses for other curated runtimes.
 
-- `quilt-nightly --rlm` for the single-agent RLM environment
-- `quilt-nightly --rlm-mesh` for the Quilt-native mesh-oriented extension
+The direct path is one isolated runtime, one workspace, and one persistent RLM state tree selected as a first-class Quilt container image.
 
-The single-agent mode is the direct path: one isolated runtime, one workspace, one persistent RLM state tree.
-
-The mesh mode keeps the same environment-local RLM model, but prepares the session for multi-agent orchestration instead of treating that as a separate platform.
+Quilt-native multi-agent or mesh-oriented orchestration can still build on that same environment-local RLM model, but the base RLM runtime is not a separate launcher product.
 
 ## Runtime Shape On Quilt
 
@@ -102,8 +99,8 @@ The RLM runtime on Quilt is designed around:
 | You need raw runtime APIs or direct container control | Quilt runtime docs |
 | You need infrastructure orchestration across clusters and workloads | `quiltc` |
 
-## Used Through Quilt Nightly
+## Runtime Entry On Quilt
 
-RLM is typically surfaced to end users through `quilt-nightly`, which launches the curated runtime on top of Quilt infrastructure.
+RLM is a real ML execution model first, and Quilt is the infrastructure layer that makes it practical to run as an isolated, persistent product surface.
 
-That launcher flow is documented separately. The important point here is that RLM is a real ML execution model first, and Quilt is the infrastructure layer that makes it practical to run as an isolated, persistent product surface.
+Users access the curated RLM environment through Quilt's normal container selection flow, the same way they choose other native Quilt runtimes.
